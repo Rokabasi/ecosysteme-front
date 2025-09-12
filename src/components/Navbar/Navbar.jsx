@@ -48,8 +48,19 @@ const NavBar = () => {
           <div className="relative" ref={userMenuRef}>
             <button
               type="button"
-              className="flex items-center space-x-2 focus:outline-none"
-              onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+              className="flex items-center space-x-2 p-0 mt-1 m-0 border-0 !bg-white"
+              style={{
+                outline: 'none',
+                boxShadow: 'none',
+                WebkitTapHighlightColor: 'transparent'
+              }}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                setIsUserMenuOpen(!isUserMenuOpen);
+              }}
+              onMouseDown={e => e.preventDefault()}
+              onFocus={e => e.target.blur()}
             >
               <div className="h-8 w-8 rounded-full bg-gradient-to-r from-[#8e1f71] to-[#0089cf] flex items-center justify-center text-white">
                 <FiUser className="h-5 w-5" />
