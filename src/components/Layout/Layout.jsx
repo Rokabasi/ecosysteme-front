@@ -1,45 +1,40 @@
-import { Outlet } from "react-router";
-import { useState, useEffect } from "react";
-import Sidebar from "../Sidebar/Sidebar";
-import NavBar from "../Navbar/Navbar";
+import React, { useState, useEffect } from 'react';
+import { Outlet } from 'react-router-dom';
+import Sidebar from '../Sidebar/Sidebar';
+import NavBar from '../Navbar/Navbar';
 
-function Layout() {
+const Layout = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(true); // Set to true for demo
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
 
-  // Check if mobile view
+  // Handle window resize
   useEffect(() => {
-    const checkIfMobile = () => {
-      setIsMobile(window.innerWidth < 1024);
+    const handleResize = () => {
+      const isMobileView = window.innerWidth < 1024;
+      setIsMobile(isMobileView);
+      
+      // On larger screens, always show the sidebar
+      if (!isMobileView) {
+        setIsSidebarOpen(true);
+      } else {
+        setIsSidebarOpen(false);
+      }
     };
-    
-    // Initial check
-    checkIfMobile();
-    
-    // Add event listener for window resize
-    window.addEventListener('resize', checkIfMobile);
-    
-    // Cleanup
-    return () => window.removeEventListener('resize', checkIfMobile);
+
+    window.addEventListener('resize', handleResize);
+    handleResize(); // Call it once to set initial state
+
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Toggle sidebar
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
-  // Close sidebar when route changes on mobile
   const handleMobileNavigate = () => {
     if (isMobile) {
       setIsSidebarOpen(false);
     }
-  };
-
-  // Handle logout
-  const handleLogout = () => {
-    localStorage.removeItem('authToken');
-    setIsAuthenticated(false);
   };
 
   return (
@@ -47,28 +42,24 @@ function Layout() {
       {/* Navbar */}
       <div className="fixed top-0 left-0 right-0 z-40">
         <NavBar 
-          isAuthenticated={isAuthenticated}
-          onLogout={handleLogout}
           onMenuToggle={toggleSidebar}
+          //onLogout={handleLogout}
         />
       </div>
 
-      <div className="pt-16 flex w-[100%]">
+      <div className="flex flex-1 pt-16 w-full">
         {/* Sidebar */}
         <div 
           className={`fixed inset-y-0 left-0 z-30 transform ${
             isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
-          }  transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static`}
+          } transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static`}
           style={{
             width: isMobile ? '16rem' : '16rem',
             transitionProperty: 'transform',
             flexShrink: 0
           }}
         >
-          <Sidebar 
-            isCollapsed={false}
-            onMobileNavigate={handleMobileNavigate}
-          />
+          <Sidebar onMobileNavigate={handleMobileNavigate} />
         </div>
 
         {/* Overlay for mobile */}
@@ -80,16 +71,16 @@ function Layout() {
         )}
 
         {/* Main content */}
-        <main className=" min-w-0 w-[100%] bg-white">
-          <div className="min-h-[calc(100vh-4rem)] p-2 w-full max-w-none">
+        <main className="flex-1 w-full min-w-0 bg-white">
+          <div className="min-h-[calc(100vh-4rem)] p-4 md:p-6 w-full">
             <div className="w-full">
-              <Outlet context={{ isAuthenticated, setIsAuthenticated }} />
+              <Outlet />
             </div>
           </div>
         </main>
       </div>
     </div>
   );
-}
+};
 
 export default Layout;
