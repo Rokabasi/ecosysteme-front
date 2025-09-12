@@ -1,5 +1,7 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { Link } from "react-router-dom";
+import { UseRegisterConfig } from "./hook";
+import RegisterStep1 from "../../components/Stepper/RegisterStep1";
 
 const Register = () => {
   const handleSubmit = (e) => {
@@ -7,94 +9,154 @@ const Register = () => {
     // Handle form submission
   };
 
+  const { currentStep, nextStep, prevStep, steps, provinces } =
+    UseRegisterConfig();
+
+  const renderStepContent = () => {
+    switch (currentStep) {
+      case 1:
+        return <div></div>;
+
+      case 2:
+        return <div></div>;
+
+      case 3:
+        return <div></div>;
+
+      case 4:
+        const documents = [
+          {
+            key: "statuts",
+            label: "Statuts notariés de l'ASBL/ONG",
+            required: true,
+          },
+          {
+            key: "reglements",
+            label: "Règlements d'ordre intérieurs",
+            required: true,
+          },
+          {
+            key: "personnaliteJuridique",
+            label: "Personnalité juridique",
+            required: true,
+          },
+          { key: "organigramme", label: "Organigramme", required: false },
+          {
+            key: "rapportsActivite",
+            label: "Rapports d'activité ou narratifs de 3 dernières années",
+            required: true,
+          },
+          {
+            key: "etatsFinanciers",
+            label: "États financiers de 3 dernières années",
+            required: true,
+          },
+          {
+            key: "pvAssemblee",
+            label: "Dernier PV d'Assemblée Générale/Conseil d'Administration",
+            required: false,
+          },
+        ];
+
+        return <div></div>;
+
+      case 5:
+        return <div></div>;
+
+      case 6:
+        const questions = [
+          {
+            key: "priseEnChargeVictimes",
+            question:
+              "Avez-vous déjà pris en charge les victimes des violences sexuelles liées aux conflits ou les victimes des crimes contre la paix et la sécurité de l'humanité ?",
+            hasFollowUp: true,
+            followUpKey: "occasionPriseEnCharge",
+          },
+          {
+            key: "associationVictimes",
+            question:
+              "Votre organisation constitue-t-elle une association des victimes ?",
+          },
+          {
+            key: "informationsVictimes",
+            question:
+              "Disposez-vous d'informations concernant les victimes des violences sexuelles liées aux conflits ou les victimes des crimes contre la paix et la sécurité de l'humanité ?",
+          },
+          {
+            key: "collaborationFonarev",
+            question:
+              "Votre organisation est-elle prête à collaborer avec le FONAREV pour assurer la prise en charge des victimes des violences sexuelles liées aux conflits ou les victimes des crimes contre la paix et la sécurité de l'humanité ?",
+          },
+          {
+            key: "compteBancaire",
+            question:
+              "Votre organisation dispose-t-elle d'un compte bancaire ?",
+          },
+        ];
+
+        return <div></div>;
+
+      case 7:
+        return <div></div>;
+
+      default:
+        return null;
+    }
+  };
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-xl shadow-lg">
-        <div className="text-center">
-          <h2 className="mt-6 text-3xl font-extrabold text-[#6a1754]">
-            Enregistrement
-          </h2>
-          <p className="mt-2 text-sm text-gray-600">
-            Remplissez le formulaire pour enregistrer votre organisation
-          </p>
-        </div>
-        
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          <div className="rounded-md shadow-sm space-y-4">
-            <div>
-              <label htmlFor="org-name" className="block text-sm font-medium text-gray-700">
-                Nom de l'organisation
-              </label>
-              <input
-                id="org-name"
-                name="orgName"
-                type="text"
-                required
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#0089CF] focus:border-transparent"
-                placeholder="Nom de votre organisation"
-              />
-            </div>
-
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                Email
-              </label>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                required
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#0089CF] focus:border-transparent"
-                placeholder="votre@email.com"
-              />
-            </div>
-
-            <div>
-              <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
-                Téléphone
-              </label>
-              <input
-                id="phone"
-                name="phone"
-                type="tel"
-                required
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#0089CF] focus:border-transparent"
-                placeholder="+243 XX XXX XXXX"
-              />
-            </div>
-
-            <div>
-              <label htmlFor="type" className="block text-sm font-medium text-gray-700">
-                Type d'organisation
-              </label>
-              <select
-                id="type"
-                name="type"
-                required
-                className="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#0089CF] focus:border-transparent rounded-md"
+    <div className="flex gap-6">
+      <div className="flex flex-col items-start justify-center bg-[#0f172a] gap-1 w-[280px] h-screen px-5">
+        {steps.map((step, index) => (
+          <div className="flex gap-2" key={index}>
+            <div className="flex flex-col items-center gap-1">
+              <div
+                className={
+                  step.isActive
+                    ? `flex items-center justify-center bg-[#6a1754] w-8 h-8 rounded-full text-white`
+                    : `flex items-center justify-center bg-transparent border border-gray-600 w-8 h-8 rounded-full text-gray-600`
+                }
               >
-                <option value="">Sélectionnez un type</option>
-                <option value="ong">ONG</option>
-                <option value="asbl">ASBL</option>
-                <option value="autre">Autre</option>
-              </select>
+                {step.id}
+              </div>
+              {index !== steps.length - 1 && (
+                <div className="bg-gray-600  h-14 w-[2px]"></div>
+              )}
+            </div>
+            <div className="flex flex-col">
+              <div
+                className={
+                  step.isActive
+                    ? `font-semibold text-gray-200`
+                    : `font-semibold text-gray-600`
+                }
+              >
+                {step.title}
+              </div>
+              <div
+                className={
+                  step.isActive
+                    ? `text-gray-400 text-sm mt-1`
+                    : `text-gray-600 text-sm mt-1`
+                }
+              >
+                {step.description}
+              </div>
             </div>
           </div>
-
-          <div>
-            <button
-              type="submit"
-              className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#6a1754] hover:bg-[#5a1446] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#0089CF] transition-colors duration-300"
-            >
-              Envoyer la demande
-            </button>
-          </div>
-        </form>
-
-        <div className="text-center mt-4">
-          <Link to="/" className="text-sm font-medium text-[#6a1754] hover:text-[#0089CF] transition-colors duration-300">
-            ← Retour à l'accueil
-          </Link>
+        ))}
+      </div>
+      <div className="w-full">
+        {currentStep === 1 && <RegisterStep1 />}
+        {/* {currentStep === 2 && <RegisterStep2 />}
+        {currentStep === 3 && <RegisterStep3 />}
+        {currentStep === 4 && <RegisterStep4 />}
+        {currentStep === 5 && <RegisterStep5 />}
+        {currentStep === 6 && <RegisterStep6 />}
+        {currentStep === 7 && <RegisterStep7 />} */}
+        <div>
+          <button>Précédent</button>
+          <button>Suivant</button>
         </div>
       </div>
     </div>
