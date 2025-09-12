@@ -43,7 +43,7 @@ function Layout() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col border">
+    <div className="min-h-screen w-full bg-gray-50 flex flex-col overflow-x-hidden">
       {/* Navbar */}
       <div className="fixed top-0 left-0 right-0 z-40">
         <NavBar 
@@ -53,17 +53,16 @@ function Layout() {
         />
       </div>
 
-      <div className="flex flex-1 pt-16 border ">
+      <div className="pt-16 flex w-[100%]">
         {/* Sidebar */}
         <div 
           className={`fixed inset-y-0 left-0 z-30 transform ${
             isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
-          } transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:flex-shrink-0`}
+          }  transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static`}
           style={{
             width: isMobile ? '16rem' : '16rem',
             transitionProperty: 'transform',
-            transitionDuration: '300ms',
-            transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)'
+            flexShrink: 0
           }}
         >
           <Sidebar 
@@ -81,9 +80,9 @@ function Layout() {
         )}
 
         {/* Main content */}
-        <main className="flex-1 bg-gray-50 transition-all duration-300 ease-in-out border">
-          <div className="min-h-[calc(100vh-4rem)] p-4 md:p-6">
-            <div className="max-w-full mx-auto">
+        <main className=" min-w-0 w-[100%] bg-white">
+          <div className="min-h-[calc(100vh-4rem)] p-2 w-full max-w-none">
+            <div className="w-full">
               <Outlet context={{ isAuthenticated, setIsAuthenticated }} />
             </div>
           </div>

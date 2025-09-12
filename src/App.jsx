@@ -40,7 +40,7 @@ function App() {
           </ProtectedRoute>
         }>
           <Route path="/" element={<div className="p-6">Tableau de bord</div>} />
-          <Route path="/requisition" element={<div className="p-6">Requisitions</div>} />
+          <Route path="/requisition" element={<div className="">Requisitions</div>} />
           <Route path="/configuration" element={<div className="p-6">Configuration</div>} />
         </Route>
         

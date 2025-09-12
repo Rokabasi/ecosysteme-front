@@ -48,7 +48,7 @@ const NavBar = () => {
           <div className="relative" ref={userMenuRef}>
             <button
               type="button"
-              className="flex items-center space-x-2 p-0 mt-1 m-0 border-0 !bg-white"
+              className="flex items-center space-x-2 p-0 mt-4 m-0 border-0 !bg-white"
               style={{
                 outline: 'none',
                 boxShadow: 'none',
