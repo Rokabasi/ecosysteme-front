@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { FiEdit2, FiSearch } from 'react-icons/fi';
+import { FaPlus,  } from "react-icons/fa6";
+import { FaSearch } from "react-icons/fa";
 
 const Welcome = () => {
   return (
@@ -21,7 +22,7 @@ const Welcome = () => {
             className="group bg-white p-8 rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex flex-col items-center text-center"
           >
             <div className="w-16 h-16 rounded-full bg-[#6a1754] bg-opacity-10 flex items-center justify-center mb-6 group-hover:bg-opacity-20 transition-all duration-300">
-              <FiEdit2 className="text-2xl text-[#6a1754]" />
+              <FaPlus className="text-2xl text-white" />
             </div>
             <h3 className="text-xl font-semibold text-gray-800 mb-2">S'enregistrer</h3>
             <p className="text-gray-500 mb-6">Enregistrez votre organisation pour commencer le processus de partenariat</p>
@@ -36,7 +37,7 @@ const Welcome = () => {
             className="group bg-white p-8 rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex flex-col items-center text-center"
           >
             <div className="w-16 h-16 rounded-full bg-[#0089CF] bg-opacity-10 flex items-center justify-center mb-6 group-hover:bg-opacity-20 transition-all duration-300">
-              <FiSearch className="text-2xl text-[#0089CF]" />
+              <FaSearch className="text-2xl text-white" />
             </div>
             <h3 className="text-xl font-semibold text-gray-800 mb-2">Vérifier le statut</h3>
             <p className="text-gray-500 mb-6">Vérifiez l'état d'avancement de votre demande de partenariat</p>
@@ -47,11 +48,8 @@ const Welcome = () => {
         </div>
 
         <div className="mt-16 text-center">
-          <p className="text-sm text-gray-400">
-            Vous avez déjà un compte ?{' '}
-            <Link to="/login" className="text-[#6a1754] hover:underline font-medium">
-              Connectez-vous ici
-            </Link>
+          <p className="text-md text-gray-500">
+            L'inscription est ouverte pour les provinces de Kinshasa, Kongo Central, Sud-Kivu, Nord-Kivu et Haut-Katanga.
           </p>
         </div>
       </div>
