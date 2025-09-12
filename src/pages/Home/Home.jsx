@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { FaPlus,  } from "react-icons/fa6";
 import { FaSearch } from "react-icons/fa";
 
-const Welcome = () => {
+const Home = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-white to-gray-50">
       <div className="max-w-4xl w-full mx-4">
@@ -57,4 +57,4 @@ const Welcome = () => {
   );
 };
 
-export default Welcome;
+export default Home;

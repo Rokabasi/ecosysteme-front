@@ -1,17 +1,17 @@
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 import "./App.css";
 import Layout from "./components/Layout/Layout";
-import Welcome from "./pages/Welcome";
-import Register from "./pages/Register";
-import CheckStatus from "./pages/CheckStatus";
+import Register from "./pages/Register/Register";
+import CheckStatut from "./pages/CheckStatut/CheckStatut";
+import Home from "./pages/Home/Home";
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Welcome />} />
+        <Route path="/" element={<Home />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/check-status" element={<CheckStatus />} />
+        <Route path="/check-status" element={<CheckStatut />} />
         
         <Route path="/admin" element={<Layout />}>
           <Route index element={<div className="p-6">Tableau de bord</div>} />

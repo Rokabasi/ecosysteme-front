@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FiSearch, FiClock, FiCheckCircle, FiXCircle } from 'react-icons/fi';
 
-const CheckStatus = () => {
+const CheckStatut = () => {
   const [reference, setReference] = useState('');
   const [status, setStatus] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -138,4 +138,4 @@ const CheckStatus = () => {
   );
 };
 
-export default CheckStatus;
+export default CheckStatut;
