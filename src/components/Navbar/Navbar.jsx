@@ -51,7 +51,7 @@ const NavBar = () => {
               className="flex items-center space-x-2 focus:outline-none"
               onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
             >
-              <div className="h-10 w-10 rounded-full bg-gradient-to-r from-[#8e1f71] to-[#0089cf] flex items-center justify-center text-white">
+              <div className="h-8 w-8 rounded-full bg-gradient-to-r from-[#8e1f71] to-[#0089cf] flex items-center justify-center text-white">
                 <FiUser className="h-5 w-5" />
               </div>
               <FiChevronDown className={`h-4 w-4 text-gray-500 transition-transform ${isUserMenuOpen ? 'transform rotate-180' : ''}`} />
