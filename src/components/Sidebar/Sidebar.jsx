@@ -86,7 +86,7 @@ const Sidebar = ({ onMobileNavigate, isCollapsed = false }) => {
 
   return (
     <div
-      className={`h-[calc(100vh-4rem)]  text-white flex flex-col transition-all duration-300 ${
+      className={`h-[calc(100vh-4rem)] bg-[#0f172a] text-white flex flex-col transition-all duration-300 ${
         isCollapsed ? "w-16 md:w-16" : "w-64"
       } shadow-lg`}
     >
@@ -106,23 +106,19 @@ const Sidebar = ({ onMobileNavigate, isCollapsed = false }) => {
                 onClick={() => handleNavigation(item.path)}
                 className={`group flex items-center px-3 py-3 text-sm font-medium rounded-md transition-colors duration-200 ${
                   active
-                    ? 'bg-white/20 text-white'
-                    : 'text-white/80 hover:bg-white/10 hover:text-white'
+                    ? 'bg-[#6a1754] text-white'
+                    : 'text-white/70 hover:bg-[#1e293b] hover:text-white'
                 }`}
               >
-                <span className={`transition-colors duration-200 ${active ? 'text-white' : 'text-white/70 group-hover:text-white'}`}>
+                <span className={`transition-colors duration-200 ${active ? 'text-white' : 'text-white/90 group-hover:text-white'}`}>
                   {item.icon}
                 </span>
                 {!isCollapsed && (
-                  <span className="ml-3 truncate">
+                  <span className="ml-3 truncate text-white">
                     {item.label}
                   </span>
                 )}
-                {!isCollapsed && item.roles?.includes('admin') && (
-                  <span className="ml-auto inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                    Admin
-                  </span>
-                )}
+                
               </Link>
             );
           })}

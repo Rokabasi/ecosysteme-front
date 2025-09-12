@@ -43,7 +43,7 @@ function Layout() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
+    <div className="min-h-screen bg-gray-50 flex flex-col border">
       {/* Navbar */}
       <div className="fixed top-0 left-0 right-0 z-40">
         <NavBar 
@@ -53,7 +53,7 @@ function Layout() {
         />
       </div>
 
-      <div className="flex flex-1 pt-16">
+      <div className="flex flex-1 pt-16 border ">
         {/* Sidebar */}
         <div 
           className={`fixed inset-y-0 left-0 z-30 transform ${
@@ -81,7 +81,7 @@ function Layout() {
         )}
 
         {/* Main content */}
-        <main className="flex-1 bg-gray-50 transition-all duration-300 ease-in-out">
+        <main className="flex-1 bg-gray-50 transition-all duration-300 ease-in-out border">
           <div className="min-h-[calc(100vh-4rem)] p-4 md:p-6">
             <div className="max-w-full mx-auto">
               <Outlet context={{ isAuthenticated, setIsAuthenticated }} />
