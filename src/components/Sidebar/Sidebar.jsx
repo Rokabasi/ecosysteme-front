@@ -1,13 +1,26 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import { Link, useLocation } from "react-router-dom";
-import { HiOutlineHome } from "react-icons/hi";
-import { IoDocumentTextOutline } from "react-icons/io5";
-import { IoSettingsOutline } from "react-icons/io5";
+import { 
+  HiOutlineHome, 
+  HiOutlineDocumentText, 
+  HiOutlineCog, 
+  HiOutlineChartSquareBar,
+  HiOutlineUsers,
+  HiOutlineCalendar,
+  HiOutlineChartBar,
+  HiOutlineDocumentReport
+} from "react-icons/hi";
 
 const Sidebar = ({ onMobileNavigate, isCollapsed = false }) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const [activePath, setActivePath] = useState(location.pathname);
+
+  // Update active path when location changes
+  useEffect(() => {
+    setActivePath(location.pathname);
+  }, [location]);
 
   const handleNavigation = (path) => {
     const isMobile = window.innerWidth < 1024; // lg breakpoint
@@ -21,71 +34,99 @@ const Sidebar = ({ onMobileNavigate, isCollapsed = false }) => {
     {
       path: "/",
       label: "Tableau de bord",
-      icon: <HiOutlineHome className="w-5 h-5 flex-shrink-0" />,
+      icon: <HiOutlineChartSquareBar className="w-5 h-5 flex-shrink-0" />,
     },
     {
       path: "/requisition",
       label: "Requisitions",
-      icon: <IoDocumentTextOutline className="w-5 h-5 flex-shrink-0" />,
+      icon: <HiOutlineDocumentText className="w-5 h-5 flex-shrink-0" />,
+    },
+    {
+      path: "/rapports",
+      label: "Rapports",
+      icon: <HiOutlineDocumentReport className="w-5 h-5 flex-shrink-0" />,
+    },
+    {
+      path: "/calendrier",
+      label: "Calendrier",
+      icon: <HiOutlineCalendar className="w-5 h-5 flex-shrink-0" />,
+    },
+    {
+      path: "/utilisateurs",
+      label: "Utilisateurs",
+      icon: <HiOutlineUsers className="w-5 h-5 flex-shrink-0" />,
+      roles: ['admin']
+    },
+    {
+      path: "/statistiques",
+      label: "Statistiques",
+      icon: <HiOutlineChartBar className="w-5 h-5 flex-shrink-0" />,
     },
     {
       path: "/configuration",
       label: "Configuration",
-      icon: <IoSettingsOutline className="w-5 h-5 flex-shrink-0" />,
+      icon: <HiOutlineCog className="w-5 h-5 flex-shrink-0" />,
+      roles: ['admin']
     },
   ];
 
   const isActive = (path) => {
-    // Pour les routes commençant par /requisition
-    if (
-      path === "/requisition" &&
-      location.pathname.startsWith("/requisition")
-    ) {
+    if (path === "/requisition" && activePath.startsWith("/requisition")) {
       return true;
     }
-    // Pour les autres routes
-    return location.pathname === path;
+    return activePath === path;
+  };
+
+  // Check if user has required role for menu item
+  const hasPermission = (item) => {
+    if (!item.roles) return true;
+    // In a real app, check user roles against required roles
+    return true; // For demo purposes
   };
 
   return (
     <div
-      className={`h-[calc(100vh-64px)] bg-[#8e1f71] text-white flex flex-col border-r border-gray-200 transition-all duration-300 ${
-        isCollapsed ? "w-16 md:w-20" : "w-60"
-      }`}
+      className={`h-[calc(100vh-4rem)]  text-white flex flex-col transition-all duration-300 ${
+        isCollapsed ? "w-16 md:w-16" : "w-64"
+      } shadow-lg`}
     >
-      {/* En-tête */}
-
+      {/* Logo and app name */}
+      
+      
       {/* Menu principal */}
-      <div className="flex-1 px-2 overflow-y-auto pt-12">
-        <ul className="space-y-1">
-          {menuItems.map((item) => (
-            <li key={item.path}>
+      <nav className="flex-1 px-2 pt-12 pb-4 space-y-1 overflow-y-auto ">
+        {menuItems
+          .filter(hasPermission)
+          .map((item) => {
+            const active = isActive(item.path);
+            return (
               <Link
+                key={item.path}
                 to={item.path}
                 onClick={() => handleNavigation(item.path)}
-                className={`flex items-center gap-3 py-3 px-4 rounded-lg transition-all duration-200 mx-1 ${
-                  isActive(item.path)
-                    ? "bg-white/20 !text-white shadow-md"
-                    : "!text-white/90 hover:bg-white/10 hover:text-white"
+                className={`group flex items-center px-3 py-3 text-sm font-medium rounded-md transition-colors duration-200 ${
+                  active
+                    ? 'bg-white/20 text-white'
+                    : 'text-white/80 hover:bg-white/10 hover:text-white'
                 }`}
               >
-                <span
-                  className={`${
-                    isActive(item.path) ? "text-white" : "!text-white/90"
-                  }`}
-                >
+                <span className={`transition-colors duration-200 ${active ? 'text-white' : 'text-white/70 group-hover:text-white'}`}>
                   {item.icon}
                 </span>
                 {!isCollapsed && (
-                  <span className="text-sm font-medium whitespace-nowrap overflow-hidden overflow-ellipsis">
+                  <span className="ml-3 truncate">
                     {item.label}
                   </span>
                 )}
+                {!isCollapsed && item.roles?.includes('admin') && (
+                  <span className="ml-auto inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                    Admin
+                  </span>
+                )}
               </Link>
-            </li>
-          ))}
-        </ul>
-      </div>
+            );
+          })}
+      </nav>
     </div>
   );
 };

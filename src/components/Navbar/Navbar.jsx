@@ -1,65 +1,119 @@
-import React, { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import React, { useState, useRef, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { FiUser, FiLogOut, FiChevronDown, FiMail, FiBriefcase, FiAward } from "react-icons/fi";
 import Logo from "../../assets/fonarev-logo.webp";
 
+// Mock user data
+const userData = {
+  name: "John Doe",
+  email: "john.doe@fonarev.cd",
+  department: "Direction des Systèmes d'Information",
+  position: "Chef de Projet",
+  role: "Administrateur"
+};
+
 const NavBar = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const location = useLocation();
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const userMenuRef = useRef(null);
 
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (userMenuRef.current && !userMenuRef.current.contains(event.target)) {
+        setIsUserMenuOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
-  const menuItems = [
-    { path: '/', label: 'Tableau de bord' },
-    { path: '/requisition', label: 'Requisitions' },
-    { path: '/configuration', label: 'Configuration', roles: ['admin'] },
-  ];
-
-  const isActive = (path) => location.pathname === path;
-
-
+  const handleLogout = () => {
+    console.log("User logged out");
+    setIsUserMenuOpen(false);
+  };
 
   return (
-    <>
-      <nav className="bg-white border-b border-gray-200 h-16">
-        <div className="h-full px-4 flex items-center justify-between">
-          <div className="flex items-center gap-6">
-            <Link to="/" className="flex items-center gap-2">
-              <img src={Logo} alt="Logo" className="h-10 w-auto" />
-              <span className="text-base hidden md:block lg:text-lg md:text-sm sm:text-xs font-semibold text-gray-900">Ecosystem</span>
-            </Link>
-            <div className="h-6 w-px hidden md:block bg-gray-200" />
+    <nav className="bg-white border-b border-gray-200 h-16 shadow-sm">
+      <div className="max-w-7xl mx-auto px-4 h-full">
+        <div className="flex justify-between  h-full">
+          {/* Logo */}
+          <Link to="/" className="flex items-center">
+            <img src={Logo} alt="Logo" className="h-10 w-auto" />
+            <span className="ml-2 text-lg font-semibold text-gray-900 hidden md:inline-block">
+              ECOSYSTÈME FONAREV
+            </span>
+          </Link>
 
-          </div>
-        </div>
-      </nav>
+          {/* User Menu */}
+          <div className="relative" ref={userMenuRef}>
+            <button
+              type="button"
+              className="flex items-center space-x-2 focus:outline-none"
+              onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+            >
+              <div className="h-10 w-10 rounded-full bg-gradient-to-r from-[#8e1f71] to-[#0089cf] flex items-center justify-center text-white">
+                <FiUser className="h-5 w-5" />
+              </div>
+              <FiChevronDown className={`h-4 w-4 text-gray-500 transition-transform ${isUserMenuOpen ? 'transform rotate-180' : ''}`} />
+            </button>
 
-      {/* Menu mobile */}
-      <div className={`
-        fixed inset-0 bg-black/50 z-30 md:hidden transition-opacity duration-300
-        ${isMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}
-      `}>
-        <div className={`
-          fixed top-16 left-0 w-64 h-[calc(100vh-4rem)] bg-white transform transition-transform duration-300 ease-out
-          ${isMenuOpen ? 'translate-x-0' : '-translate-x-full'}
-        `}>
-          <div className="p-4">
-            {menuItems.map((item) => (
-              (!item.roles) && (
-                <Link
-                  key={item.path}
-                  to={item.path}
-                  onClick={() => setIsMenuOpen(false)}
-                  className="block px-4 py-3 text-gray-600"
-                >
-                  {item.label}
-                </Link>
-              )
-            ))}
+            {/* User Dropdown */}
+            {isUserMenuOpen && (
+              <div className="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-xl border border-gray-200 overflow-hidden z-50">
+                {/* User Info */}
+                <div className="p-4 bg-gradient-to-r from-[#8e1f71] to-[#6a1754] text-white">
+                  <div className="flex items-center space-x-4">
+                    <div className="h-14 w-14 rounded-full bg-white/20 flex items-center justify-center">
+                      <FiUser className="h-6 w-6 text-white" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-lg">{userData.name}</h3>
+                      <p className="text-sm text-white/90">{userData.role}</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* User Details */}
+                <div className="p-4 space-y-3">
+                  <div className="flex items-start space-x-3">
+                    <FiMail className="h-5 w-5 text-[#8e1f71] mt-0.5 flex-shrink-0" />
+                    <div>
+                      <p className="text-xs text-gray-500">Email</p>
+                      <p className="text-sm text-gray-800">{userData.email}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start space-x-3">
+                    <FiBriefcase className="h-5 w-5 text-[#8e1f71] mt-0.5 flex-shrink-0" />
+                    <div>
+                      <p className="text-xs text-gray-500">Direction</p>
+                      <p className="text-sm text-gray-800">{userData.department}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start space-x-3">
+                    <FiAward className="h-5 w-5 text-[#8e1f71] mt-0.5 flex-shrink-0" />
+                    <div>
+                      <p className="text-xs text-gray-500">Fonction</p>
+                      <p className="text-sm text-gray-800">{userData.position}</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Logout Button */}
+                <div className="border-t border-gray-200 p-2 bg-gray-50">
+                  <button
+                    onClick={handleLogout}
+                    className="w-full flex items-center justify-center px-4 py-2 text-sm text-red-600 hover:bg-red-50 rounded-md transition-colors"
+                  >
+                    <FiLogOut className="mr-2 h-4 w-4" />
+                    Se déconnecter
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
-
-      
-    </>
+    </nav>
   );
 };
 
