@@ -34,13 +34,13 @@ const NavBar = () => {
 
   return (
     <nav className="bg-white border-b border-gray-200 h-16 shadow-sm">
-      <div className="max-w-7xl mx-auto px-4 h-full">
+      <div className=" px-4  h-full">
         <div className="flex justify-between  h-full">
           {/* Logo */}
           <Link to="/" className="flex items-center">
             <img src={Logo} alt="Logo" className="h-10 w-auto" />
             <span className="ml-2 text-lg font-semibold text-gray-900 hidden md:inline-block">
-              ECOSYSTÈME FONAREV
+              Ecosystème
             </span>
           </Link>
 
