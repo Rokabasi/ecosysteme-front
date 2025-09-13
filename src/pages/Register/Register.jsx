@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { UseRegisterConfig } from "./hook";
 import ProvinceStep from "../../components/Stepper/ProvinceStep";
+import ZoneStep from "../../components/Stepper/ZoneStep";
 
 const Register = () => {
   const handleSubmit = (e) => {
@@ -9,8 +10,7 @@ const Register = () => {
     // Handle form submission
   };
 
-  const { currentStep, nextStep, prevStep, steps, provinces } =
-    UseRegisterConfig();
+  const { currentStep, nextStep, prevStep, steps } = UseRegisterConfig();
 
   const renderStepContent = () => {
     switch (currentStep) {
@@ -167,17 +167,7 @@ const Register = () => {
             {/* Step Content */}
             <div className="mb-12">
               {currentStep === 1 && <ProvinceStep />}
-              {currentStep === 2 && (
-                <div className="text-center py-12">
-                  {/* <Building className="w-16 h-16 mx-auto text-gray-400 mb-4" /> */}
-                  <h3 className="text-lg font-medium text-gray-900 mb-2">
-                    Zones d'opération
-                  </h3>
-                  <p className="text-gray-600">
-                    Contenu de l'étape 2 à implémenter
-                  </p>
-                </div>
-              )}
+              {currentStep === 2 && <ZoneStep />}
               {currentStep > 2 && (
                 <div className="text-center py-12">
                   <div className="w-16 h-16 mx-auto bg-gray-100 rounded-full flex items-center justify-center mb-4">

@@ -1,13 +1,38 @@
 import Select from "react-select";
 import { LuMapPin } from "react-icons/lu";
+import { useState } from "react";
 
-const ProvinceStep = () => {
+const ZoneStep = () => {
   const provinces = [
     { value: "Kinshasa", label: "Kinshasa" },
     { value: "Kongo Central", label: "Kongo Central" },
+    { value: "Sud-Kivu", label: "Sud-Kivu" },
+    { value: "Nord-Kivu", label: "Nord-Kivu" },
     { value: "Haut-Katanga", label: "Haut-Katanga" },
+    { value: "Bas-Uele", label: "Bas-Uele" },
+    { value: "Équateur", label: "Équateur" },
+    { value: "Haut-Lomami", label: "Haut-Lomami" },
+    { value: "Haut-Uele", label: "Haut-Uele" },
+    { value: "Ituri", label: "Ituri" },
+    { value: "Kasaï", label: "Kasaï" },
+    { value: "Kasaï Central", label: "Kasaï Central" },
     { value: "Kasaï Oriental", label: "Kasaï Oriental" },
+    { value: "Kwango", label: "Kwango" },
+    { value: "Kwilu", label: "Kwilu" },
+    { value: "Lomami", label: "Lomami" },
+    { value: "Lualaba", label: "Lualaba" },
+    { value: "Mai-Ndombe", label: "Mai-Ndombe" },
+    { value: "Maniema", label: "Maniema" },
+    { value: "Mongala", label: "Mongala" },
+    { value: "Nord-Ubangi", label: "Nord-Ubangi" },
+    { value: "Sankuru", label: "Sankuru" },
+    { value: "Sud-Ubangi", label: "Sud-Ubangi" },
+    { value: "Tanganyika", label: "Tanganyika" },
+    { value: "Tshopo", label: "Tshopo" },
+    { value: "Tshuapa", label: "Tshuapa" },
   ];
+
+  const [selectedProvinces, setSelectedProvinces] = useState([]);
 
   const customStyles = {
     control: (provided, state) => ({
@@ -49,41 +74,34 @@ const ProvinceStep = () => {
           <LuMapPin className="w-8 h-8 text-[#6a1754]" />
         </div>
         <h2 className="text-2xl font-bold text-gray-900 mb-2">
-          Province du siège
+          Zone d'opération
         </h2>
 
         <p className="text-gray-600 text-lg leading-relaxed">
-          Choisissez sur cette liste la province dans laquelle se situe le siège
-          de votre organisation.
+          Sélectionnez les provinces dans lesquelles votre organisation opère.
         </p>
       </div>
 
       <div className="space-y-6">
-        <div className="space-y-3">
+        <div className="space-y-3 mb-40">
           <p className="text-base font-medium text-gray-900">
-            Sélectionnez votre province
+            Sélectionnez la(les) province(s)
             <span className="text-[#6a1754]">*</span>
           </p>
           <Select
             options={provinces}
             styles={customStyles}
-            placeholder="Selectionnez votre province..."
+            isMulti
+            value={selectedProvinces}
+            onChange={setSelectedProvinces}
+            placeholder="Selectionnez une ou plusieurs provinces..."
             noOptionsMessage={() => "Aucun résultat trouvé"}
+            closeMenuOnSelect={false}
           />
-        </div>
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-          <h4 className="font-medium text-blue-900 mb-2">
-            Information importante
-          </h4>
-          <p className="text-blue-800 text-sm">
-            La province du siège déterminera la juridiction principale de votre
-            organisation. Assurez-vous de sélectionner la province où se trouve
-            votre siège social officiel.
-          </p>
         </div>
       </div>
     </div>
   );
 };
 
-export default ProvinceStep;
+export default ZoneStep;

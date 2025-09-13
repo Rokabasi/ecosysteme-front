@@ -3,35 +3,6 @@ import { useState } from "react";
 export const UseRegisterConfig = () => {
   const [currentStep, setCurrentStep] = useState(1);
 
-  const provinces = [
-    "Kinshasa",
-    "Kongo Central",
-    "Sud-Kivu",
-    "Nord-Kivu",
-    "Haut-Katanga",
-    "Bas-Uele",
-    "Équateur",
-    "Haut-Lomami",
-    "Haut-Uele",
-    "Ituri",
-    "Kasaï",
-    "Kasaï Central",
-    "Kasaï Oriental",
-    "Kwango",
-    "Kwilu",
-    "Lomami",
-    "Lualaba",
-    "Mai-Ndombe",
-    "Maniema",
-    "Mongala",
-    "Nord-Ubangi",
-    "Sankuru",
-    "Sud-Ubangi",
-    "Tanganyika",
-    "Tshopo",
-    "Tshuapa",
-  ];
-
   const steps = [
     {
       id: 1,
@@ -94,6 +65,5 @@ export const UseRegisterConfig = () => {
     nextStep,
     prevStep,
     steps,
-    provinces,
   };
 };
