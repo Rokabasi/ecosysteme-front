@@ -18,18 +18,17 @@ const LocaliteStep = () => {
       </div>
 
       <div className="space-y-6">
-        <div className="space-y-3 mb-40">
+        <div className="flex justify-between space-y-3 mb-40">
           <p className="text-base font-medium text-gray-900">
             Province
             <span className="text-[#6a1754]"> *</span>
           </p>
           <textarea
-            className="rounded-sm p-2 border border-[#0089CF] outline-0 w-full"
+            className="rounded-sm p-2 border border-[#0089CF] outline-0 w-[calc(100%-6rem)]"
             type="text"
             name="province"
             id="province"
-            placeholder="Saisissez les noms des villes, les localités ou les villages ici en les séparant par
-des virgules."
+            placeholder="Saisissez les noms des villes, les localités ou les villages ici en les séparant par des virgules."
           />
         </div>
       </div>

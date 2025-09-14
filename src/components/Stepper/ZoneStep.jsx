@@ -98,7 +98,7 @@ const ZoneStep = () => {
                   <LuMapPin className="w-12 h-12 mx-auto mb-2 text-gray-300" />
                   <p>Aucune province sélectionnée</p>
                   <p className="text-sm">
-                    Sélectionnez des provinces dans la colonne de gauche
+                    Sélectionnez les provinces dans la colonne de gauche
                   </p>
                 </div>
               </div>

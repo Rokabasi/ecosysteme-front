@@ -51,17 +51,12 @@ const ProvinceStep = () => {
         <h2 className="text-2xl font-bold text-gray-900 mb-2">
           Province du siège
         </h2>
-
-        <p className="text-gray-600 text-lg leading-relaxed">
-          Choisissez sur cette liste la province dans laquelle se situe le siège
-          de votre organisation.
-        </p>
       </div>
 
       <div className="space-y-6 mb-40">
         <div className="space-y-3">
           <p className="text-base font-medium text-gray-900">
-            Sélectionnez votre province
+            Choisissez la province dans laquelle se situe votre siège
             <span className="text-[#6a1754]"> *</span>
           </p>
           <Select
