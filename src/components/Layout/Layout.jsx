@@ -3,9 +3,15 @@ import { Outlet } from 'react-router-dom';
 import Sidebar from '../Sidebar/Sidebar';
 import NavBar from '../Navbar/Navbar';
 
-const Layout = () => {
+const Layout = ({ onLogout }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
+  
+  const handleLogout = () => {
+    // Ici, vous pourriez supprimer le token d'authentification
+    // localStorage.removeItem('authToken');
+    if (onLogout) onLogout();
+  };
 
   // Handle window resize
   useEffect(() => {
@@ -41,7 +47,7 @@ const Layout = () => {
     <div className="min-h-screen flex flex-col bg-gray-50">
       {/* Navbar */}
       <div className="fixed top-0 left-0 right-0 h-16 bg-white shadow-sm z-40">
-        <NavBar onMenuToggle={toggleSidebar} />
+        <NavBar onMenuToggle={toggleSidebar} onLogout={handleLogout} />
       </div>
 
       <div className="flex flex-1 pt-16">
