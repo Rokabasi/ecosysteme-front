@@ -1,4 +1,10 @@
 import { useState, useMemo } from "react";
+import { useDispatch } from "react-redux";
+import { clearAllDocuments } from "../../app/reducers/documents";
+import { clearProvinces } from "../../app/reducers/provinces";
+import { clearZones } from "../../app/reducers/zones";
+import { clearLocalites } from "../../app/reducers/localites";
+import { clearAnswers } from "../../app/reducers/questions";
 
 export const UseRegisterConfig = () => {
   const [currentStep, setCurrentStep] = useState(1);
@@ -133,6 +139,22 @@ export const UseRegisterConfig = () => {
     alert("Formulaire soumis avec succès !");
   };
 
+  const dispatch = useDispatch();
+
+  const resetForm = () => {
+    // Réinitialiser l'état local
+    setCurrentStep(1);
+    setCurrentSubStep(1);
+    setFormData({});
+    
+    // Réinitialiser les états Redux
+    dispatch(clearAllDocuments());
+    dispatch(clearProvinces());
+    dispatch(clearZones());
+    dispatch(clearLocalites());
+    dispatch(clearAnswers());
+  };
+
   return {
     currentStep,
     currentSubStep,
@@ -142,5 +164,6 @@ export const UseRegisterConfig = () => {
     formData,
     updateFormData,
     submitForm,
+    resetForm,
   };
 };

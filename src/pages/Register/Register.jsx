@@ -25,6 +25,7 @@ const Register = () => {
     formData,
     updateFormData,
     submitForm,
+    resetForm,
   } = UseRegisterConfig();
 
   return (
@@ -85,6 +86,7 @@ const Register = () => {
         <div className="border-b border-gray-200 bg-white px-8 py-4">
           <Link
             to="/"
+            onClick={resetForm}
             className="text-sm font-medium text-[#6a1754] hover:text-[#0089CF] transition-colors duration-300"
           >
             ← Retour à l'accueil

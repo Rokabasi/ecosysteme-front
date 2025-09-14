@@ -27,6 +27,12 @@ const provincesSlice = createSlice({
   name: "provinces",
   initialState,
   reducers: {
+    clearProvinces: (state) => {
+      state.selectedProvince = null;
+      state.selectedProvinces = [];
+      // Réinitialiser également l'état de l'adapter si nécessaire
+      provincesAdapter.removeAll(state);
+    },
     setSelectedProvince: (state, action) => {
       state.selectedProvince = action.payload;
     },
@@ -67,6 +73,7 @@ const provincesSlice = createSlice({
 });
 
 export const {
+  clearProvinces,
   setSelectedProvince,
   setSelectedProvinces,
   toggleSelectedProvince,
