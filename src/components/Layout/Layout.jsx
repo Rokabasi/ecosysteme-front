@@ -1,16 +1,36 @@
 import React, { useState, useEffect } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { getSessionStorage, deleteSessionToken } from '../../config/auth';
 import Sidebar from '../Sidebar/Sidebar';
 import NavBar from '../Navbar/Navbar';
 
 const Layout = ({ onLogout }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
+  const navigate = useNavigate();
+  const { user } = useSelector((state) => state.user);
   
+  // Vérifier l'authentification au chargement
+  useEffect(() => {
+    try {
+      const token = getSessionStorage().getSessionToken();
+      if (!token) {
+        navigate('/auth/login', { state: { from: window.location.pathname } });
+      }
+    } catch (error) {
+      navigate('/auth/login', { state: { from: window.location.pathname } });
+    }
+  }, [navigate]);
+
   const handleLogout = () => {
-    // Ici, vous pourriez supprimer le token d'authentification
-    // localStorage.removeItem('authToken');
-    if (onLogout) onLogout();
+    try {
+      getSessionStorage().deleteSessionToken();
+      if (onLogout) onLogout();
+      navigate('/auth/login');
+    } catch (error) {
+      console.error('Erreur lors de la déconnexion:', error);
+    }
   };
 
   // Handle window resize
