@@ -1,0 +1,16 @@
+/* Fix pour le z-index de la carte Leaflet */
+.leaflet-container {
+  position: relative !important;
+  z-index: 0 !important;
+}
+
+/* Assure que les contrôles de la carte sont correctement positionnés */
+.leaflet-top, 
+.leaflet-bottom {
+  z-index: 1 !important;
+}
+
+/* Assure que les popups sont au-dessus des contrôles */
+.leaflet-popup {
+  z-index: 2 !important;
+}

@@ -13,6 +13,7 @@ import {
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line } from 'recharts';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
+import './Dashboard.css';
 import L from 'leaflet';
 
 // Données de démonstration
@@ -117,7 +118,12 @@ function Dashboard() {
             <MapContainer 
               center={[-4.0383, 21.7587]} 
               zoom={5} 
-              style={{ height: '100%', width: '100%' }}
+              style={{ 
+                height: '100%', 
+                width: '100%',
+                position: 'relative',
+                zIndex: 0
+              }}
               zoomControl={false}
             >
               <TileLayer
