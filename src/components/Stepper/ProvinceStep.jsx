@@ -94,10 +94,15 @@ const ProvinceStep = () => {
                 : null
             }
             onChange={(option) => {
-              const province = provincesData.find(
-                (p) => p.pro_id === option.value
-              );
-              dispatch(setSelectedProvince(province));
+              if (option) {
+                const province = provincesData.find(
+                  (p) => p.pro_id === option.value
+                );
+                dispatch(setSelectedProvince(province));
+              } else {
+                // L'utilisateur a effacé la sélection
+                dispatch(setSelectedProvince(null));
+              }
             }}
             isClearable
           />

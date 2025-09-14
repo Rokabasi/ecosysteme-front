@@ -1,15 +1,28 @@
 import { useState, useMemo } from "react";
-import { useDispatch } from "react-redux";
-import { clearAllDocuments } from "../../app/reducers/documents";
-import { clearProvinces } from "../../app/reducers/provinces";
-import { clearZones } from "../../app/reducers/zones";
-import { clearLocalites } from "../../app/reducers/localites";
-import { clearAnswers } from "../../app/reducers/questions";
+import { useDispatch, useSelector } from "react-redux";
+import { clearAllDocuments, getAllDocuments } from "../../app/reducers/documents";
+import { clearProvinces, getSelectedProvince, getSelectedProvinces } from "../../app/reducers/provinces";
+import { clearZones, getSelectedZones } from "../../app/reducers/zones";
+import { clearLocalites, getAllLocalites } from "../../app/reducers/localites";
+import { clearAnswers, getAllAnswers } from "../../app/reducers/questions";
+import { clearFormData, getIdentificationFormData } from "../../app/reducers/identification";
 
 export const UseRegisterConfig = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [currentSubStep, setCurrentSubStep] = useState(1);
   const [formData, setFormData] = useState({});
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+
+  const dispatch = useDispatch();
+  
+  // Sélecteurs pour vérifier si des données ont été saisies
+  const selectedProvince = useSelector(getSelectedProvince);
+  const selectedProvinces = useSelector(getSelectedProvinces);
+  const selectedZones = useSelector(getSelectedZones);
+  const localites = useSelector(getAllLocalites);
+  const documents = useSelector(getAllDocuments);
+  const identificationData = useSelector(getIdentificationFormData);
+  const questionsAnswers = useSelector(getAllAnswers);
 
   const steps = [
     {
@@ -139,20 +152,85 @@ export const UseRegisterConfig = () => {
     alert("Formulaire soumis avec succès !");
   };
 
-  const dispatch = useDispatch();
+  // Fonction pour vérifier si le formulaire contient des données
+  const hasFormData = () => {
+    // Vérifier les provinces
+    const hasProvinceData = selectedProvince !== null || selectedProvinces.length > 0;
+    
+    // Vérifier les zones
+    const hasZoneData = selectedZones.length > 0;
+    
+    // Vérifier les localités
+    const hasLocaliteData = Object.keys(localites).length > 0 && 
+      Object.values(localites).some(value => value && value.trim() !== "");
+    
+    // Vérifier les documents
+    const hasDocumentData = Object.values(documents).some(doc => doc !== null);
+    
+    // Vérifier les données d'identification
+    const hasIdentificationData = Object.values(identificationData).some(value => 
+      value && value.toString().trim() !== ""
+    );
+    
+    // Vérifier les réponses aux questions
+    const hasQuestionData = Object.values(questionsAnswers).some(answer => 
+      answer && answer.toString().trim() !== ""
+    );
+    
+    // Vérifier si on a avancé dans les étapes
+    const hasStepProgress = currentStep > 1 || (currentStep === 1 && currentSubStep > 1);
+    
+    // Vérifier les données locales du hook
+    const hasLocalFormData = Object.keys(formData).length > 0;
+
+    return (
+      hasProvinceData ||
+      hasZoneData ||
+      hasLocaliteData ||
+      hasDocumentData ||
+      hasIdentificationData ||
+      hasQuestionData ||
+      hasStepProgress ||
+      hasLocalFormData
+    );
+  };
+
+  // Fonction pour gérer le clic sur "Retour à l'accueil"
+  const handleBackToHome = () => {
+    if (hasFormData()) {
+      setShowConfirmModal(true);
+    } else {
+      resetForm();
+      return true; // Permet la navigation
+    }
+    return false; // Empêche la navigation
+  };
+
+  // Fonction pour confirmer l'abandon
+  const confirmAbandon = () => {
+    setShowConfirmModal(false);
+    resetForm();
+    return true; // Permet la navigation
+  };
+
+  // Fonction pour continuer l'inscription
+  const continueRegistration = () => {
+    setShowConfirmModal(false);
+  };
 
   const resetForm = () => {
     // Réinitialiser l'état local
     setCurrentStep(1);
     setCurrentSubStep(1);
     setFormData({});
-    
+
     // Réinitialiser les états Redux
     dispatch(clearAllDocuments());
     dispatch(clearProvinces());
     dispatch(clearZones());
     dispatch(clearLocalites());
     dispatch(clearAnswers());
+    dispatch(clearFormData());
   };
 
   return {
@@ -165,5 +243,10 @@ export const UseRegisterConfig = () => {
     updateFormData,
     submitForm,
     resetForm,
+    showConfirmModal,
+    handleBackToHome,
+    confirmAbandon,
+    continueRegistration,
+    hasFormData,
   };
 };

@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { UseRegisterConfig } from "./hook";
+import ConfirmationModal from "../../components/ConfirmationModal/ConfirmationModal";
 import ProvinceStep from "../../components/Stepper/ProvinceStep";
 import ZoneStep from "../../components/Stepper/ZoneStep";
 import LocaliteStep from "../../components/Stepper/LocaliteStep";
@@ -11,6 +12,8 @@ import QuestionStep from "../../components/Stepper/QuestionStep";
 import RevisionStep from "../../components/Stepper/RevisionStep";
 
 const Register = () => {
+  const navigate = useNavigate();
+  
   const handleSubmit = (e) => {
     e.preventDefault();
     // Handle form submission
@@ -26,7 +29,26 @@ const Register = () => {
     updateFormData,
     submitForm,
     resetForm,
+    showConfirmModal,
+    handleBackToHome,
+    confirmAbandon,
+    continueRegistration,
   } = UseRegisterConfig();
+
+  // Gérer le clic sur le lien "Retour à l'accueil"
+  const handleBackClick = (e) => {
+    e.preventDefault();
+    const canNavigate = handleBackToHome();
+    if (canNavigate) {
+      navigate("/");
+    }
+  };
+
+  // Gérer la confirmation d'abandon
+  const handleConfirmAbandon = () => {
+    confirmAbandon();
+    navigate("/");
+  };
 
   return (
     <div className="flex">
@@ -84,13 +106,12 @@ const Register = () => {
       </div>
       <div className="flex-1 bg-white ">
         <div className="border-b border-gray-200 bg-white px-8 py-4">
-          <Link
-            to="/"
-            onClick={resetForm}
-            className="text-sm font-medium text-[#6a1754] hover:text-[#0089CF] transition-colors duration-300"
+          <button
+            onClick={handleBackClick}
+            className="text-sm font-medium text-[#6a1754] hover:text-[#0089CF] transition-colors duration-300 bg-transparent border-none cursor-pointer"
           >
             ← Retour à l'accueil
-          </Link>
+          </button>
         </div>
 
         <div className="p-8 flex justify-center">
@@ -152,6 +173,14 @@ const Register = () => {
           </div>
         </div>
       </div>
+
+      {/* Modal de confirmation */}
+      <ConfirmationModal
+        isOpen={showConfirmModal}
+        onClose={continueRegistration}
+        onConfirm={continueRegistration}
+        onCancel={handleConfirmAbandon}
+      />
     </div>
   );
 };
