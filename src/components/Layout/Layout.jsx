@@ -7,33 +7,32 @@ import NavBar from '../Navbar/Navbar';
 
 const Layout = ({ onLogout }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
+  const [isMobile, setIsMobile] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.user);
-  
-  // Vérifier l'authentification au chargement
+
   useEffect(() => {
-    try {
-      const token = getSessionStorage().getSessionToken();
-      if (!token) {
+    // Vérifier l'authentification avant de rendre le layout
+    const checkAuth = () => {
+      try {
+        const session = getSessionStorage();
+        const token = session.getSessionToken();
+        if (!token) {
+          navigate('/auth/login', { state: { from: window.location.pathname } });
+          return;
+        }
+      } catch (error) {
+        console.error('Erreur de vérification de session:', error);
         navigate('/auth/login', { state: { from: window.location.pathname } });
+        return;
       }
-    } catch (error) {
-      navigate('/auth/login', { state: { from: window.location.pathname } });
-    }
+      setIsLoading(false);
+    };
+
+    checkAuth();
   }, [navigate]);
 
-  const handleLogout = () => {
-    try {
-      getSessionStorage().deleteSessionToken();
-      if (onLogout) onLogout();
-      navigate('/auth/login');
-    } catch (error) {
-      console.error('Erreur lors de la déconnexion:', error);
-    }
-  };
-
-  // Handle window resize
   useEffect(() => {
     const handleResize = () => {
       const isMobileView = window.innerWidth < 1024;
@@ -53,6 +52,16 @@ const Layout = ({ onLogout }) => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  const handleLogout = () => {
+    try {
+      getSessionStorage().deleteSessionToken();
+      if (onLogout) onLogout();
+      navigate('/auth/login');
+    } catch (error) {
+      console.error('Erreur lors de la déconnexion:', error);
+    }
+  };
+
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
@@ -62,6 +71,10 @@ const Layout = ({ onLogout }) => {
       setIsSidebarOpen(false);
     }
   };
+
+  if (isLoading) {
+    return null;
+  }
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
