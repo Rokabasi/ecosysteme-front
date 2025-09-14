@@ -7,6 +7,7 @@ import LocaliteStep from "../../components/Stepper/LocaliteStep";
 import DocumentStep from "../../components/Stepper/DocumentStep";
 import IdentificationStep from "../../components/Stepper/IdentificationStep";
 import QuestionStep from "../../components/Stepper/QuestionStep";
+import RevisionStep from "../../components/Stepper/RevisionStep";
 
 const Register = () => {
   const handleSubmit = (e) => {
@@ -14,7 +15,15 @@ const Register = () => {
     // Handle form submission
   };
 
-  const { currentStep, nextStep, prevStep, steps } = UseRegisterConfig();
+  const {
+    currentStep,
+    nextStep,
+    prevStep,
+    steps,
+    formData,
+    updateFormData,
+    submitForm,
+  } = UseRegisterConfig();
 
   return (
     <div className="flex">
@@ -26,19 +35,29 @@ const Register = () => {
                 className={
                   step.isActive
                     ? `flex items-center justify-center bg-[#6a1754] w-8 h-8 rounded-full text-white`
+                    : step.isCompleted
+                    ? `flex items-center justify-center bg-[#6a1754] w-8 h-8 rounded-full text-white`
                     : `flex items-center justify-center bg-transparent border border-gray-600 w-8 h-8 rounded-full text-gray-600`
                 }
               >
-                {step.id}
+                {step.isCompleted ? "✓" : step.id}
               </div>
               {index !== steps.length - 1 && (
-                <div className="bg-gray-600  h-14 w-[2px]"></div>
+                <div
+                  className={
+                    step.isCompleted
+                      ? `bg-[#6a1754] h-14 w-[2px]`
+                      : `bg-gray-600  h-14 w-[2px]`
+                  }
+                ></div>
               )}
             </div>
             <div className="flex flex-col">
               <div
                 className={
                   step.isActive
+                    ? `font-semibold text-gray-200`
+                    : step.isCompleted
                     ? `font-semibold text-gray-200`
                     : `font-semibold text-gray-600`
                 }
@@ -48,6 +67,8 @@ const Register = () => {
               <div
                 className={
                   step.isActive
+                    ? `text-gray-400 text-sm mt-1`
+                    : step.isCompleted
                     ? `text-gray-400 text-sm mt-1`
                     : `text-gray-600 text-sm mt-1`
                 }
@@ -84,23 +105,34 @@ const Register = () => {
               {currentStep === 4 && <DocumentStep />}
               {currentStep === 5 && <IdentificationStep />}
               {currentStep === 6 && <QuestionStep />}
-              {/* {currentStep > 2 && <LocaliteStep />} */}
+              {currentStep === 7 && <RevisionStep formData={formData} />}
             </div>
 
             <div className="flex justify-between items-center">
               <button
                 onClick={prevStep}
+                disabled={currentStep === 1}
                 className="flex justify-center py-3 px-4 w-32 border-2 border-[#6a1754] rounded-md shadow-sm text-sm font-medium text-[#6a1754] bg-transparent  hover:bg-[#6a1754] hover:text-white transition-colors duration-300 disabled:opacity-70 disabled:cursor-not-allowed cursor-pointer active:bg-[#913376]"
               >
                 ← Précédent
               </button>
 
-              <button
-                onClick={nextStep}
-                className="flex justify-center items-end py-3 px-4 w-32 border-2 border-[#6a1754]  rounded-md shadow-sm text-sm font-medium text-white bg-[#6a1754] hover:bg-[#5c1949] transition-colors duration-300 disabled:opacity-70 disabled:cursor-not-allowed cursor-pointer active:bg-[#913376]"
-              >
-                Suivant →
-              </button>
+              {currentStep === 7 ? (
+                <button
+                  onClick={submitForm}
+                  className="flex justify-center items-end py-3 px-4 w-40 border-2 border-[#0089CF] rounded-md shadow-sm text-sm font-medium text-white bg-[#0089CF] hover:bg-[#117bb1] transition-colors duration-300 cursor-pointer"
+                >
+                  Soumettre
+                </button>
+              ) : (
+                <button
+                  onClick={nextStep}
+                  disabled={currentStep === steps.length}
+                  className="flex justify-center items-end py-3 px-4 w-32 border-2 border-[#6a1754]  rounded-md shadow-sm text-sm font-medium text-white bg-[#6a1754] hover:bg-[#5c1949] transition-colors duration-300 disabled:opacity-70 disabled:cursor-not-allowed cursor-pointer active:bg-[#913376]"
+                >
+                  Suivant →
+                </button>
+              )}
             </div>
           </div>
         </div>

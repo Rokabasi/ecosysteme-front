@@ -1,52 +1,55 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 
 export const UseRegisterConfig = () => {
   const [currentStep, setCurrentStep] = useState(1);
+  const [formData, setFormData] = useState({});
 
   const steps = [
     {
       id: 1,
       title: "Province du siège",
       description: "Sélectionnez votre province",
-      isActive: true,
     },
     {
       id: 2,
       title: "Zones d'opération",
       description: "Provinces d'intervention",
-      isActive: false,
     },
     {
       id: 3,
       title: "Localités",
       description: "Villes et villages",
-      isActive: false,
     },
     {
       id: 4,
       title: "Documents",
       description: "Pièces administratives",
-      isActive: false,
     },
     {
       id: 5,
       title: "Identification",
       description: "Informations organisation",
-      isActive: false,
     },
     {
       id: 6,
       title: "Questionnaire",
       description: "Questions spécifiques",
-      isActive: false,
     },
     {
       id: 7,
       title: "Révision",
       description: "Vérification finale",
-      isActive: false,
     },
   ];
+
+  // Calculer l'état des étapes en fonction de l'étape courante
+  const stepsWithState = useMemo(() => {
+    return steps.map((step, index) => ({
+      ...step,
+      isActive: index + 1 === currentStep,
+      isCompleted: index + 1 < currentStep,
+    }));
+  }, [currentStep]);
 
   const nextStep = () => {
     if (currentStep < steps.length) {
@@ -60,10 +63,26 @@ export const UseRegisterConfig = () => {
     }
   };
 
+  const updateFormData = (stepData) => {
+    setFormData((prev) => ({
+      ...prev,
+      ...stepData,
+    }));
+  };
+
+  const submitForm = () => {
+    console.log("Données du formulaire:", formData);
+    // Ici vous pouvez ajouter la logique pour envoyer les données au serveur
+    alert("Formulaire soumis avec succès !");
+  };
+
   return {
     currentStep,
     nextStep,
     prevStep,
-    steps,
+    steps: stepsWithState,
+    formData,
+    updateFormData,
+    submitForm,
   };
 };
