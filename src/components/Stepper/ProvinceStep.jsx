@@ -10,7 +10,7 @@ const ProvinceStep = () => {
   ];
 
   const customStyles = {
-    control: (provided, state) => ({
+    control: (provided) => ({
       ...provided,
       borderRadius: "5px",
       borderColor: "#6a1754",
@@ -62,7 +62,7 @@ const ProvinceStep = () => {
         <div className="space-y-3">
           <p className="text-base font-medium text-gray-900">
             Sélectionnez votre province
-            <span className="text-[#6a1754]">*</span>
+            <span className="text-[#6a1754]"> *</span>
           </p>
           <Select
             options={provinces}

@@ -35,7 +35,7 @@ const ZoneStep = () => {
   const [selectedProvinces, setSelectedProvinces] = useState([]);
 
   const customStyles = {
-    control: (provided, state) => ({
+    control: (provided) => ({
       ...provided,
       borderRadius: "5px",
       borderColor: "#6a1754",
@@ -86,7 +86,7 @@ const ZoneStep = () => {
         <div className="space-y-3 mb-40">
           <p className="text-base font-medium text-gray-900">
             Sélectionnez la(les) province(s)
-            <span className="text-[#6a1754]">*</span>
+            <span className="text-[#6a1754]"> *</span>
           </p>
           <Select
             options={provinces}
