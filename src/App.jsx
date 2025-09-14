@@ -4,6 +4,8 @@ import Layout from "./components/Layout/Layout";
 import Register from "./pages/Register/Register";
 import CheckStatut from "./pages/CheckStatut/CheckStatut";
 import Home from "./pages/Home/Home";
+import Configuration from "./pages/Configuration/Configuration";
+import Dashboard from "./pages/Dashboard/Dashboard";
 
 function App() {
   return (
@@ -14,9 +16,9 @@ function App() {
         <Route path="/check-status" element={<CheckStatut />} />
         
         <Route path="/admin" element={<Layout />}>
-          <Route index element={<div className="p-6">Tableau de bord</div>} />
+          <Route index element={<Dashboard />} />
           <Route path="requisition" element={<div className="p-6">Requisitions</div>} />
-          <Route path="configuration" element={<div className="p-6">Configuration</div>} />
+          <Route path="configuration" element={<Configuration />} />
         </Route>
         
         <Route path="*" element={<Navigate to="/" replace />} />
