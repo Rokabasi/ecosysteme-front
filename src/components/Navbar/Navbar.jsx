@@ -51,7 +51,7 @@ const NavBar = ({ onMenuToggle, onLogout }) => {
           </button>
 
           {/* Logo */}
-          <Link to="/" className="flex items-center flex-grow justify-center lg:justify-start lg:ml-4">
+          <Link to="/admin" className="flex items-center flex-grow justify-center lg:justify-start lg:ml-4">
             <img src={Logo} alt="Logo" className="h-10 w-auto" />
             <span className="ml-2 text-lg font-semibold text-gray-900 hidden md:inline-block">
               Ecosystème

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import {  useNavigate, useLocation } from 'react-router-dom';
 import { FiLogIn, FiLock, FiMail, FiAlertCircle } from 'react-icons/fi';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../../app/reducers/user';
@@ -16,7 +16,6 @@ const Login = ({ onLogin }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Vérifier si l'utilisateur est déjà connecté
     try {
       const token = getSessionStorage().getSessionToken();
       if (token) {
@@ -29,13 +28,11 @@ const Login = ({ onLogin }) => {
   useEffect(() => {
     if (user?.token) {
       try {
-        // Sauvegarder le token et rediriger
         saveSessionToken({
           usr_token: user.token,
           ...user.user
         });
         
-        // Rediriger vers la page précédente ou /admin par défaut
         const from = location.state?.from?.pathname || '/admin';
         navigate(from, { replace: true });
       } catch (error) {
@@ -59,18 +56,15 @@ const Login = ({ onLogin }) => {
       const res = await dispatch(loginUser({ email, password })).unwrap();
 
       if (res?.token) {
-        // Sauvegarder le token
         saveSessionToken({
           usr_token: res.token,
           ...res.user
         });
         
-        // Appeler la callback de connexion réussie
         if (onLogin) {
           onLogin();
         }
         
-        // Rediriger après un court délai pour s'assurer que l'état est mis à jour
         setTimeout(() => {
           const from = location.state?.from?.pathname || '/admin';
           navigate(from, { replace: true });
