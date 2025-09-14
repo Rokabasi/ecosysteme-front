@@ -1,7 +1,13 @@
-import { useState } from "react";
 import { SlQuestion } from "react-icons/sl";
+import { useSelector, useDispatch } from "react-redux";
+import { getAllAnswers, updateAnswer } from "../../app/reducers/questions";
 const QuestionStep = () => {
-  const [priseEnCharge, setPriseEnCharge] = useState("");
+  const dispatch = useDispatch();
+  const answers = useSelector(getAllAnswers);
+
+  const handleAnswerChange = (question, answer) => {
+    dispatch(updateAnswer({ question, answer }));
+  };
 
   return (
     <div className="max-w-2xl mx-auto">
@@ -29,8 +35,10 @@ const QuestionStep = () => {
                 type="radio"
                 name="priseEnCharge"
                 value="oui"
-                checked={priseEnCharge === "oui"}
-                onChange={(e) => setPriseEnCharge(e.target.value)}
+                checked={answers.priseEnCharge === "oui"}
+                onChange={(e) =>
+                  handleAnswerChange("priseEnCharge", e.target.value)
+                }
                 className="peer"
               />
               Oui
@@ -40,15 +48,17 @@ const QuestionStep = () => {
                 type="radio"
                 name="priseEnCharge"
                 value="non"
-                checked={priseEnCharge === "non"}
-                onChange={(e) => setPriseEnCharge(e.target.value)}
+                checked={answers.priseEnCharge === "non"}
+                onChange={(e) =>
+                  handleAnswerChange("priseEnCharge", e.target.value)
+                }
                 className="peer"
               />
               Non
             </label>
           </div>
 
-          {priseEnCharge === "oui" && (
+          {answers.priseEnCharge === "oui" && (
             <div className="flex justify-between mt-3">
               <p className="text-base font-medium text-gray-900">
                 Si oui, à quelle occasion ?
@@ -57,6 +67,8 @@ const QuestionStep = () => {
               <textarea
                 className="rounded-sm p-2 border border-[#0089CF] outline-0 w-2/3"
                 name="occasion"
+                value={answers.occasion}
+                onChange={(e) => handleAnswerChange("occasion", e.target.value)}
               ></textarea>
             </div>
           )}
@@ -74,6 +86,10 @@ const QuestionStep = () => {
                 type="radio"
                 name="associationVictimes"
                 value="oui"
+                checked={answers.associationVictimes === "oui"}
+                onChange={(e) =>
+                  handleAnswerChange("associationVictimes", e.target.value)
+                }
                 className="peer"
               />
               Oui
@@ -83,6 +99,10 @@ const QuestionStep = () => {
                 type="radio"
                 name="associationVictimes"
                 value="non"
+                checked={answers.associationVictimes === "non"}
+                onChange={(e) =>
+                  handleAnswerChange("associationVictimes", e.target.value)
+                }
                 className="peer"
               />
               Non
@@ -104,6 +124,10 @@ const QuestionStep = () => {
                 type="radio"
                 name="infosVictimes"
                 value="oui"
+                checked={answers.infosVictimes === "oui"}
+                onChange={(e) =>
+                  handleAnswerChange("infosVictimes", e.target.value)
+                }
                 className="peer"
               />
               Oui
@@ -113,6 +137,10 @@ const QuestionStep = () => {
                 type="radio"
                 name="infosVictimes"
                 value="non"
+                checked={answers.infosVictimes === "non"}
+                onChange={(e) =>
+                  handleAnswerChange("infosVictimes", e.target.value)
+                }
                 className="peer"
               />
               Non
@@ -133,6 +161,10 @@ const QuestionStep = () => {
                 type="radio"
                 name="collaborationFonarev"
                 value="oui"
+                checked={answers.collaborationFonarev === "oui"}
+                onChange={(e) =>
+                  handleAnswerChange("collaborationFonarev", e.target.value)
+                }
                 className="peer"
               />
               Oui
@@ -142,6 +174,10 @@ const QuestionStep = () => {
                 type="radio"
                 name="collaborationFonarev"
                 value="non"
+                checked={answers.collaborationFonarev === "non"}
+                onChange={(e) =>
+                  handleAnswerChange("collaborationFonarev", e.target.value)
+                }
                 className="peer"
               />
               Non
@@ -161,6 +197,10 @@ const QuestionStep = () => {
                 type="radio"
                 name="compteBancaire"
                 value="oui"
+                checked={answers.compteBancaire === "oui"}
+                onChange={(e) =>
+                  handleAnswerChange("compteBancaire", e.target.value)
+                }
                 className="peer"
               />
               Oui
@@ -170,6 +210,10 @@ const QuestionStep = () => {
                 type="radio"
                 name="compteBancaire"
                 value="non"
+                checked={answers.compteBancaire === "non"}
+                onChange={(e) =>
+                  handleAnswerChange("compteBancaire", e.target.value)
+                }
                 className="peer"
               />
               Non

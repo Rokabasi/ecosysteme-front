@@ -4,6 +4,8 @@ import { provincesReducer } from "./reducers/provinces";
 import { localitesReducer } from "./reducers/localites";
 import { zonesReducer } from "./reducers/zones";
 import { documentsReducer } from "./reducers/documents";
+import { identificationReducer } from "./reducers/identification";
+import { questionsReducer } from "./reducers/questions";
 
 const store = configureStore({
   reducer: {
@@ -12,6 +14,8 @@ const store = configureStore({
     localites: localitesReducer,
     zones: zonesReducer,
     documents: documentsReducer,
+    identification: identificationReducer,
+    questions: questionsReducer,
   },
 });
 export default store;

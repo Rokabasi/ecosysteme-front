@@ -1,6 +1,19 @@
 import { IoDocumentTextOutline } from "react-icons/io5";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getIdentificationFormData,
+  updateField,
+} from "../../app/reducers/identification";
 
 const IdentificationStepPart1 = () => {
+  const dispatch = useDispatch();
+  const formData = useSelector(getIdentificationFormData);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    dispatch(updateField({ field: name, value }));
+  };
+
   return (
     <div className="max-w-2xl mx-auto">
       <div className="text-center mb-8">
@@ -26,6 +39,8 @@ const IdentificationStepPart1 = () => {
             type="text"
             name="denomination"
             id="denomination"
+            value={formData.denomination || ""}
+            onChange={handleChange}
             placeholder="Nom de l'ONG ou ASBL"
           />
         </div>
@@ -40,6 +55,8 @@ const IdentificationStepPart1 = () => {
               type="text"
               name="sigle"
               id="sigle"
+              value={formData.sigle || ""}
+              onChange={handleChange}
               placeholder="Sigle de l'ONG ou ASBL"
             />
           </div>
@@ -53,6 +70,8 @@ const IdentificationStepPart1 = () => {
               type="number"
               name="anneeCreation"
               id="anneeCreation"
+              value={formData.anneeCreation || ""}
+              onChange={handleChange}
               min="1900"
               max={new Date().getFullYear()}
               placeholder="2022"
@@ -69,6 +88,8 @@ const IdentificationStepPart1 = () => {
             type="text"
             name="adresse"
             id="adresse"
+            value={formData.adresse || ""}
+            onChange={handleChange}
             placeholder="Ex : 23, rue de la paix, Gombe"
           />
         </div>
@@ -80,14 +101,16 @@ const IdentificationStepPart1 = () => {
           <input
             className="rounded-sm p-2 border border-[#0089CF] outline-0 w-full"
             type="text"
-            name="noms"
+            name="nomFonction"
             id="noms"
+            value={formData.nomFonction || ""}
+            onChange={handleChange}
             placeholder="Ex : Jean Dupont"
           />
         </div>
         <div className="space-y-1">
           <p className="text-base font-medium text-gray-900">
-           Fonction du représentant légal
+            Fonction du représentant légal
             <span className="text-[#6a1754]"> *</span>
           </p>
           <input
@@ -95,6 +118,8 @@ const IdentificationStepPart1 = () => {
             type="text"
             name="fonction"
             id="fonction"
+            value={formData.fonction || ""}
+            onChange={handleChange}
             placeholder="Ex : Directeur Général"
           />
         </div>
@@ -109,6 +134,8 @@ const IdentificationStepPart1 = () => {
               type="tel"
               name="telephone"
               id="telephone"
+              value={formData.telephone || ""}
+              onChange={handleChange}
               placeholder="Ex : +243 999 999 999"
             />
           </div>
@@ -122,6 +149,8 @@ const IdentificationStepPart1 = () => {
               type="email"
               name="email"
               id="email"
+              value={formData.email || ""}
+              onChange={handleChange}
               placeholder="Ex : ong@exemple.com"
             />
           </div>
@@ -136,6 +165,8 @@ const IdentificationStepPart1 = () => {
             type="url"
             name="site"
             id="site"
+            value={formData.site || ""}
+            onChange={handleChange}
             placeholder="Ex : www.ongexemple.cd"
           />
         </div>

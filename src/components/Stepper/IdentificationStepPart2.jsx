@@ -1,7 +1,25 @@
 import { IoDocumentTextOutline } from "react-icons/io5";
-import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getIdentificationFormData, updateField, setFormData } from "../../app/reducers/identification";
 
 const IdentificationStepPart2 = () => {
+  const dispatch = useDispatch();
+  const formData = useSelector(getIdentificationFormData);
+  
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    dispatch(updateField({ field: name, value }));
+  };
+  
+  const handleDomainToggle = (domain) => {
+    const updatedDomains = formData.domaines
+      ? formData.domaines.includes(domain)
+        ? formData.domaines.filter(d => d !== domain)
+        : [...formData.domaines, domain]
+      : [domain];
+    
+    dispatch(updateField({ field: 'domaines', value: updatedDomains }));
+  };
   const domains = [
     "Droits humains",
     "Éducation",
@@ -22,15 +40,7 @@ const IdentificationStepPart2 = () => {
     "Autre",
   ];
 
-  const [selectedDomains, setSelectedDomains] = useState([]);
-
-  const handleDomainToggle = (domain) => {
-    setSelectedDomains((prev) =>
-      prev.includes(domain)
-        ? prev.filter((d) => d !== domain)
-        : [...prev, domain]
-    );
-  };
+  const selectedDomains = formData.domaines ? [...formData.domaines] : [];
   return (
     <div className="max-w-2xl mx-auto">
       <div className="text-center mb-8">
@@ -56,6 +66,8 @@ const IdentificationStepPart2 = () => {
             name="mission"
             id="mission"
             placeholder="Décrivez la mission de votre organisation en 100 mots maximum..."
+            value={formData.mission || ''}
+            onChange={handleChange}
           ></textarea>
         </div>
         <div className="space-y-1">
@@ -66,8 +78,10 @@ const IdentificationStepPart2 = () => {
           <input
             className="rounded-sm p-2 border border-[#0089CF] outline-0 w-full"
             type="number"
-            name="employer"
-            id="employer"
+            name="nombreEmployes"
+            id="nombreEmployes"
+            value={formData.nombreEmployes || ''}
+            onChange={handleChange}
             placeholder="Ex : 10"
           />
         </div>
@@ -103,8 +117,10 @@ const IdentificationStepPart2 = () => {
           <textarea
             className="rounded-sm p-2 border border-[#0089CF] outline-0 w-full"
             type="text"
-            name="resultat"
-            id="resultat"
+            name="resultats"
+            id="resultats"
+            value={formData.resultats || ''}
+            onChange={handleChange}
             placeholder="Décrivez vos réalisations en 150 mots maximum..."
           />
         </div>
