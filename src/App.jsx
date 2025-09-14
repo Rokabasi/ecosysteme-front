@@ -6,10 +6,12 @@ import CheckStatut from "./pages/CheckStatut/CheckStatut";
 import Home from "./pages/Home/Home";
 import Configuration from "./pages/Configuration/Configuration";
 import Dashboard from "./pages/Dashboard/Dashboard";
+import CandidatureDetail from "./pages/Candidatures/CandidatureDetail";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { getSessionStorage } from "./config/auth";
 import Login from "./pages/Auth/Login";
+import Candidatures from "./pages/Candidatures/Candidatures";
 
 function App() {
   const navigate = useNavigate();
@@ -74,6 +76,10 @@ function App() {
         <Route index element={<Dashboard />} />
         <Route path="requisition" element={<div className="p-6">Requisitions</div>} />
         <Route path="configuration" element={<Configuration />} />
+        <Route path="candidatures">
+          <Route index element={<Candidatures />} />
+          <Route path=":id" element={<CandidatureDetail />} />
+        </Route>
       </Route>
       
       {/* Redirection pour les routes inconnues */}
