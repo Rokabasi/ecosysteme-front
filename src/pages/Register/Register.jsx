@@ -5,7 +5,8 @@ import ProvinceStep from "../../components/Stepper/ProvinceStep";
 import ZoneStep from "../../components/Stepper/ZoneStep";
 import LocaliteStep from "../../components/Stepper/LocaliteStep";
 import DocumentStep from "../../components/Stepper/DocumentStep";
-import IdentificationStep from "../../components/Stepper/IdentificationStep";
+import IdentificationStepPart1 from "../../components/Stepper/IdentificationStepPart1";
+import IdentificationStepPart2 from "../../components/Stepper/IdentificationStepPart2";
 import QuestionStep from "../../components/Stepper/QuestionStep";
 import RevisionStep from "../../components/Stepper/RevisionStep";
 
@@ -17,6 +18,7 @@ const Register = () => {
 
   const {
     currentStep,
+    currentSubStep,
     nextStep,
     prevStep,
     steps,
@@ -94,6 +96,12 @@ const Register = () => {
             <div className="mb-8">
               <h1 className="text-2xl font-bold text-[#0089CF] mb-2">
                 Étape {currentStep} : {steps[currentStep - 1].title}
+                {steps[currentStep - 1].hasSubSteps && (
+                  <span className="text-lg text-gray-600 ml-2">
+                    -{" "}
+                    {steps[currentStep - 1].subSteps[currentSubStep - 1].title}
+                  </span>
+                )}
               </h1>
             </div>
 
@@ -103,7 +111,12 @@ const Register = () => {
               {currentStep === 2 && <ZoneStep />}
               {currentStep === 3 && <LocaliteStep />}
               {currentStep === 4 && <DocumentStep />}
-              {currentStep === 5 && <IdentificationStep />}
+              {currentStep === 5 && currentSubStep === 1 && (
+                <IdentificationStepPart1 />
+              )}
+              {currentStep === 5 && currentSubStep === 2 && (
+                <IdentificationStepPart2 />
+              )}
               {currentStep === 6 && <QuestionStep />}
               {currentStep === 7 && <RevisionStep formData={formData} />}
             </div>
@@ -111,7 +124,7 @@ const Register = () => {
             <div className="flex justify-between items-center">
               <button
                 onClick={prevStep}
-                disabled={currentStep === 1}
+                disabled={currentStep === 1 && currentSubStep === 1}
                 className="flex justify-center py-3 px-4 w-32 border-2 border-[#6a1754] rounded-md shadow-sm text-sm font-medium text-[#6a1754] bg-transparent  hover:bg-[#6a1754] hover:text-white transition-colors duration-300 disabled:opacity-70 disabled:cursor-not-allowed cursor-pointer active:bg-[#913376]"
               >
                 ← Précédent

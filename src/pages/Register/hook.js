@@ -2,6 +2,7 @@ import { useState, useMemo } from "react";
 
 export const UseRegisterConfig = () => {
   const [currentStep, setCurrentStep] = useState(1);
+  const [currentSubStep, setCurrentSubStep] = useState(1);
   const [formData, setFormData] = useState({});
 
   const steps = [
@@ -9,36 +10,47 @@ export const UseRegisterConfig = () => {
       id: 1,
       title: "Province du siège",
       description: "Sélectionnez votre province",
+      hasSubSteps: false,
     },
     {
       id: 2,
       title: "Zones d'opération",
       description: "Provinces d'intervention",
+      hasSubSteps: false,
     },
     {
       id: 3,
       title: "Localités",
       description: "Villes et villages",
+      hasSubSteps: false,
     },
     {
       id: 4,
       title: "Documents",
       description: "Pièces administratives",
+      hasSubSteps: false,
     },
     {
       id: 5,
       title: "Identification",
       description: "Informations organisation",
+      hasSubSteps: true,
+      subSteps: [
+        { id: 1, title: "Informations de base" },
+        { id: 2, title: "Mission et activités" },
+      ],
     },
     {
       id: 6,
       title: "Questionnaire",
       description: "Questions spécifiques",
+      hasSubSteps: false,
     },
     {
       id: 7,
       title: "Révision",
       description: "Vérification finale",
+      hasSubSteps: false,
     },
   ];
 
@@ -52,14 +64,59 @@ export const UseRegisterConfig = () => {
   }, [currentStep]);
 
   const nextStep = () => {
-    if (currentStep < steps.length) {
-      setCurrentStep(currentStep + 1);
+    const currentStepData = steps[currentStep - 1];
+
+    if (currentStepData.hasSubSteps) {
+      // Si l'étape courante a des sous-étapes
+      if (currentSubStep < currentStepData.subSteps.length) {
+        // Passer à la sous-étape suivante
+        setCurrentSubStep(currentSubStep + 1);
+      } else {
+        // Passer à l'étape suivante et réinitialiser la sous-étape
+        if (currentStep < steps.length) {
+          setCurrentStep(currentStep + 1);
+          setCurrentSubStep(1);
+        }
+      }
+    } else {
+      // Si l'étape courante n'a pas de sous-étapes
+      if (currentStep < steps.length) {
+        setCurrentStep(currentStep + 1);
+      }
     }
   };
 
   const prevStep = () => {
-    if (currentStep > 1) {
-      setCurrentStep(currentStep - 1);
+    const currentStepData = steps[currentStep - 1];
+
+    if (currentStepData.hasSubSteps) {
+      // Si l'étape courante a des sous-étapes
+      if (currentSubStep > 1) {
+        // Revenir à la sous-étape précédente
+        setCurrentSubStep(currentSubStep - 1);
+      } else {
+        // Revenir à l'étape précédente
+        if (currentStep > 1) {
+          setCurrentStep(currentStep - 1);
+          const prevStepData = steps[currentStep - 2];
+          if (prevStepData.hasSubSteps) {
+            setCurrentSubStep(prevStepData.subSteps.length);
+          } else {
+            setCurrentSubStep(1);
+          }
+        }
+      }
+    } else {
+      // Si l'étape courante n'a pas de sous-étapes
+      if (currentStep > 1) {
+        setCurrentStep(currentStep - 1);
+        const prevStepData = steps[currentStep - 2];
+        if (prevStepData.hasSubSteps) {
+          setCurrentSubStep(prevStepData.subSteps.length);
+        } else {
+          setCurrentSubStep(1);
+        }
+      }
     }
   };
 
@@ -78,6 +135,7 @@ export const UseRegisterConfig = () => {
 
   return {
     currentStep,
+    currentSubStep,
     nextStep,
     prevStep,
     steps: stepsWithState,
