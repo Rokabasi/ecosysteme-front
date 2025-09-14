@@ -6,7 +6,7 @@ import { loginUser } from '../../app/reducers/user';
 import { getSessionStorage, saveSessionToken } from '../../config/auth';
 import Logo from '../../assets/fonarev-logo.webp';
 
-const Login = () => {
+const Login = ({ onLogin }) => {
   const dispatch = useDispatch();
   const location = useLocation();
   const { loading, error, user } = useSelector((state) => state.user);
@@ -23,8 +23,6 @@ const Login = () => {
         navigate('/admin');
       }
     } catch (error) {
-      // Token invalide ou expiré, on laisse l'utilisateur se connecter
-      console.log('Session invalide ou expirée:', error.message);
     }
   }, [navigate]);
 
@@ -61,20 +59,27 @@ const Login = () => {
       const res = await dispatch(loginUser({ email, password })).unwrap();
 
       if (res?.token) {
-        // Sauvegarder le token et rediriger
+        // Sauvegarder le token
         saveSessionToken({
           usr_token: res.token,
           ...res.user
         });
         
-        // Rediriger vers la page précédente ou /admin par défaut
-        const from = location.state?.from?.pathname || '/admin';
-        navigate(from, { replace: true });
-      }else{
-        setFormError(res?.message || 'Une erreur est survenue lors de la connexion');
+        // Appeler la callback de connexion réussie
+        if (onLogin) {
+          onLogin();
+        }
+        
+        // Rediriger après un court délai pour s'assurer que l'état est mis à jour
+        setTimeout(() => {
+          const from = location.state?.from?.pathname || '/admin';
+          navigate(from, { replace: true });
+        }, 100);
+      } else {
+        setFormError(res?.message || 'Identifiants invalides');
       }
-
     } catch (error) {
+      console.error('Erreur de connexion:', error);
       setFormError(error.message || 'Une erreur est survenue lors de la connexion');
     }
   };

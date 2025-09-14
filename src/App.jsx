@@ -7,17 +7,37 @@ import Home from "./pages/Home/Home";
 import Configuration from "./pages/Configuration/Configuration";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { getSessionStorage } from "./config/auth";
 import Login from "./pages/Auth/Login";
 
 function App() {
+  const navigate = useNavigate();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  // Vérifier l'authentification (à remplacer par une vraie vérification)
+  // Vérifier l'authentification au chargement
   useEffect(() => {
-    // Ici, vous pourriez vérifier un token dans le localStorage
-    // const token = localStorage.getItem('authToken');
-    // setIsAuthenticated(!!token);
+    try {
+      const session = getSessionStorage();
+      const token = session.getSessionToken();
+      setIsAuthenticated(!!token);
+    } catch (error) {
+      console.log('Aucune session valide trouvée:', error.message);
+      setIsAuthenticated(false);
+    }
   }, []);
+
+  // Fonction pour gérer la déconnexion
+  const handleLogout = () => {
+    try {
+      const session = getSessionStorage();
+      session.deleteSessionToken();
+      setIsAuthenticated(false);
+      navigate('/auth/login');
+    } catch (error) {
+      console.error('Erreur lors de la déconnexion:', error);
+    }
+  };
 
   return (
     <Routes>
@@ -45,7 +65,7 @@ function App() {
         path="/admin" 
         element={
           isAuthenticated ? (
-            <Layout onLogout={() => setIsAuthenticated(false)} />
+            <Layout onLogout={handleLogout} />
           ) : (
             <Navigate to="/auth/login" state={{ from: '/admin' }} replace />
           )
