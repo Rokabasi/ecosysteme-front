@@ -53,15 +53,11 @@ const Sidebar = ({ onMobileNavigate, isCollapsed = false }) => {
   // Check if user has required role for menu item
 
   return (
-    <div
-      className={`h-[calc(100vh-4rem)] bg-[#0f172a] text-white flex flex-col transition-all duration-300 ${
-        isCollapsed ? "w-16 md:w-16" : "w-64"
-      } shadow-lg`}
-    >
-      {/* Logo and app name */}
+    <div className="h-full w-full text-white flex flex-col">
+
 
       {/* Menu principal */}
-      <nav className="flex-1 px-2 pt-12 pb-4 space-y-1 overflow-y-auto ">
+      <nav className="flex-1 px-2 py-4 space-y-1 overflow-y-auto pt-12">
         {menuItems.map((item) => {
           const active = isActive(item.path);
           return (

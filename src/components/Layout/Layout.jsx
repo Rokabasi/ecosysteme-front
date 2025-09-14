@@ -38,29 +38,23 @@ const Layout = () => {
   };
 
   return (
-    <div className="min-h-screen w-full bg-gray-50 flex flex-col overflow-x-hidden">
+    <div className="min-h-screen flex flex-col bg-gray-50">
       {/* Navbar */}
-      <div className="fixed top-0 left-0 right-0 z-40">
-        <NavBar 
-          onMenuToggle={toggleSidebar}
-          //onLogout={handleLogout}
-        />
+      <div className="fixed top-0 left-0 right-0 h-16 bg-white shadow-sm z-40">
+        <NavBar onMenuToggle={toggleSidebar} />
       </div>
 
-      <div className="flex flex-1 pt-16 w-full">
+      <div className="flex flex-1 pt-16">
         {/* Sidebar */}
-        <div 
-          className={`fixed inset-y-0 left-0 z-30 transform ${
+        <aside 
+          className={`fixed top-16 left-0 bottom-0 w-64 bg-[#0f172a] transform transition-transform duration-300 ease-in-out z-30 ${
             isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
-          } transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static`}
-          style={{
-            width: isMobile ? '16rem' : '16rem',
-            transitionProperty: 'transform',
-            flexShrink: 0
-          }}
+          } lg:translate-x-0`}
         >
-          <Sidebar onMobileNavigate={handleMobileNavigate} />
-        </div>
+          <div className="h-full overflow-y-auto">
+            <Sidebar onMobileNavigate={handleMobileNavigate} />
+          </div>
+        </aside>
 
         {/* Overlay for mobile */}
         {isSidebarOpen && isMobile && (
@@ -71,9 +65,13 @@ const Layout = () => {
         )}
 
         {/* Main content */}
-        <main className="flex-1 w-full min-w-0 bg-white">
-          <div className="min-h-[calc(100vh-4rem)] p-4 md:p-6 w-full">
-            <div className="w-full">
+        <main 
+          className={`flex-1 min-w-0 transition-all duration-300 ${
+            isSidebarOpen ? 'lg:ml-64' : ''
+          }`}
+        >
+          <div className="p-4 md:p-6 w-full">
+            <div className="max-w-7xl mx-auto">
               <Outlet />
             </div>
           </div>
