@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, createSelector } from "@reduxjs/toolkit";
 import axios from "axios";
 
 // Thunk pour récupérer les domaines depuis l'API
@@ -42,10 +42,19 @@ const domainesSlice = createSlice({
 });
 
 // Sélecteurs
-export const selectAllDomaines = (state) => state.domaines.domaines.map(d => d.dom_designation);
+const selectDomainesState = (state) => state.domaines;
+
+export const selectAllDomaines = createSelector(
+  [selectDomainesState],
+  (domainesState) => domainesState.domaines.map(d => d.dom_designation)
+);
+
 export const selectDomainesLoading = (state) => state.domaines.loading;
 export const selectDomainesError = (state) => state.domaines.error;
 
-export const selectDomainesWithDetails = (state) => state.domaines.domaines;
+export const selectDomainesWithDetails = createSelector(
+  [selectDomainesState],
+  (domainesState) => domainesState.domaines
+);
 
 export default domainesSlice.reducer;
