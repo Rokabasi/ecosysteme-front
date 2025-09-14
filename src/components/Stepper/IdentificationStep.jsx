@@ -22,7 +22,7 @@ const IdentificationStep = () => {
             <span className="text-[#6a1754]"> *</span>
           </p>
           <input
-            className="rounded-sm p-2 border border-[#6a1754] outline-0 w-full"
+            className="rounded-sm p-2 border border-[#0089CF] outline-0 w-full"
             type="text"
             name="denomination"
             id="denomination"
@@ -35,7 +35,7 @@ const IdentificationStep = () => {
               <span className="text-[#6a1754]"> *</span>
             </p>
             <input
-              className="rounded-sm p-2 border border-[#6a1754] outline-0 w-full"
+              className="rounded-sm p-2 border border-[#0089CF] outline-0 w-full"
               type="text"
               name="sigle"
               id="sigle"
@@ -47,7 +47,7 @@ const IdentificationStep = () => {
               <span className="text-[#6a1754]"> *</span>
             </p>
             <input
-              className="rounded-sm p-2 border border-[#6a1754] outline-0 w-full"
+              className="rounded-sm p-2 border border-[#0089CF] outline-0 w-full"
               type="number"
               name="anneeCreation"
               id="anneeCreation"
@@ -63,7 +63,7 @@ const IdentificationStep = () => {
             <span className="text-[#6a1754]"> *</span>
           </p>
           <input
-            className="rounded-sm p-2 border border-[#6a1754] outline-0 w-full"
+            className="rounded-sm p-2 border border-[#0089CF] outline-0 w-full"
             type="text"
             name="adresse"
             id="adresse"
@@ -75,7 +75,7 @@ const IdentificationStep = () => {
             <span className="text-[#6a1754]"> *</span>
           </p>
           <input
-            className="rounded-sm p-2 border border-[#6a1754] outline-0 w-full"
+            className="rounded-sm p-2 border border-[#0089CF] outline-0 w-full"
             type="text"
             name="NomFonction"
             id="NomFonction"
@@ -88,7 +88,7 @@ const IdentificationStep = () => {
               <span className="text-[#6a1754]"> *</span>
             </p>
             <input
-              className="rounded-sm p-2 border border-[#6a1754] outline-0 w-full"
+              className="rounded-sm p-2 border border-[#0089CF] outline-0 w-full"
               type="tel"
               name="telephone"
               id="telephone"
@@ -100,7 +100,7 @@ const IdentificationStep = () => {
               <span className="text-[#6a1754]"> *</span>
             </p>
             <input
-              className="rounded-sm p-2 border border-[#6a1754] outline-0 w-full"
+              className="rounded-sm p-2 border border-[#0089CF] outline-0 w-full"
               type="email"
               name="email"
               id="email"
@@ -113,7 +113,7 @@ const IdentificationStep = () => {
             <span className="text-[#6a1754]"> *</span>
           </p>
           <input
-            className="rounded-sm p-2 border border-[#6a1754] outline-0 w-full"
+            className="rounded-sm p-2 border border-[#0089CF] outline-0 w-full"
             type="url"
             name="site"
             id="site"
@@ -126,7 +126,7 @@ const IdentificationStep = () => {
             <span className="text-[#6a1754]"> *</span>
           </p>
           <textarea
-            className="rounded-sm p-2 border border-[#6a1754] outline-0 w-full"
+            className="rounded-sm p-2 border border-[#0089CF] outline-0 w-full"
             name="denomination"
             id="denomination"
             placeholder="Décrivez la mission de votre organisation en 100 mots maximum..."
@@ -139,7 +139,7 @@ const IdentificationStep = () => {
               <span className="text-[#6a1754]"> *</span>
             </p>
             <input
-              className="rounded-sm p-2 border border-[#6a1754] outline-0 w-full"
+              className="rounded-sm p-2 border border-[#0089CF] outline-0 w-full"
               type="number"
               name="employer"
               id="employer"
@@ -151,7 +151,7 @@ const IdentificationStep = () => {
               Domaines d’intervention <span className="text-[#6a1754]"> *</span>
             </p>
             <input
-              className="rounded-sm p-2 border border-[#6a1754] outline-0 w-full"
+              className="rounded-sm p-2 border border-[#0089CF] outline-0 w-full"
               type="text"
               name="domaine"
               id="domaine"
@@ -165,7 +165,7 @@ const IdentificationStep = () => {
             <span className="text-[#6a1754]"> *</span>
           </p>
           <textarea
-            className="rounded-sm p-2 border border-[#6a1754] outline-0 w-full"
+            className="rounded-sm p-2 border border-[#0089CF] outline-0 w-full"
             type="text"
             name="resultat"
             id="resultat"

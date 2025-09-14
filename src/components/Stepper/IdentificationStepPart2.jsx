@@ -22,7 +22,7 @@ const IdentificationStepPart2 = () => {
             <span className="text-[#6a1754]"> *</span>
           </p>
           <textarea
-            className="rounded-sm p-2 border border-[#6a1754] outline-0 w-full"
+            className="rounded-sm p-2 border border-[#0089CF] outline-0 w-full"
             name="mission"
             id="mission"
             placeholder="Décrivez la mission de votre organisation en 100 mots maximum..."
@@ -35,7 +35,7 @@ const IdentificationStepPart2 = () => {
               <span className="text-[#6a1754]"> *</span>
             </p>
             <input
-              className="rounded-sm p-2 border border-[#6a1754] outline-0 w-full"
+              className="rounded-sm p-2 border border-[#0089CF] outline-0 w-full"
               type="number"
               name="employer"
               id="employer"
@@ -47,7 +47,7 @@ const IdentificationStepPart2 = () => {
               Domaines d'intervention <span className="text-[#6a1754]"> *</span>
             </p>
             <input
-              className="rounded-sm p-2 border border-[#6a1754] outline-0 w-full"
+              className="rounded-sm p-2 border border-[#0089CF] outline-0 w-full"
               type="text"
               name="domaine"
               id="domaine"
@@ -61,7 +61,7 @@ const IdentificationStepPart2 = () => {
             <span className="text-[#6a1754]"> *</span>
           </p>
           <textarea
-            className="rounded-sm p-2 border border-[#6a1754] outline-0 w-full"
+            className="rounded-sm p-2 border border-[#0089CF] outline-0 w-full"
             type="text"
             name="resultat"
             id="resultat"

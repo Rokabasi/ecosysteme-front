@@ -1,16 +1,21 @@
-import React, { useState } from 'react';
-import DataTable from 'react-data-table-component';
-import {  FiPlus } from 'react-icons/fi';
-import { UseConfiguration } from './hook';
+import React, { useState } from "react";
+import DataTable from "react-data-table-component";
+import { FiPlus } from "react-icons/fi";
+import { UseConfiguration } from "./hook";
 
 // Données de démonstration pour les provinces
 
-
 const Configuration = () => {
+  const {
+    provincesData,
+    domainesData,
+    provincesColumns,
+    domainesColumns,
+    handleAdd,
+    customStyles,
+  } = UseConfiguration();
 
-  const { provincesData, domainesData, provincesColumns, domainesColumns, handleAdd, customStyles } = UseConfiguration();
-
-  const [activeTab, setActiveTab] = useState('provinces');
+  const [activeTab, setActiveTab] = useState("provinces");
 
   return (
     <div className="p-6 max-w-7xl mx-auto">
@@ -24,21 +29,21 @@ const Configuration = () => {
         <div className="border-b border-gray-200">
           <nav className="flex -mb-px">
             <button
-              onClick={() => setActiveTab('provinces')}
+              onClick={() => setActiveTab("provinces")}
               className={`py-4 px-6 text-sm font-medium ${
-                activeTab === 'provinces'
-                  ? 'border-b-2 border-[#0089CF] text-[#0089CF]'
-                  : 'text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                activeTab === "provinces"
+                  ? "border-b-2 border-[#0089CF] text-[#0089CF]"
+                  : "text-gray-500 hover:text-gray-700 hover:border-gray-300"
               }`}
             >
               Provinces
             </button>
             <button
-              onClick={() => setActiveTab('domaines')}
+              onClick={() => setActiveTab("domaines")}
               className={`py-4 px-6 text-sm font-medium ${
-                activeTab === 'domaines'
-                  ? 'border-b-2 border-[#0089CF] text-[#0089CF]'
-                  : 'text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                activeTab === "domaines"
+                  ? "border-b-2 border-[#0089CF] text-[#0089CF]"
+                  : "text-gray-500 hover:text-gray-700 hover:border-gray-300"
               }`}
             >
               Domaines d'intervention
@@ -51,16 +56,19 @@ const Configuration = () => {
           {/* Bouton d'ajout */}
           <div className="flex justify-end mb-4">
             <button
-              onClick={() => handleAdd(activeTab === 'provinces' ? 'province' : 'domaine')}
+              onClick={() =>
+                handleAdd(activeTab === "provinces" ? "province" : "domaine")
+              }
               className="cursor-pointer flex items-center px-4 py-2 bg-[#0089CF] text-white rounded-md  transition-colors"
             >
               <FiPlus className="mr-2" />
-              Ajouter {activeTab === 'provinces' ? 'une province' : 'un domaine'}
+              Ajouter{" "}
+              {activeTab === "provinces" ? "une province" : "un domaine"}
             </button>
           </div>
 
           {/* Tableau des provinces */}
-          {activeTab === 'provinces' && (
+          {activeTab === "provinces" && (
             <DataTable
               columns={provincesColumns}
               data={provincesData}
@@ -78,7 +86,7 @@ const Configuration = () => {
           )}
 
           {/* Tableau des domaines */}
-          {activeTab === 'domaines' && (
+          {activeTab === "domaines" && (
             <DataTable
               columns={domainesColumns}
               data={domainesData}

@@ -24,7 +24,7 @@ const LocaliteStep = () => {
             <span className="text-[#6a1754]"> *</span>
           </p>
           <textarea
-            className="rounded-sm p-2 border-2 border-[#6a1754] outline-0 w-full"
+            className="rounded-sm p-2 border border-[#0089CF] outline-0 w-full"
             type="text"
             name="province"
             id="province"

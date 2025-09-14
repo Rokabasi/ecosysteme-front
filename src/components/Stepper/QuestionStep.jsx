@@ -23,7 +23,7 @@ const QuestionStep = () => {
             liées aux conflits ou les victimes des crimes contre la paix et la
             sécurité de l’humanité ?<span className="text-[#6a1754]"> *</span>
           </p>
-          <div className="flex flex-col gap-1">
+          <div className="flex gap-4">
             <label className="flex items-center cursor-pointer gap-1">
               <input
                 type="radio"
@@ -55,7 +55,7 @@ const QuestionStep = () => {
                 <span className="text-[#6a1754]"> *</span>
               </p>
               <textarea
-                className="rounded-sm p-2 border border-[#6a1754] outline-0 w-2/3"
+                className="rounded-sm p-2 border border-[#0089CF] outline-0 w-2/3"
                 name="occasion"
               ></textarea>
             </div>
@@ -68,7 +68,7 @@ const QuestionStep = () => {
             Votre organisation constitue-t-elle une association des victimes ?
             <span className="text-[#6a1754]"> *</span>
           </p>
-          <div className="flex flex-col gap-1">
+          <div className="flex gap-4">
             <label className="flex items-center cursor-pointer gap-1">
               <input
                 type="radio"
@@ -98,7 +98,7 @@ const QuestionStep = () => {
             paix et la sécurité de l’humanité ?
             <span className="text-[#6a1754]"> *</span>
           </p>
-          <div className="flex flex-col gap-1">
+          <div className="flex gap-4">
             <label className="flex items-center cursor-pointer gap-1">
               <input
                 type="radio"
@@ -127,7 +127,7 @@ const QuestionStep = () => {
             assurer la prise en charge des victimes ?
             <span className="text-[#6a1754]"> *</span>
           </p>
-          <div className="flex flex-col gap-1">
+          <div className="flex gap-4">
             <label className="flex items-center cursor-pointer gap-1">
               <input
                 type="radio"
@@ -155,7 +155,7 @@ const QuestionStep = () => {
             Votre organisation dispose-t-elle d’un compte bancaire ?
             <span className="text-[#6a1754]"> *</span>
           </p>
-          <div className="flex flex-col gap-1">
+          <div className="flex gap-4">
             <label className="flex items-center cursor-pointer gap-1">
               <input
                 type="radio"

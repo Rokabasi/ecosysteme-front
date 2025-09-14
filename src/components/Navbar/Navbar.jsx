@@ -1,6 +1,13 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { FiUser, FiLogOut, FiChevronDown, FiMail, FiBriefcase, FiAward } from "react-icons/fi";
+import {
+  FiUser,
+  FiLogOut,
+  FiChevronDown,
+  FiMail,
+  FiBriefcase,
+  FiAward,
+} from "react-icons/fi";
 import Logo from "../../assets/fonarev-logo.webp";
 
 // Mock user data
@@ -9,7 +16,7 @@ const userData = {
   email: "john.doe@fonarev.cd",
   department: "Direction des Systèmes d'Information",
   position: "Chef de Projet",
-  role: "Administrateur"
+  role: "Administrateur",
 };
 
 const NavBar = () => {
@@ -50,22 +57,26 @@ const NavBar = () => {
               type="button"
               className="flex items-center space-x-2 p-0 mt-4 m-0 border-0 !bg-white"
               style={{
-                outline: 'none',
-                boxShadow: 'none',
-                WebkitTapHighlightColor: 'transparent'
+                outline: "none",
+                boxShadow: "none",
+                WebkitTapHighlightColor: "transparent",
               }}
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
                 setIsUserMenuOpen(!isUserMenuOpen);
               }}
-              onMouseDown={e => e.preventDefault()}
-              onFocus={e => e.target.blur()}
+              onMouseDown={(e) => e.preventDefault()}
+              onFocus={(e) => e.target.blur()}
             >
               <div className="h-8 w-8 rounded-full bg-gradient-to-r from-[#8e1f71] to-[#0089cf] flex items-center justify-center text-white">
                 <FiUser className="h-5 w-5" />
               </div>
-              <FiChevronDown className={`h-4 w-4 text-gray-500 transition-transform ${isUserMenuOpen ? 'transform rotate-180' : ''}`} />
+              <FiChevronDown
+                className={`h-4 w-4 text-gray-500 transition-transform ${
+                  isUserMenuOpen ? "transform rotate-180" : ""
+                }`}
+              />
             </button>
 
             {/* User Dropdown */}
@@ -97,14 +108,18 @@ const NavBar = () => {
                     <FiBriefcase className="h-5 w-5 text-[#8e1f71] mt-0.5 flex-shrink-0" />
                     <div>
                       <p className="text-xs text-gray-500">Direction</p>
-                      <p className="text-sm text-gray-800">{userData.department}</p>
+                      <p className="text-sm text-gray-800">
+                        {userData.department}
+                      </p>
                     </div>
                   </div>
                   <div className="flex items-start space-x-3">
                     <FiAward className="h-5 w-5 text-[#8e1f71] mt-0.5 flex-shrink-0" />
                     <div>
                       <p className="text-xs text-gray-500">Fonction</p>
-                      <p className="text-sm text-gray-800">{userData.position}</p>
+                      <p className="text-sm text-gray-800">
+                        {userData.position}
+                      </p>
                     </div>
                   </div>
                 </div>

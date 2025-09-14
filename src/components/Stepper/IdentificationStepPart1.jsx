@@ -22,10 +22,11 @@ const IdentificationStepPart1 = () => {
             <span className="text-[#6a1754]"> *</span>
           </p>
           <input
-            className="rounded-sm p-2 border border-[#6a1754] outline-0 w-full"
+            className="rounded-sm p-2 border border-[#0089CF] outline-0 w-full"
             type="text"
             name="denomination"
             id="denomination"
+            placeholder="Nom de l'ONG ou ASBL"
           />
         </div>
         <div className="flex gap-4">
@@ -35,10 +36,11 @@ const IdentificationStepPart1 = () => {
               <span className="text-[#6a1754]"> *</span>
             </p>
             <input
-              className="rounded-sm p-2 border border-[#6a1754] outline-0 w-full"
+              className="rounded-sm p-2 border border-[#0089CF] outline-0 w-full"
               type="text"
               name="sigle"
               id="sigle"
+              placeholder="Sigle de l'ONG ou ASBL"
             />
           </div>
           <div className="space-y-1 w-1/2">
@@ -47,13 +49,13 @@ const IdentificationStepPart1 = () => {
               <span className="text-[#6a1754]"> *</span>
             </p>
             <input
-              className="rounded-sm p-2 border border-[#6a1754] outline-0 w-full"
+              className="rounded-sm p-2 border border-[#0089CF] outline-0 w-full"
               type="number"
               name="anneeCreation"
               id="anneeCreation"
               min="1900"
               max={new Date().getFullYear()}
-              placeholder="Année"
+              placeholder="2022"
             />
           </div>
         </div>
@@ -63,22 +65,37 @@ const IdentificationStepPart1 = () => {
             <span className="text-[#6a1754]"> *</span>
           </p>
           <input
-            className="rounded-sm p-2 border border-[#6a1754] outline-0 w-full"
+            className="rounded-sm p-2 border border-[#0089CF] outline-0 w-full"
             type="text"
             name="adresse"
             id="adresse"
+            placeholder="Ex : 23, rue de la paix, Gombe"
           />
         </div>
         <div className="space-y-1">
           <p className="text-base font-medium text-gray-900">
-            Nom et fonction du représentant légal
+            Nom complet du représentant légal
             <span className="text-[#6a1754]"> *</span>
           </p>
           <input
-            className="rounded-sm p-2 border border-[#6a1754] outline-0 w-full"
+            className="rounded-sm p-2 border border-[#0089CF] outline-0 w-full"
             type="text"
-            name="NomFonction"
-            id="NomFonction"
+            name="noms"
+            id="noms"
+            placeholder="Ex : Jean Dupont"
+          />
+        </div>
+        <div className="space-y-1">
+          <p className="text-base font-medium text-gray-900">
+           Fonction du représentant légal
+            <span className="text-[#6a1754]"> *</span>
+          </p>
+          <input
+            className="rounded-sm p-2 border border-[#0089CF] outline-0 w-full"
+            type="text"
+            name="fonction"
+            id="fonction"
+            placeholder="Ex : Directeur Général"
           />
         </div>
         <div className="flex gap-4">
@@ -88,10 +105,11 @@ const IdentificationStepPart1 = () => {
               <span className="text-[#6a1754]"> *</span>
             </p>
             <input
-              className="rounded-sm p-2 border border-[#6a1754] outline-0 w-full"
+              className="rounded-sm p-2 border border-[#0089CF] outline-0 w-full"
               type="tel"
               name="telephone"
               id="telephone"
+              placeholder="Ex : +243 999 999 999"
             />
           </div>
           <div className="space-y-1 w-1/2">
@@ -100,10 +118,11 @@ const IdentificationStepPart1 = () => {
               <span className="text-[#6a1754]"> *</span>
             </p>
             <input
-              className="rounded-sm p-2 border border-[#6a1754] outline-0 w-full"
+              className="rounded-sm p-2 border border-[#0089CF] outline-0 w-full"
               type="email"
               name="email"
               id="email"
+              placeholder="Ex : ong@exemple.com"
             />
           </div>
         </div>
@@ -113,11 +132,11 @@ const IdentificationStepPart1 = () => {
             <span className="text-[#6a1754]"> *</span>
           </p>
           <input
-            className="rounded-sm p-2 border border-[#6a1754] outline-0 w-full"
+            className="rounded-sm p-2 border border-[#0089CF] outline-0 w-full"
             type="url"
             name="site"
             id="site"
-            placeholder="Ex : www.fonarev.cd"
+            placeholder="Ex : www.ongexemple.cd"
           />
         </div>
       </form>
