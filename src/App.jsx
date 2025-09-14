@@ -1,4 +1,5 @@
-import { Route, Routes, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate } from 'react-router-dom';
+import ProtectedRoutes from './components/ProtectedRoutes/ProtectedRoutes';
 import "./App.css";
 import Layout from "./components/Layout/Layout";
 import Register from "./pages/Register/Register";
@@ -7,82 +8,30 @@ import Home from "./pages/Home/Home";
 import Configuration from "./pages/Configuration/Configuration";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import CandidatureDetail from "./pages/Candidatures/CandidatureDetail";
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { getSessionStorage } from "./config/auth";
 import Login from "./pages/Auth/Login";
 import Candidatures from "./pages/Candidatures/Candidatures";
 
 function App() {
-  const navigate = useNavigate();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  // Vérifier l'authentification au chargement
-  useEffect(() => {
-    try {
-      const session = getSessionStorage();
-      const token = session.getSessionToken();
-      setIsAuthenticated(!!token);
-    } catch (error) {
-      console.log('Aucune session valide trouvée:', error.message);
-      setIsAuthenticated(false);
-    }
-  }, []);
-
-  // Fonction pour gérer la déconnexion
-  const handleLogout = () => {
-    try {
-      const session = getSessionStorage();
-      session.deleteSessionToken();
-      setIsAuthenticated(false);
-      navigate('/auth/login');
-    } catch (error) {
-      console.error('Erreur lors de la déconnexion:', error);
-    }
-  };
-
   return (
     <Routes>
-      {/* Route racine */}
+      {/* Route racine et routes publiques */}
       <Route path="/" element={<Home />} />
-      
-      {/* Routes d'authentification */}
-      <Route path="/auth">
-        <Route index element={<Navigate to="login" replace />} />
-        <Route path="login" element={
-          !isAuthenticated ? (
-            <Login onLogin={() => setIsAuthenticated(true)} />
-          ) : (
-            <Navigate to="/admin" replace />
-          )
-        } />
-      </Route>
-      
-      {/* Routes publiques */}
+      <Route path="/auth/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/check-status" element={<CheckStatut />} />
-      
-      {/* Routes protégées */}
-      <Route 
-        path="/admin" 
-        element={
-          isAuthenticated ? (
-            <Layout onLogout={handleLogout} />
-          ) : (
-            <Navigate to="/auth/login" state={{ from: '/admin' }} replace />
-          )
-        }
-      >
-        <Route index element={<Dashboard />} />
-        <Route path="requisition" element={<div className="p-6">Requisitions</div>} />
-        <Route path="configuration" element={<Configuration />} />
-        <Route path="candidatures">
-          <Route index element={<Candidatures />} />
-          <Route path=":id" element={<CandidatureDetail />} />
+
+      {/* Routes Protégées englobées par ProtectedRoutes */}
+      <Route element={<ProtectedRoutes />}>
+        <Route path="/admin" element={<Layout />}>
+          <Route index element={<Navigate to="/admin" replace />} />
+          <Route path="" element={<Dashboard />} />
+          <Route path="candidatures" element={<Candidatures />} />
+          <Route path="candidatures/:id" element={<CandidatureDetail />} />
+          <Route path="configuration" element={<Configuration />} />
         </Route>
       </Route>
-      
-      {/* Redirection pour les routes inconnues */}
+
+      {/* Redirection pour les routes non trouvées */}
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );

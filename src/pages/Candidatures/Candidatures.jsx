@@ -101,6 +101,53 @@ const statuts = [
 ];
 const domainesIntervention = ['Santé', 'Éducation', 'Environnement', 'Droits humains', 'Développement rural', 'Eau et assainissement', 'Sécurité alimentaire', 'Autre'];
 
+// Composant pour afficher les filtres actifs
+const FiltresActifs = ({ filtres, setFiltres, setFiltresAvances, setInputRecherche }) => {
+  const filtresActifs = Object.entries(filtres).filter(([, value]) => value);
+
+  if (filtresActifs.length === 0) {
+    return null;
+  }
+
+  const removeFiltre = (key) => {
+    setFiltres(prev => ({ ...prev, [key]: '' }));
+    if (key === 'recherche') {
+      setInputRecherche('');
+    } else {
+      setFiltresAvances(prev => ({ ...prev, [key]: '' }));
+    }
+  };
+
+  const getLabel = (key) => {
+    switch (key) {
+      case 'recherche': return 'Recherche';
+      case 'domaine': return 'Domaine';
+      case 'annee': return 'Année';
+      case 'province': return 'Province';
+      case 'statut': return 'Statut';
+      default: return key;
+    }
+  }
+
+  return (
+    <div className="flex items-center flex-wrap gap-2 mb-4 p-3 bg-gray-50 rounded-lg border">
+      <span className="text-sm font-medium text-gray-700">Filtres actifs:</span>
+      {filtresActifs.map(([key, value]) => (
+        <span key={key} className="inline-flex items-center py-1 pl-3 pr-2 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+          {getLabel(key)}: {value}
+          <button
+            onClick={() => removeFiltre(key)}
+            className="ml-2 flex-shrink-0 h-4 w-4 rounded-full inline-flex items-center justify-center text-blue-400 hover:bg-blue-200 hover:text-blue-500 focus:outline-none focus:bg-blue-500 focus:text-white"
+          >
+            <span className="sr-only">Retirer le filtre</span>
+            <FiX className="h-3 w-3" />
+          </button>
+        </span>
+      ))}
+    </div>
+  );
+};
+
 const Candidatures = () => {
   const { candidatures, loading, error, customStyles, updateCandidatureStatus } = useCandidatures();
   const navigate = useNavigate();
@@ -113,9 +160,16 @@ const Candidatures = () => {
     province: '',
     statut: ''
   });
+  const [filtresAvances, setFiltresAvances] = useState({
+    domaine: '',
+    annee: '',
+    province: '',
+    statut: ''
+  });
   const [showFiltres, setShowFiltres] = useState(false);
   const [selectedRows, setSelectedRows] = useState([]);
   const [toggleCleared, setToggleCleared] = useState(false);
+  const [inputRecherche, setInputRecherche] = useState('');
   
   // Compter le nombre de filtres actifs
   const nbFiltresActifs = useMemo(() => {
@@ -125,23 +179,41 @@ const Candidatures = () => {
   // Gestion des changements de filtres
   const handleFiltreChange = (e) => {
     const { name, value } = e.target;
-    setFiltres(prev => ({
+    setFiltres(prev => ({ ...prev, [name]: value }));
+  };
+
+  const appliquerRecherche = () => {
+    setFiltres(prev => ({ ...prev, recherche: inputRecherche }));
+  };
+
+  const handleAdvancedFiltreChange = (e) => {
+    const { name, value } = e.target;
+    setFiltresAvances(prev => ({
       ...prev,
       [name]: value
     }));
   };
+
+  const appliquerFiltresAvances = () => {
+    setFiltres(prev => ({ ...prev, ...filtresAvances }));
+  };
   
   // Réinitialisation des filtres
   const reinitialiserFiltres = useCallback(() => {
-    setFiltres({
-      recherche: '',
+    setFiltresAvances({
       domaine: '',
       annee: '',
       province: '',
       statut: ''
     });
-    setToggleCleared(!toggleCleared);
-  }, [toggleCleared]);
+    setFiltres(prev => ({
+      ...prev,
+      domaine: '',
+      annee: '',
+      province: '',
+      statut: ''
+    }));
+  }, []);
   
   // Mise à jour du statut d'une candidature
   const handleStatusChange = (id, newStatus) => {
@@ -414,27 +486,55 @@ const Candidatures = () => {
     <div className="p-6">
       <div className="container mx-auto px-4 py-6">
         <div className="space-y-6">
-          {/* En-tête avec titre et actions */}
-          <div className="flex justify-between items-center">
-            <h1 className="text-2xl font-bold text-gray-900">Gestion des candidatures</h1>
-            <div className="flex space-x-3">
+          {/* En-tête de la page */}
+          <div className="bg-white shadow-sm border-b border-gray-200 p-4 rounded-lg">
+            <div className="flex items-center justify-between">
+              <h1 className="text-2xl font-semibold text-gray-800">Gestion des candidatures</h1>
+              <div className="flex items-center space-x-3">
+                <button
+                  onClick={exporterExcel}
+                  className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                >
+                  <FiDownload className="-ml-1 mr-2 h-5 w-5 text-gray-500" />
+                  Exporter
+                </button>
+              </div>
+            </div>
+            <div className="mt-4 flex items-center justify-between">
+              <div className="flex items-center space-x-2 w-full max-w-sm">
+                <div className="relative w-full">
+                  <label htmlFor="recherche-principale" className="sr-only">Rechercher</label>
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <FiSearch className="h-5 w-5 text-gray-400" />
+                  </div>
+                  <input
+                    type="text"
+                    name="recherche"
+                    id="recherche-principale"
+                    value={inputRecherche}
+                    onChange={(e) => setInputRecherche(e.target.value)}
+                    onKeyPress={(e) => e.key === 'Enter' && appliquerRecherche()}
+                    className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                    placeholder="Rechercher par nom ou sigle..."
+                  />
+                </div>
+                <button 
+                  onClick={appliquerRecherche}
+                  className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                >
+                  Rechercher
+                </button>
+              </div>
               <button
                 onClick={() => setShowFiltres(!showFiltres)}
                 className={`flex items-center px-4 py-2 border rounded-md shadow-sm text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${
-                  nbFiltresActifs > 0
+                  nbFiltresActifs > 1 || (nbFiltresActifs === 1 && !filtres.recherche)
                     ? 'bg-blue-50 border-blue-200 text-blue-700 hover:bg-blue-100'
                     : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-50'
                 }`}
               >
-                <FiFilter className={`mr-2 h-4 w-4 ${nbFiltresActifs > 0 ? 'text-blue-500' : 'text-gray-400'}`} />
-                Filtres {nbFiltresActifs > 0 && `(${nbFiltresActifs})`}
-              </button>
-              <button
-                onClick={exporterExcel}
-                className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-              >
-                <FiDownload className="mr-2 h-4 w-4" />
-                Exporter en Excel
+                <FiFilter className="mr-2 h-4 w-4" />
+                Filtres avancés {nbFiltresActifs > 1 || (nbFiltresActifs === 1 && !filtres.recherche) ? `(${nbFiltresActifs - (filtres.recherche ? 1 : 0)})` : ''}
               </button>
             </div>
           </div>
@@ -462,34 +562,6 @@ const Candidatures = () => {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                {/* Champ de recherche */}
-                <div>
-                  <label htmlFor="recherche" className="block text-sm font-medium text-gray-700 mb-1">
-                    Recherche
-                  </label>
-                  <div className="relative rounded-md shadow-sm">
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <FiSearch className="h-4 w-4 text-gray-400" />
-                    </div>
-                    <input
-                      type="text"
-                      name="recherche"
-                      id="recherche"
-                      value={filtres.recherche}
-                      onChange={handleFiltreChange}
-                      className="focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md"
-                      placeholder="Nom ou sigle..."
-                    />
-                    {filtres.recherche && (
-                      <button
-                        onClick={() => setFiltres({ ...filtres, recherche: '' })}
-                        className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                      >
-                        <FiX className="h-4 w-4 text-gray-400 hover:text-gray-500" />
-                      </button>
-                    )}
-                  </div>
-                </div>
 
                 {/* Filtre par domaine */}
                 <div>
@@ -500,8 +572,8 @@ const Candidatures = () => {
                     <select
                       id="domaine"
                       name="domaine"
-                      value={filtres.domaine}
-                      onChange={handleFiltreChange}
+                      value={filtresAvances.domaine}
+                      onChange={handleAdvancedFiltreChange}
                       className="appearance-none block w-full bg-white border border-gray-300 rounded-md pl-3 pr-10 py-2 text-base focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                     >
                       <option value="">Tous les domaines</option>
@@ -526,8 +598,8 @@ const Candidatures = () => {
                     <select
                       id="annee"
                       name="annee"
-                      value={filtres.annee}
-                      onChange={handleFiltreChange}
+                      value={filtresAvances.annee}
+                      onChange={handleAdvancedFiltreChange}
                       className="appearance-none block w-full bg-white border border-gray-300 rounded-md pl-3 pr-10 py-2 text-base focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                     >
                       <option value="">Toutes les années</option>
@@ -552,8 +624,8 @@ const Candidatures = () => {
                     <select
                       id="province"
                       name="province"
-                      value={filtres.province}
-                      onChange={handleFiltreChange}
+                      value={filtresAvances.province}
+                      onChange={handleAdvancedFiltreChange}
                       className="appearance-none block w-full bg-white border border-gray-300 rounded-md pl-3 pr-10 py-2 text-base focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                     >
                       <option value="">Toutes les provinces</option>
@@ -578,8 +650,8 @@ const Candidatures = () => {
                     <select
                       id="statut"
                       name="statut"
-                      value={filtres.statut}
-                      onChange={handleFiltreChange}
+                      value={filtresAvances.statut}
+                      onChange={handleAdvancedFiltreChange}
                       className="appearance-none block w-full bg-white border border-gray-300 rounded-md pl-3 pr-10 py-2 text-base focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                     >
                       <option value="">Tous les statuts</option>
@@ -594,9 +666,20 @@ const Candidatures = () => {
                     </div>
                   </div>
                 </div>
+                <div className="md:col-span-2 lg:col-span-4 flex justify-end items-center pt-4">
+                  <button 
+                    onClick={appliquerFiltresAvances} 
+                    className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                  >
+                    Appliquer les filtres
+                  </button>
+                </div>
               </div>
             </div>
           )}
+
+          {/* Affichage des filtres actifs */}
+          <FiltresActifs filtres={filtres} setFiltres={setFiltres} setFiltresAvances={setFiltresAvances} setInputRecherche={setInputRecherche} />
 
           {/* Tableau des candidatures */}
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
