@@ -46,10 +46,7 @@ const IdentificationStepPart1 = () => {
         </div>
         <div className="flex gap-4">
           <div className="space-y-1 w-1/2">
-            <p className="text-base font-medium text-gray-900">
-              Sigle
-              <span className="text-[#6a1754]"> *</span>
-            </p>
+            <p className="text-base font-medium text-gray-900">Sigle</p>
             <input
               className="rounded-sm p-2 border border-[#0089CF] outline-0 w-full"
               type="text"
@@ -156,10 +153,7 @@ const IdentificationStepPart1 = () => {
           </div>
         </div>
         <div className="space-y-1">
-          <p className="text-base font-medium text-gray-900">
-            Site web
-            <span className="text-[#6a1754]"> *</span>
-          </p>
+          <p className="text-base font-medium text-gray-900">Site web</p>
           <input
             className="rounded-sm p-2 border border-[#0089CF] outline-0 w-full"
             type="url"
