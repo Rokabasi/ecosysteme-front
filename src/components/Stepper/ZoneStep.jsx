@@ -91,7 +91,7 @@ const ZoneStep = () => {
             Provinces sélectionnées ({selectedProvinces.length})
           </h3>
 
-          <div className="min-h-96 border border-[#0089CF] rounded-lg p-4">
+          <div className="h-96 overflow-y-auto border border-[#0089CF] rounded-lg p-4">
             {selectedProvinces.length === 0 ? (
               <div className="flex items-center justify-center h-full text-gray-500">
                 <div className="text-center">

@@ -13,12 +13,12 @@ const ProvinceStep = () => {
     control: (provided) => ({
       ...provided,
       borderRadius: "5px",
-      borderColor: "#6a1754",
-      border: "2px solid #6a1754",
+      borderColor: "#0089CF",
+      border: "1px solid #0089CF",
       boxShadow: "none",
       padding: "4px",
       "&:hover": {
-        borderColor: "#6a1754",
+        borderColor: "#0089CF",
       },
     }),
     option: (provided, state) => ({
@@ -58,7 +58,7 @@ const ProvinceStep = () => {
         </p>
       </div>
 
-      <div className="space-y-6">
+      <div className="space-y-6 mb-40">
         <div className="space-y-3">
           <p className="text-base font-medium text-gray-900">
             Sélectionnez votre province
@@ -70,16 +70,6 @@ const ProvinceStep = () => {
             placeholder="Selectionnez votre province..."
             noOptionsMessage={() => "Aucun résultat trouvé"}
           />
-        </div>
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-          <h4 className="font-medium text-blue-900 mb-2">
-            Information importante
-          </h4>
-          <p className="text-blue-800 text-sm">
-            La province du siège déterminera la juridiction principale de votre
-            organisation. Assurez-vous de sélectionner la province où se trouve
-            votre siège social officiel.
-          </p>
         </div>
       </div>
     </div>

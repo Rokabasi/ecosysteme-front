@@ -49,29 +49,6 @@ const RevisionStep = ({ formData }) => {
             </div>
           </div>
         </div>
-
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-          <h4 className="font-medium text-blue-900 mb-2">Prochaines étapes</h4>
-          <p className="text-blue-800 text-sm">
-            Après validation de votre inscription, vous recevrez un email de
-            confirmation et votre dossier sera transmis pour validation
-            administrative. Vous pourrez suivre l'état de votre demande dans la
-            section "Vérifier le statut".
-          </p>
-        </div>
-
-        <div className="flex items-center space-x-2">
-          <input
-            type="checkbox"
-            id="confirmation"
-            className="rounded border-gray-300 text-[#6a1754] focus:ring-[#6a1754]"
-          />
-          <label htmlFor="confirmation" className="text-sm text-gray-700">
-            Je confirme que toutes les informations fournies sont exactes et
-            complètes
-            <span className="text-[#6a1754]"> *</span>
-          </label>
-        </div>
       </div>
     </div>
   );
