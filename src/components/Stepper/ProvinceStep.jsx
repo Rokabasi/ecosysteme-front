@@ -1,13 +1,31 @@
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Select from "react-select";
 import { LuMapPin } from "react-icons/lu";
+import {
+  getProvinces,
+  getProvincesError,
+  getProvincesLoading,
+  selectAllProvinces,
+  getSelectedProvince,
+  setSelectedProvince,
+} from "../../app/reducers/provinces";
 
 const ProvinceStep = () => {
-  const provinces = [
-    { value: "Kinshasa", label: "Kinshasa" },
-    { value: "Kongo Central", label: "Kongo Central" },
-    { value: "Haut-Katanga", label: "Haut-Katanga" },
-    { value: "Kasaï Oriental", label: "Kasaï Oriental" },
-  ];
+  const dispatch = useDispatch();
+  const provincesData = useSelector(selectAllProvinces);
+  const loading = useSelector(getProvincesLoading);
+  const error = useSelector(getProvincesError);
+  const selectedProvince = useSelector(getSelectedProvince); // récupère la sélection
+
+  useEffect(() => {
+    dispatch(getProvinces());
+  }, [dispatch]);
+
+  const provinces = provincesData.map((province) => ({
+    value: province.pro_id,
+    label: province.pro_designation,
+  }));
 
   const customStyles = {
     control: (provided) => ({
@@ -42,6 +60,9 @@ const ProvinceStep = () => {
     }),
   };
 
+  if (loading) return <p>Chargement des provinces...</p>;
+  if (error) return <p className="text-red-500">{error}</p>;
+
   return (
     <div className="max-w-2xl mx-auto">
       <div className="text-center mb-8">
@@ -64,6 +85,21 @@ const ProvinceStep = () => {
             styles={customStyles}
             placeholder="Selectionnez votre province..."
             noOptionsMessage={() => "Aucun résultat trouvé"}
+            value={
+              selectedProvince
+                ? {
+                    value: selectedProvince.pro_id,
+                    label: selectedProvince.pro_designation,
+                  }
+                : null
+            }
+            onChange={(option) => {
+              const province = provincesData.find(
+                (p) => p.pro_id === option.value
+              );
+              dispatch(setSelectedProvince(province));
+            }}
+            isClearable
           />
         </div>
       </div>
