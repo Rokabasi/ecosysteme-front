@@ -1,27 +1,34 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  data: {},
+  localites: {}, // { provinceId: "localité1, localité2, ..." }
 };
 
 const localitesSlice = createSlice({
   name: "localites",
   initialState,
   reducers: {
-    setLocalite: (state, action) => {
-      const { pro_id, value } = action.payload;
-      state.data[pro_id] = value;
-    },
     setLocalites: (state, action) => {
-      state.data = action.payload;
+      // Remplace toutes les localités
+      state.localites = action.payload;
+    },
+    updateLocalites: (state, action) => {
+      // Met à jour les localités pour une province spécifique
+      const { provinceId, value } = action.payload;
+      state.localites[provinceId] = value;
     },
     clearLocalites: (state) => {
-      state.data = {};
+      // Vide toutes les localités
+      state.localites = {};
     },
   },
 });
 
-export const { setLocalite, setLocalites, clearLocalites } =
+export const { setLocalites, updateLocalites, clearLocalites } =
   localitesSlice.actions;
 export const localitesReducer = localitesSlice.reducer;
-export const getLocalites = (state) => state.localites.data;
+
+// Sélecteurs
+export const getAllLocalites = (state) => state.localites.localites;
+export const getLocalitesByProvince = (provinceId) => (state) =>
+  state.localites.localites[provinceId] || "";

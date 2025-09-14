@@ -1,18 +1,15 @@
-import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { LuMapPin } from "react-icons/lu";
 import { getSelectedProvinces } from "../../app/reducers/provinces";
+import { getAllLocalites, updateLocalites } from "../../app/reducers/localites";
 
 const LocaliteStep = () => {
+  const dispatch = useDispatch();
   const selectedProvinces = useSelector(getSelectedProvinces);
-
-  const [localites, setLocalites] = useState({});
+  const localites = useSelector(getAllLocalites);
 
   const handleLocalitesChange = (provinceId, value) => {
-    setLocalites((prev) => ({
-      ...prev,
-      [provinceId]: value,
-    }));
+    dispatch(updateLocalites({ provinceId, value }));
   };
 
   return (
