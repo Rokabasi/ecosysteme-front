@@ -1,6 +1,20 @@
+import { useState } from "react";
+import { useSelector } from "react-redux";
 import { LuMapPin } from "react-icons/lu";
+import { getSelectedProvinces } from "../../app/reducers/provinces";
 
 const LocaliteStep = () => {
+  const selectedProvinces = useSelector(getSelectedProvinces);
+
+  const [localites, setLocalites] = useState({});
+
+  const handleLocalitesChange = (provinceId, value) => {
+    setLocalites((prev) => ({
+      ...prev,
+      [provinceId]: value,
+    }));
+  };
+
   return (
     <div className="max-w-2xl mx-auto">
       <div className="text-center mb-8">
@@ -13,24 +27,30 @@ const LocaliteStep = () => {
 
         <p className="text-gray-600 text-lg leading-relaxed">
           Renseignez les localités, villes ou villages dans lesquels vous opérez
-          en RDC.
+          en RDC pour chaque province sélectionnée.
         </p>
       </div>
 
-      <div className="space-y-6">
-        <div className="flex justify-between space-y-3 mb-40">
-          <p className="text-base font-medium text-gray-900">
-            Province
-            <span className="text-[#6a1754]"> *</span>
-          </p>
-          <textarea
-            className="rounded-sm p-2 border border-[#0089CF] outline-0 w-[calc(100%-6rem)]"
-            type="text"
-            name="province"
-            id="province"
-            placeholder="Saisissez les noms des villes, les localités ou les villages ici en les séparant par des virgules."
-          />
-        </div>
+      <div className="space-y-6 mb-40">
+        {selectedProvinces.map((province) => (
+          <div
+            key={province.pro_id}
+            className="flex flex-col md:flex-row items-start gap-2 mb-4"
+          >
+            <p className="text-base font-medium text-gray-900 w-full md:w-36">
+              {province.pro_designation}{" "}
+              <span className="text-[#6a1754]">*</span>
+            </p>
+            <textarea
+              className="flex-1 rounded-sm p-2 border border-[#0089CF] outline-0 w-full"
+              placeholder={`Saisissez les localités pour ${province.pro_designation}, séparées par des virgules`}
+              value={localites[province.pro_id] || ""}
+              onChange={(e) =>
+                handleLocalitesChange(province.pro_id, e.target.value)
+              }
+            />
+          </div>
+        ))}
       </div>
     </div>
   );
