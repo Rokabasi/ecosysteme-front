@@ -49,15 +49,15 @@ const ZoneStep = () => {
     option: (provided, state) => ({
       ...provided,
       backgroundColor: state.isSelected
-        ? "#6a1754"
+        ? "#0089CF"
         : state.isFocused
-        ? "rgba(106, 23, 84, 0.1)"
+        ? "rgba(0, 137, 207, 0.1)"
         : "white",
       color: state.isSelected ? "white" : "#333",
       cursor: "pointer",
       padding: "10px",
       ":active": {
-        backgroundColor: "rgba(106, 23, 84, 0.2)",
+        backgroundColor: "rgba(0, 137, 207, 0.2)",
       },
     }),
     menu: (provided) => ({
@@ -70,8 +70,8 @@ const ZoneStep = () => {
   return (
     <div className="max-w-2xl mx-auto">
       <div className="text-center mb-8">
-        <div className="w-16 h-16 mx-auto bg-purple-100 rounded-full flex items-center justify-center mb-4">
-          <LuMapPin className="w-8 h-8 text-[#6a1754]" />
+        <div className="w-16 h-16 mx-auto bg-[#0089CF]/20 rounded-full flex items-center justify-center mb-4">
+          <LuMapPin className="w-8 h-8 text-[#0089CF]" />
         </div>
         <h2 className="text-2xl font-bold text-gray-900 mb-2">
           Zone d'opération

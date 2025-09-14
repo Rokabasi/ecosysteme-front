@@ -6,8 +6,8 @@ const QuestionStep = () => {
   return (
     <div className="max-w-2xl mx-auto">
       <div className="text-center mb-8">
-        <div className="w-16 h-16 mx-auto bg-purple-100 rounded-full flex items-center justify-center mb-4">
-          <SlQuestion className="w-8 h-8 text-[#6a1754]" />
+        <div className="w-16 h-16 mx-auto bg-[#0089CF]/20 rounded-full flex items-center justify-center mb-4">
+          <SlQuestion className="w-8 h-8 text-[#0089CF]" />
         </div>
         <h2 className="text-2xl font-bold text-gray-900 mb-2">Questionnaire</h2>
 
@@ -23,32 +23,28 @@ const QuestionStep = () => {
             liées aux conflits ou les victimes des crimes contre la paix et la
             sécurité de l’humanité ?<span className="text-[#6a1754]"> *</span>
           </p>
-          <div className="flex gap-2">
-            <label className="flex items-center cursor-pointer">
+          <div className="flex flex-col gap-1">
+            <label className="flex items-center cursor-pointer gap-1">
               <input
                 type="radio"
                 name="priseEnCharge"
                 value="oui"
                 checked={priseEnCharge === "oui"}
                 onChange={(e) => setPriseEnCharge(e.target.value)}
-                className="hidden peer"
+                className="peer"
               />
-              <span className="px-2 py-1 border border-[#6a1754] rounded-md peer-checked:bg-[#6a1754] peer-checked:text-white">
-                Oui
-              </span>
+              Oui
             </label>
-            <label className="flex items-center cursor-pointer">
+            <label className="flex items-center cursor-pointer gap-1">
               <input
                 type="radio"
                 name="priseEnCharge"
                 value="non"
                 checked={priseEnCharge === "non"}
                 onChange={(e) => setPriseEnCharge(e.target.value)}
-                className="hidden peer"
+                className="peer"
               />
-              <span className="px-2 py-1 border border-[#6a1754] rounded-md peer-checked:bg-[#6a1754] peer-checked:text-white">
-                Non
-              </span>
+              Non
             </label>
           </div>
 
@@ -72,28 +68,24 @@ const QuestionStep = () => {
             Votre organisation constitue-t-elle une association des victimes ?
             <span className="text-[#6a1754]"> *</span>
           </p>
-          <div className="flex gap-2">
-            <label className="flex items-center cursor-pointer">
+          <div className="flex flex-col gap-1">
+            <label className="flex items-center cursor-pointer gap-1">
               <input
                 type="radio"
                 name="associationVictimes"
                 value="oui"
-                className="hidden peer"
+                className="peer"
               />
-              <span className="px-2 py-1 border border-[#6a1754] rounded-md peer-checked:bg-[#6a1754] peer-checked:text-white">
-                Oui
-              </span>
+              Oui
             </label>
-            <label className="flex items-center cursor-pointer">
+            <label className="flex items-center cursor-pointer gap-1">
               <input
                 type="radio"
                 name="associationVictimes"
                 value="non"
-                className="hidden peer"
+                className="peer"
               />
-              <span className="px-2 py-1 border border-[#6a1754] rounded-md peer-checked:bg-[#6a1754] peer-checked:text-white">
-                Non
-              </span>
+              Non
             </label>
           </div>
         </div>
@@ -106,28 +98,24 @@ const QuestionStep = () => {
             paix et la sécurité de l’humanité ?
             <span className="text-[#6a1754]"> *</span>
           </p>
-          <div className="flex gap-2">
-            <label className="flex items-center cursor-pointer">
+          <div className="flex flex-col gap-1">
+            <label className="flex items-center cursor-pointer gap-1">
               <input
                 type="radio"
                 name="infosVictimes"
                 value="oui"
-                className="hidden peer"
+                className="peer"
               />
-              <span className="px-2 py-1 border border-[#6a1754] rounded-md peer-checked:bg-[#6a1754] peer-checked:text-white">
-                Oui
-              </span>
+              Oui
             </label>
-            <label className="flex items-center cursor-pointer">
+            <label className="flex items-center cursor-pointer gap-1">
               <input
                 type="radio"
                 name="infosVictimes"
                 value="non"
-                className="hidden peer"
+                className="peer"
               />
-              <span className="px-2 py-1 border border-[#6a1754] rounded-md peer-checked:bg-[#6a1754] peer-checked:text-white">
-                Non
-              </span>
+              Non
             </label>
           </div>
         </div>
@@ -139,28 +127,24 @@ const QuestionStep = () => {
             assurer la prise en charge des victimes ?
             <span className="text-[#6a1754]"> *</span>
           </p>
-          <div className="flex gap-2">
-            <label className="flex items-center cursor-pointer">
+          <div className="flex flex-col gap-1">
+            <label className="flex items-center cursor-pointer gap-1">
               <input
                 type="radio"
                 name="collaborationFonarev"
                 value="oui"
-                className="hidden peer"
+                className="peer"
               />
-              <span className="px-2 py-1 border border-[#6a1754] rounded-md peer-checked:bg-[#6a1754] peer-checked:text-white">
-                Oui
-              </span>
+              Oui
             </label>
-            <label className="flex items-center cursor-pointer">
+            <label className="flex items-center cursor-pointer gap-1">
               <input
                 type="radio"
                 name="collaborationFonarev"
                 value="non"
-                className="hidden peer"
+                className="peer"
               />
-              <span className="px-2 py-1 border border-[#6a1754] rounded-md peer-checked:bg-[#6a1754] peer-checked:text-white">
-                Non
-              </span>
+              Non
             </label>
           </div>
         </div>
@@ -171,28 +155,24 @@ const QuestionStep = () => {
             Votre organisation dispose-t-elle d’un compte bancaire ?
             <span className="text-[#6a1754]"> *</span>
           </p>
-          <div className="flex gap-2">
-            <label className="flex items-center cursor-pointer">
+          <div className="flex flex-col gap-1">
+            <label className="flex items-center cursor-pointer gap-1">
               <input
                 type="radio"
                 name="compteBancaire"
                 value="oui"
-                className="hidden peer"
+                className="peer"
               />
-              <span className="px-2 py-1 border border-[#6a1754] rounded-md peer-checked:bg-[#6a1754] peer-checked:text-white">
-                Oui
-              </span>
+              Oui
             </label>
-            <label className="flex items-center cursor-pointer">
+            <label className="flex items-center cursor-pointer gap-1">
               <input
                 type="radio"
                 name="compteBancaire"
                 value="non"
-                className="hidden peer"
+                className="peer"
               />
-              <span className="px-2 py-1 border border-[#6a1754] rounded-md peer-checked:bg-[#6a1754] peer-checked:text-white">
-                Non
-              </span>
+              Non
             </label>
           </div>
         </div>

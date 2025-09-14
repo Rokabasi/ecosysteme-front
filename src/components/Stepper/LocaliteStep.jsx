@@ -4,8 +4,8 @@ const LocaliteStep = () => {
   return (
     <div className="max-w-2xl mx-auto">
       <div className="text-center mb-8">
-        <div className="w-16 h-16 mx-auto bg-purple-100 rounded-full flex items-center justify-center mb-4">
-          <LuMapPin className="w-8 h-8 text-[#6a1754]" />
+        <div className="w-16 h-16 mx-auto bg-[#0089CF]/20 rounded-full flex items-center justify-center mb-4">
+          <LuMapPin className="w-8 h-8 text-[#0089CF]" />
         </div>
         <h2 className="text-2xl font-bold text-gray-900 mb-2">
           Localités d'opération

@@ -92,7 +92,7 @@ const Register = () => {
         <div className="p-8 flex justify-center">
           <div className="w-full max-w-5xl">
             <div className="mb-8">
-              <h1 className="text-2xl font-bold text-[#6a1754] mb-2">
+              <h1 className="text-2xl font-bold text-[#0089CF] mb-2">
                 Étape {currentStep} : {steps[currentStep - 1].title}
               </h1>
             </div>
