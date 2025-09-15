@@ -2,11 +2,19 @@ import { SlQuestion } from "react-icons/sl";
 import { useSelector, useDispatch } from "react-redux";
 import { getAllAnswers, updateAnswer } from "../../app/reducers/questions";
 import FieldError from "../FieldError/FieldError";
-const QuestionStep = ({ validationErrors = {} }) => {
+const QuestionStep = ({ validationErrors = {}, clearFieldError }) => {
   const dispatch = useDispatch();
   const answers = useSelector(getAllAnswers);
 
   const handleAnswerChange = (question, answer) => {
+    // Effacer l'erreur dès que l'utilisateur modifie la réponse
+    if (clearFieldError) {
+      clearFieldError(question);
+      // Pour la question conditionnelle "occasion"
+      if (question === 'priseEnCharge' && answer === 'oui') {
+        clearFieldError('occasion');
+      }
+    }
     dispatch(updateAnswer({ question, answer }));
   };
 

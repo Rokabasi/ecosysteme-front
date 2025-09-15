@@ -34,6 +34,7 @@ const Register = () => {
     confirmAbandon,
     continueRegistration,
     validationErrors,
+    clearFieldError,
   } = UseRegisterConfig();
 
   // Gérer le clic sur le lien "Retour à l'accueil"
@@ -131,17 +132,17 @@ const Register = () => {
 
             {/* Step Content */}
             <div className="mb-12">
-              {currentStep === 1 && <ProvinceStep validationErrors={validationErrors} />}
-              {currentStep === 2 && <ZoneStep validationErrors={validationErrors} />}
-              {currentStep === 3 && <LocaliteStep validationErrors={validationErrors} />}
-              {currentStep === 4 && <DocumentStep validationErrors={validationErrors} />}
+              {currentStep === 1 && <ProvinceStep validationErrors={validationErrors} clearFieldError={clearFieldError} />}
+              {currentStep === 2 && <ZoneStep validationErrors={validationErrors} clearFieldError={clearFieldError} />}
+              {currentStep === 3 && <LocaliteStep validationErrors={validationErrors} clearFieldError={clearFieldError} />}
+              {currentStep === 4 && <DocumentStep validationErrors={validationErrors} clearFieldError={clearFieldError} />}
               {currentStep === 5 && currentSubStep === 1 && (
-                <IdentificationStepPart1 validationErrors={validationErrors} />
+                <IdentificationStepPart1 validationErrors={validationErrors} clearFieldError={clearFieldError} />
               )}
               {currentStep === 5 && currentSubStep === 2 && (
-                <IdentificationStepPart2 validationErrors={validationErrors} />
+                <IdentificationStepPart2 validationErrors={validationErrors} clearFieldError={clearFieldError} />
               )}
-              {currentStep === 6 && <QuestionStep validationErrors={validationErrors} />}
+              {currentStep === 6 && <QuestionStep validationErrors={validationErrors} clearFieldError={clearFieldError} />}
               {currentStep === 7 && <RevisionStep formData={formData} />}
             </div>
 

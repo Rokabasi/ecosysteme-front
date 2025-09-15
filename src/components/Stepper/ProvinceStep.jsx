@@ -12,7 +12,7 @@ import {
 } from "../../app/reducers/provinces";
 import FieldError from "../FieldError/FieldError";
 
-const ProvinceStep = ({ validationErrors = {} }) => {
+const ProvinceStep = ({ validationErrors = {}, clearFieldError }) => {
   const dispatch = useDispatch();
   const provincesData = useSelector(selectAllProvinces);
   const loading = useSelector(getProvincesLoading);
@@ -95,6 +95,11 @@ const ProvinceStep = ({ validationErrors = {} }) => {
                 : null
             }
             onChange={(option) => {
+              // Effacer l'erreur dès que l'utilisateur modifie le champ
+              if (clearFieldError) {
+                clearFieldError('selectedProvince');
+              }
+              
               if (option) {
                 const province = provincesData.find(
                   (p) => p.pro_id === option.value

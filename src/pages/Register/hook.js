@@ -258,6 +258,15 @@ export const UseRegisterConfig = () => {
     dispatch(clearFormData());
   };
 
+  // Fonction pour effacer l'erreur d'un champ spécifique quand il est modifié
+  const clearFieldError = (fieldName) => {
+    setValidationErrors(prev => {
+      const newErrors = { ...prev };
+      delete newErrors[fieldName];
+      return newErrors;
+    });
+  };
+
   return {
     currentStep,
     currentSubStep,
@@ -275,5 +284,6 @@ export const UseRegisterConfig = () => {
     hasFormData,
     validationErrors,
     setValidationErrors,
+    clearFieldError,
   };
 };

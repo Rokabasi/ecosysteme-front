@@ -8,7 +8,7 @@ import {
 } from "../../app/reducers/documents";
 import FieldError from "../FieldError/FieldError";
 
-const DocumentStep = ({ validationErrors = {} }) => {
+const DocumentStep = ({ validationErrors = {}, clearFieldError }) => {
   const dispatch = useDispatch();
   const documents = useSelector(getAllDocuments);
 
@@ -23,6 +23,11 @@ const DocumentStep = ({ validationErrors = {} }) => {
   const handleFileChange = (documentType, event) => {
     const file = event.target.files[0];
     if (file) {
+      // Effacer l'erreur dès que l'utilisateur ajoute un fichier
+      if (clearFieldError) {
+        clearFieldError(documentType);
+      }
+      
       // Extraire seulement les informations sérialisables du fichier
       const fileInfo = {
         name: file.name,

@@ -9,7 +9,7 @@ import {
 } from "../../app/reducers/provinces";
 import FieldError from "../FieldError/FieldError";
 
-const ZoneStep = ({ validationErrors = {} }) => {
+const ZoneStep = ({ validationErrors = {}, clearFieldError }) => {
   const dispatch = useDispatch();
   const provincesData = useSelector(selectAllProvinces);  
   const selectedProvinces = useSelector(getSelectedProvinces);  
@@ -21,6 +21,10 @@ const ZoneStep = ({ validationErrors = {} }) => {
   }, [dispatch, provincesData.length]);
 
   const handleProvinceToggle = (province) => {
+    // Effacer l'erreur dès que l'utilisateur modifie le champ
+    if (clearFieldError) {
+      clearFieldError('selectedProvinces');
+    }
     dispatch(toggleSelectedProvince(province));
   };
 

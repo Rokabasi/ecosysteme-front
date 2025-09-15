@@ -18,10 +18,12 @@ const RevisionStep = () => {
   const selectedZones = useSelector(getSelectedZones);
   const localitesByProvince = useSelector((state) => state.localites.localites);
   // Convertir l'objet localitesByProvince en tableau d'objets avec pro_id et localite
-  const selectedLocalites = Object.entries(localitesByProvince).map(([pro_id, localite]) => ({
-    pro_id,
-    loc_designation: localite
-  }));
+  const selectedLocalites = Object.entries(localitesByProvince).map(
+    ([pro_id, localite]) => ({
+      pro_id,
+      loc_designation: localite,
+    })
+  );
   const documents = useSelector(getAllDocuments);
   const questions = useSelector(getAllAnswers);
 
@@ -130,9 +132,9 @@ const RevisionStep = () => {
             <div className="pl-8">
               {hasData(selectedLocalites) ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
-                  {selectedLocalites.map((localite) => (
+                  {selectedLocalites.map((localite, index) => (
                     <div
-                      key={localite.loc_id}
+                      key={localite.pro_id + "-" + index}
                       className="flex items-center space-x-2"
                     >
                       <span className="text-[#6a1754]">•</span>
@@ -336,11 +338,15 @@ const RevisionStep = () => {
                         "Disposez-vous d'informations concernant les victimes des violences sexuelles liées aux conflits ou les victimes des crimes contre la paix et la sécurité de l'humanité ?",
                       collaborationFonarev:
                         "Votre organisation est-elle prête à collaborer avec le FONAREV pour assurer la prise en charge des victimes ?",
-                      compteBancaire: "Votre organisation dispose-t-elle d'un compte bancaire ?",
+                      compteBancaire:
+                        "Votre organisation dispose-t-elle d'un compte bancaire ?",
                     };
 
                     // Ne pas afficher la question 'occasion' si la réponse à 'priseEnCharge' n'est pas 'oui'
-                    if (key === 'occasion' && questions.priseEnCharge !== 'oui') {
+                    if (
+                      key === "occasion" &&
+                      questions.priseEnCharge !== "oui"
+                    ) {
                       return null;
                     }
 

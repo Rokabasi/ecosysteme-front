@@ -5,7 +5,7 @@ import { getIdentificationFormData, updateField } from "../../app/reducers/ident
 import { selectAllDomaines, selectDomainesLoading, selectDomainesError, fetchDomaines, selectDomainesWithDetails } from "../../app/reducers/domaines";
 import FieldError from "../FieldError/FieldError";
 
-const IdentificationStepPart2 = ({ validationErrors = {} }) => {
+const IdentificationStepPart2 = ({ validationErrors = {}, clearFieldError }) => {
   const dispatch = useDispatch();
   const formData = useSelector(getIdentificationFormData);
   const domainesLabels = useSelector(selectAllDomaines);
@@ -20,10 +20,19 @@ const IdentificationStepPart2 = ({ validationErrors = {} }) => {
   
   const handleChange = (e) => {
     const { name, value } = e.target;
+    // Effacer l'erreur dès que l'utilisateur modifie le champ
+    if (clearFieldError) {
+      clearFieldError(name);
+    }
     dispatch(updateField({ field: name, value }));
   };
   
   const handleDomainToggle = (domain) => {
+    // Effacer l'erreur dès que l'utilisateur modifie les domaines
+    if (clearFieldError) {
+      clearFieldError('domaines');
+    }
+    
     const updatedDomains = formData.domaines
       ? formData.domaines.includes(domain)
         ? formData.domaines.filter(d => d !== domain)

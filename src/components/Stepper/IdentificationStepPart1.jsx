@@ -6,12 +6,16 @@ import {
 } from "../../app/reducers/identification";
 import FieldError from "../FieldError/FieldError";
 
-const IdentificationStepPart1 = ({ validationErrors = {} }) => {
+const IdentificationStepPart1 = ({ validationErrors = {}, clearFieldError }) => {
   const dispatch = useDispatch();
   const formData = useSelector(getIdentificationFormData);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    // Effacer l'erreur dès que l'utilisateur modifie le champ
+    if (clearFieldError) {
+      clearFieldError(name);
+    }
     dispatch(updateField({ field: name, value }));
   };
 

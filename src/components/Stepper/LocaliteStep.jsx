@@ -4,12 +4,16 @@ import { getSelectedProvinces } from "../../app/reducers/provinces";
 import { getAllLocalites, updateLocalites } from "../../app/reducers/localites";
 import FieldError from "../FieldError/FieldError";
 
-const LocaliteStep = ({ validationErrors = {} }) => {
+const LocaliteStep = ({ validationErrors = {}, clearFieldError }) => {
   const dispatch = useDispatch();
   const selectedProvinces = useSelector(getSelectedProvinces);
   const localites = useSelector(getAllLocalites);
 
   const handleLocalitesChange = (provinceId, value) => {
+    // Effacer l'erreur dès que l'utilisateur modifie le champ
+    if (clearFieldError) {
+      clearFieldError(`localite_${provinceId}`);
+    }
     dispatch(updateLocalites({ provinceId, value }));
   };
 
