@@ -50,15 +50,14 @@ export const formatSubmissionData = (data) => {
     };
 
     // Ajouter conditionnellement str_sigle si non vide
-    // if (identificationData.sigle && String(identificationData.sigle).trim() !== "") {
-    //     payload.str_sigle = identificationData.sigle;
-    // }
+    if (identificationData.sigle && String(identificationData.sigle).trim() !== "") {
+        payload.str_sigle = identificationData.sigle;
+    }
 
     // Ajouter conditionnellement sres_is_association_victime_description si non vide
-    // if (questionsAnswers.sres_is_association_victime_description && String(questionsAnswers.sres_is_association_victime_description).trim() !== "") {
-    //     payload.sres_is_association_victime_description = questionsAnswers.sres_is_association_victime_description;
-    // }
-console.log(payload);
+    if (questionsAnswers.sres_is_association_victime_description && String(questionsAnswers.sres_is_association_victime_description).trim() !== "") {
+        payload.sres_is_association_victime_description = questionsAnswers.sres_is_association_victime_description;
+    }
 
     return payload;
 };

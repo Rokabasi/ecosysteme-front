@@ -1,11 +1,9 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { UseRegisterConfig } from "./hook";
 import ConfirmationModal from "../../components/ConfirmationModal/ConfirmationModal";
 import { validateStep } from "../../utils/validation";
 import { formatSubmissionData } from "../../utils/dataFormatter";
-import { sendCandidature } from "../../app/reducers/candidatures";
 import ProvinceStep from "../../components/Stepper/ProvinceStep";
 import ZoneStep from "../../components/Stepper/ZoneStep";
 import LocaliteStep from "../../components/Stepper/LocaliteStep";
@@ -19,7 +17,6 @@ const Register = () => {
   const navigate = useNavigate();
   const [showSubmitConfirm, setShowSubmitConfirm] = useState(false);
   const [pendingPayload, setPendingPayload] = useState(null);
-  const dispatch = useDispatch();
   
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -33,9 +30,6 @@ const Register = () => {
     prevStep,
     steps,
     formData,
-    updateFormData,
-    submitForm,
-    resetForm,
     showConfirmModal,
     handleBackToHome,
     confirmAbandon,
@@ -50,6 +44,7 @@ const Register = () => {
     documents,
     identificationData,
     questionsAnswers,
+    onSubmitForm,
   } = UseRegisterConfig();
 
   // Gérer le clic sur le lien "Retour à l'accueil"
@@ -244,58 +239,13 @@ const Register = () => {
       <ConfirmationModal
         isOpen={showSubmitConfirm}
         type="question"
-        title="Confirmer la soumission"
-        message="Voulez-vous soumettre votre inscription maintenant ?"
-        confirmText="Oui, soumettre"
+        title="Confirmation"
+        message="Etes-vous sur de vouloir soumettre votre candidature ?"
+        confirmText="Oui"
         cancelText="Annuler"
         onClose={() => setShowSubmitConfirm(false)}
         onCancel={() => setShowSubmitConfirm(false)}
-        onConfirm={async () => {
-          // Construire le FormData avec la structure + fichiers
-          const fd = new FormData();
-          // Ajouter la structure formatée
-          fd.append('structure', JSON.stringify(pendingPayload));
-
-          // Ajouter les fichiers selon les clés demandées
-          const docs = documents || {};
-          if (docs.statuts) fd.append('statutNotarie', docs.statuts);
-          if (docs.reglements) fd.append("regledordreinterieur", docs.reglements);
-          if (docs.personnalite) fd.append('personnalitejuridique', docs.personnalite);
-          if (docs.organigramme) fd.append('organigramme', docs.organigramme);
-
-          // Rapports (supporte File unique ou tableau de Files)
-          if (docs.rapports) {
-            if (Array.isArray(docs.rapports)) {
-              if (docs.rapports[0]) fd.append('rapport1', docs.rapports[0]);
-              if (docs.rapports[1]) fd.append('rapport2', docs.rapports[1]);
-              if (docs.rapports[2]) fd.append('rapport3', docs.rapports[2]);
-            } else {
-              fd.append('rapport1', docs.rapports);
-            }
-          }
-
-          // États financiers (supporte File unique ou tableau de Files)
-          if (docs.etatsFinanciers) {
-            if (Array.isArray(docs.etatsFinanciers)) {
-              if (docs.etatsFinanciers[0]) fd.append('etatfin1', docs.etatsFinanciers[0]);
-              if (docs.etatsFinanciers[1]) fd.append('etatfin2', docs.etatsFinanciers[1]);
-              if (docs.etatsFinanciers[2]) fd.append('etatfin3', docs.etatsFinanciers[2]);
-            } else {
-              fd.append('etatfin1', docs.etatsFinanciers);
-            }
-          }
-
-          if (docs.pvAssemblee) fd.append('dernierpv', docs.pvAssemblee);
-
-          // Envoie la requête via le reducer; déclenche succès/erreur dans le modal
-          const action = await dispatch(sendCandidature(fd));
-          console.log(action);
-          
-          const payload = action && action.payload;
-          if (payload && payload?.meta?.requestStatus === '"rejected"') {
-            throw new Error(payload.message || 'Échec de la soumission');
-          }
-        }}
+        onConfirm={() => onSubmitForm(pendingPayload)}
       />
     </div>
   );

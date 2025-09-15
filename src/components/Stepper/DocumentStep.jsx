@@ -27,15 +27,9 @@ const DocumentStep = ({ validationErrors = {}, clearFieldError }) => {
       if (clearFieldError) {
         clearFieldError(documentType);
       }
-      
-      // Extraire seulement les informations sérialisables du fichier
-      const fileInfo = {
-        name: file.name,
-        size: file.size,
-        type: file.type,
-        lastModified: file.lastModified,
-      };
-      dispatch(setDocument({ documentType, file: fileInfo }));
+
+      // Stocker le fichier brut pour l'envoi via FormData
+      dispatch(setDocument({ documentType, file }));
     }
   };
 

@@ -8,6 +8,7 @@ import { clearAnswers, getAllAnswers } from "../../app/reducers/questions";
 import { clearFormData, getIdentificationFormData } from "../../app/reducers/identification";
 import { validateStep } from "../../utils/validation";
 import { formatSubmissionData, validateSubmissionData } from "../../utils/dataFormatter";
+import { sendCandidature } from "../../app/reducers/candidatures";
 
 export const UseRegisterConfig = () => {
   const [currentStep, setCurrentStep] = useState(1);
@@ -279,6 +280,46 @@ export const UseRegisterConfig = () => {
     dispatch(clearFormData());
   };
 
+  const onSubmitForm = async (structuredPayload) => {
+          const fd = new FormData();
+
+          fd.append('structure', JSON.stringify(structuredPayload));
+
+          const docs = documents || {};
+          if (docs.statuts) fd.append('statutNotarie', docs.statuts);
+          if (docs.reglements) fd.append("regledordreinterieur", docs.reglements);
+          if (docs.personnalite) fd.append('personnalitejuridique', docs.personnalite);
+          if (docs.organigramme) fd.append('organigramme', docs.organigramme);
+
+          if (docs.rapports) {
+            if (Array.isArray(docs.rapports)) {
+              if (docs.rapports[0]) fd.append('rapport1', docs.rapports[0]);
+              if (docs.rapports[1]) fd.append('rapport2', docs.rapports[1]);
+              if (docs.rapports[2]) fd.append('rapport3', docs.rapports[2]);
+            } else {
+              fd.append('rapport1', docs.rapports);
+            }
+          }
+
+          if (docs.etatsFinanciers) {
+            if (Array.isArray(docs.etatsFinanciers)) {
+              if (docs.etatsFinanciers[0]) fd.append('etatfin1', docs.etatsFinanciers[0]);
+              if (docs.etatsFinanciers[1]) fd.append('etatfin2', docs.etatsFinanciers[1]);
+              if (docs.etatsFinanciers[2]) fd.append('etatfin3', docs.etatsFinanciers[2]);
+            } else {
+              fd.append('etatfin1', docs.etatsFinanciers);
+            }
+          }
+
+          if (docs.pvAssemblee) fd.append('dernierpv', docs.pvAssemblee);
+
+          const action = await dispatch(sendCandidature(fd));
+          // Déclencher l'affichage d'échec dans le modal en cas d'erreur
+          if (action?.meta?.requestStatus === 'rejected' || (action?.payload && action.payload.status === 'failed')) {
+            throw new Error(action?.payload?.message || 'Échec de la soumission');
+          }
+  }
+
   // Fonction pour effacer l'erreur d'un champ spécifique quand il est modifié
   const clearFieldError = (fieldName) => {
     setValidationErrors(prev => {
@@ -306,6 +347,7 @@ export const UseRegisterConfig = () => {
     validationErrors,
     setValidationErrors,
     clearFieldError,
+    onSubmitForm,
     // Données pour la validation finale et la soumission
     selectedProvince,
     selectedProvinces,

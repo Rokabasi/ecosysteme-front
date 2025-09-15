@@ -109,10 +109,18 @@ const ConfirmationModal = ({
         {/* Actions */}
         {result === null ? (
           <div className="flex flex-col sm:flex-row gap-3 p-6 pt-0">
+           
             <button
+              onClick={handleCancel}
+              disabled={loading}
+              className="flex-1 px-4 py-2 border border-red-600 font-normal text-red-600 rounded-md hover:bg-red-50 transition-colors cursor-pointer disabled:opacity-60"
+            >
+              {cancelText}
+            </button>
+             <button
               onClick={handleConfirm}
               disabled={loading}
-              className={`flex-1 inline-flex items-center justify-center px-4 py-2 rounded-md text-white font-medium transition-colors ${
+              className={`flex-1 inline-flex items-center justify-center px-4 py-2 rounded-md text-white font-normal cursor-pointer transition-colors ${
                 loading
                   ? "bg-[#6a1754]/70 cursor-not-allowed"
                   : "bg-[#6a1754] hover:bg-[#5c1949]"
@@ -122,13 +130,6 @@ const ConfirmationModal = ({
                 <span className="mr-2 inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
               )}
               {confirmText}
-            </button>
-            <button
-              onClick={handleCancel}
-              disabled={loading}
-              className="flex-1 px-4 py-2 border border-red-300 text-red-700 rounded-md hover:bg-red-50 transition-colors font-medium disabled:opacity-60"
-            >
-              {cancelText}
             </button>
           </div>
         ) : (

@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { axios, protectedAxios } from "../../config/axios";
+import { axios, protectedAxios, protectedSendFileAxios } from "../../config/axios";
 
 const initialState = {
   candidatures: null,
@@ -9,7 +9,9 @@ const initialState = {
 
 export const sendCandidature = createAsyncThunk("structure/register", async (data) => {
   try {
-    const res = await axios.post("/register", data);
+    // Utiliser l'instance configurée pour l'envoi de fichiers (FormData)
+    const client = data instanceof FormData ? protectedSendFileAxios : axios;
+    const res = await client.post("/register", data);
     return res.data;
   } catch (error) {
     const response = error.response;
