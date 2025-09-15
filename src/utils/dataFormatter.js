@@ -20,10 +20,9 @@ export const formatSubmissionData = (data) => {
         questionsAnswers
     } = data;
 
-    return {
+    const payload = {
         // Structure data - Informations de base de l'organisation
         str_designation: identificationData.denomination || "",
-        str_sigle: identificationData.sigle || "",
         str_annee_creation: identificationData.anneeCreation || "",
         str_adresse_siege_sociale: identificationData.adresse || "",
         str_nom_representant_legal: identificationData.nomFonction || "",
@@ -39,7 +38,7 @@ export const formatSubmissionData = (data) => {
         sres_prise_en_charge: convertToBool(questionsAnswers.priseEnCharge),
         sres_prise_en_charge_description: questionsAnswers.occasion || "",
         sres_is_association_victime: convertToBool(questionsAnswers.associationVictimes),
-        sres_is_association_victime_description: "", // Pas de description pour cette question
+        // sres_is_association_victime_description sera ajouté conditionnellement plus bas
         sres_infos_victime_sexuel: convertToBool(questionsAnswers.infosVictimes),
         sres_pret_a_collaborer: convertToBool(questionsAnswers.collaborationFonarev),
         sres_a_compte_bancaire: convertToBool(questionsAnswers.compteBancaire),
@@ -47,10 +46,20 @@ export const formatSubmissionData = (data) => {
         // Related data - Données relationnelles
         provinces: formatProvinces(selectedProvince, selectedProvinces),
         localites: formatLocalites(localites),
-        // Conserver aussi la source brute pour la validation
-        localitesByProvince: localites,
         domaines: formatDomaines(identificationData.domaines)
     };
+
+    // Ajouter conditionnellement str_sigle si non vide
+    if (identificationData.sigle && String(identificationData.sigle).trim() !== "") {
+        payload.str_sigle = identificationData.sigle;
+    }
+
+    // Ajouter conditionnellement sres_is_association_victime_description si non vide
+    if (questionsAnswers.sres_is_association_victime_description && String(questionsAnswers.sres_is_association_victime_description).trim() !== "") {
+        payload.sres_is_association_victime_description = questionsAnswers.sres_is_association_victime_description;
+    }
+
+    return payload;
 };
 
 // Formater les provinces (siège + opération, sans doublons)
