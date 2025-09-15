@@ -160,10 +160,6 @@ const Candidatures = () => {
       statut: ''
     }));
   }, []);
-  
-  // Mise à jour du statut d'une candidature
-  const handleStatusChange = (id, newStatus) => {
-  };
 
   const columns = [
     {
@@ -202,7 +198,7 @@ const Candidatures = () => {
       cell: row => (
         <div className="flex items-center">
           
-          <span className="text-sm">{'KINSHASA'}</span>
+          <span className="text-sm">{row.str_province_siege_sociale || 'Non renseigné'}</span>
         </div>
       )
     },
@@ -224,67 +220,6 @@ const Candidatures = () => {
       cell: row => <StatusBadge status={row.str_statut} />,
       width: '180px'
     },
-    {
-      name: 'ACTIONS',
-      cell: row => (
-        <div className="flex space-x-2">
-          <Link 
-            to={`/admin/candidatures/${row.str_id}`}
-            className="p-1.5 text-[#0089CF] hover:bg-blue-50 rounded-full"
-            title="Voir les détails"
-          >
-            <FiEye className="h-4 w-4" />
-          </Link>
-          <div className="relative inline-block text-left group">
-            <button 
-              type="button" 
-              className="p-1.5 text-gray-600 hover:bg-gray-100 rounded-full"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <FiChevronDown className="h-4 w-4" />
-            </button>
-            <div className="hidden group-hover:block absolute right-0 z-10 mt-1 w-48 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-              <div className="py-1">
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleStatusChange(row.str_id, 'en_cours');
-                  }}
-                  className="flex items-center w-full px-4 py-2 text-sm text-yellow-700 hover:bg-yellow-50"
-                >
-                  <FiRefreshCw className="mr-2 h-4 w-4" />
-                  Marquer en cours
-                </button>
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleStatusChange(row.str_id, 'approuvé');
-                  }}
-                  className="flex items-center w-full px-4 py-2 text-sm text-green-700 hover:bg-green-50"
-                >
-                  <FiCheckCircle className="mr-2 h-4 w-4" />
-                  Approuver
-                </button>
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleStatusChange(row.str_id, 'rejeté');
-                  }}
-                  className="flex items-center w-full px-4 py-2 text-sm text-red-700 hover:bg-red-50"
-                >
-                  <FiXCircle className="mr-2 h-4 w-4" />
-                  Rejeter
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      ),
-      width: '100px',
-      ignoreRowClick: true,
-      allowOverflow: true,
-      button: true,
-    }
   ];
 
 
