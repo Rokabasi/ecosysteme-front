@@ -192,8 +192,12 @@ const validateDocumentStep = (state) => {
     { key: "statuts", name: "Statuts notariés de l'ASBL/ONG" },
     { key: "reglements", name: "Règlements d'ordre intérieurs" },
     { key: "personnalite", name: "Personnalité juridique" },
-    { key: "rapports", name: "Rapports d'activité ou narratifs de 3 dernières années" },
-    { key: "etatsFinanciers", name: "États financiers de 3 dernières années" },
+    { key: "rapport1", name: "Rapport d'activités année N" },
+    { key: "rapport2", name: "Rapport d'activités année N-1" },
+    { key: "rapport3", name: "Rapport d'activités année N-2" },
+    { key: "etatfin1", name: "États financiers année N" },
+    { key: "etatfin2", name: "États financiers année N-1" },
+    { key: "etatfin3", name: "États financiers année N-2" },
   ];
 
   requiredDocuments.forEach((doc) => {
@@ -216,8 +220,8 @@ const validateIdentificationStep1 = (state) => {
     { key: "denomination", name: "Dénomination" },
     { key: "anneeCreation", name: "Année de création" },
     { key: "adresse", name: "Adresse du siège social" },
-    { key: "nomFonction", name: "Nom complet du représentant légal" },
-    { key: "fonction", name: "Fonction du représentant légal" },
+    { key: "str_nom_representant_legal", name: "Nom complet du représentant légal" },
+    { key: "str_fonction_representant", name: "Fonction du représentant légal" },
     { key: "telephone", name: "Téléphone" },
     { key: "email", name: "Email" },
   ];

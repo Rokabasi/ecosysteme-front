@@ -289,8 +289,10 @@ const Register = () => {
 
           // Envoie la requête via le reducer; déclenche succès/erreur dans le modal
           const action = await dispatch(sendCandidature(fd));
+          console.log(action);
+          
           const payload = action && action.payload;
-          if (payload && payload.status === 'failed') {
+          if (payload && payload?.meta?.requestStatus === '"rejected"') {
             throw new Error(payload.message || 'Échec de la soumission');
           }
         }}

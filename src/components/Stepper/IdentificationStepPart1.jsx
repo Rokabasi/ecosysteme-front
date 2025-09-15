@@ -106,13 +106,13 @@ const IdentificationStepPart1 = ({ validationErrors = {}, clearFieldError }) => 
           <input
             className="rounded-sm p-2 border border-[#0089CF] outline-0 w-full"
             type="text"
-            name="nomFonction"
-            id="noms"
-            value={formData.nomFonction || ""}
+            name="str_nom_representant_legal"
+            id="str_nom_representant_legal"
+            value={formData.str_nom_representant_legal || ""}
             onChange={handleChange}
             placeholder="Ex : Jean Dupont"
           />
-          <FieldError error={validationErrors.nomFonction} />
+          <FieldError error={validationErrors.str_nom_representant_legal} />
         </div>
         <div className="space-y-1">
           <p className="text-base font-medium text-gray-900">
@@ -122,13 +122,13 @@ const IdentificationStepPart1 = ({ validationErrors = {}, clearFieldError }) => 
           <input
             className="rounded-sm p-2 border border-[#0089CF] outline-0 w-full"
             type="text"
-            name="fonction"
-            id="fonction"
-            value={formData.fonction || ""}
+            name="str_fonction_representant"
+            id="str_fonction_representant"
+            value={formData.str_fonction_representant || ""}
             onChange={handleChange}
             placeholder="Ex : Directeur Général"
           />
-          <FieldError error={validationErrors.fonction} />
+          <FieldError error={validationErrors.str_fonction_representant} />
         </div>
         <div className="flex gap-4">
           <div className="space-y-1 w-1/2">

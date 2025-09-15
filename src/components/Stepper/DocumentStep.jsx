@@ -133,16 +133,55 @@ const DocumentStep = ({ validationErrors = {}, clearFieldError }) => {
           title="Organigramme"
           isRequired={false}
         />
-        <DocumentItem
-          documentType="rapports"
-          title="Rapports d'activité ou narratifs de 3 dernières années"
-          isRequired={true}
-        />
-        <DocumentItem
-          documentType="etatsFinanciers"
-          title="États financiers de 3 dernières années"
-          isRequired={true}
-        />
+        {/* Rapports d'activité (année N, N-1, N-2) */}
+        <div className="space-y-2">
+          <p className="font-semibold text-gray-900">
+            Rapports d'activité ou narratifs de 3 dernières années
+            <span className="text-[#6a1754]"> *</span>
+          </p>
+          <div className="space-y-3">
+            <DocumentItem
+              documentType="rapport1"
+              title="Rapport année N"
+              isRequired={true}
+            />
+            <DocumentItem
+              documentType="rapport2"
+              title="Rapport année N-1"
+              isRequired={true}
+            />
+            <DocumentItem
+              documentType="rapport3"
+              title="Rapport année N-2"
+              isRequired={true}
+            />
+          </div>
+        </div>
+
+        {/* États financiers (année N, N-1, N-2) */}
+        <div className="space-y-2">
+          <p className="font-semibold text-gray-900">
+            États financiers de 3 dernières années
+            <span className="text-[#6a1754]"> *</span>
+          </p>
+          <div className="space-y-3">
+            <DocumentItem
+              documentType="etatfin1"
+              title="États financiers année N"
+              isRequired={true}
+            />
+            <DocumentItem
+              documentType="etatfin2"
+              title="États financiers année N-1"
+              isRequired={true}
+            />
+            <DocumentItem
+              documentType="etatfin3"
+              title="États financiers année N-2"
+              isRequired={true}
+            />
+          </div>
+        </div>
         <DocumentItem
           documentType="pvAssemblee"
           title="Dernier PV d'Assemblée Générale/Conseil d'Administration"
