@@ -3,8 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { getIdentificationFormData, updateField } from "../../app/reducers/identification";
 import { selectAllDomaines, selectDomainesLoading, selectDomainesError, fetchDomaines, selectDomainesWithDetails } from "../../app/reducers/domaines";
+import FieldError from "../FieldError/FieldError";
 
-const IdentificationStepPart2 = () => {
+const IdentificationStepPart2 = ({ validationErrors = {} }) => {
   const dispatch = useDispatch();
   const formData = useSelector(getIdentificationFormData);
   const domainesLabels = useSelector(selectAllDomaines);
@@ -63,6 +64,7 @@ const IdentificationStepPart2 = () => {
             value={formData.mission || ''}
             onChange={handleChange}
           ></textarea>
+          <FieldError error={validationErrors.mission} />
         </div>
         <div className="space-y-1">
           <p className="text-base font-medium text-gray-900">
@@ -78,6 +80,7 @@ const IdentificationStepPart2 = () => {
             onChange={handleChange}
             placeholder="Ex : 10"
           />
+          <FieldError error={validationErrors.nombreEmployes} />
         </div>
         <div className="space-y-1">
           <p className="text-base font-medium text-gray-900">
@@ -109,6 +112,7 @@ const IdentificationStepPart2 = () => {
               </div>
             ))}
           </div>
+          <FieldError error={validationErrors.domaines} />
         </div>
         <div className="space-y-1">
           <p className="text-base font-medium text-gray-900">
@@ -124,6 +128,7 @@ const IdentificationStepPart2 = () => {
             onChange={handleChange}
             placeholder="Décrivez vos réalisations en 150 mots maximum..."
           />
+          <FieldError error={validationErrors.resultats} />
         </div>
       </form>
     </div>

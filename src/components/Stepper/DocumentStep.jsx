@@ -6,8 +6,9 @@ import {
   setDocument,
   removeDocument,
 } from "../../app/reducers/documents";
+import FieldError from "../FieldError/FieldError";
 
-const DocumentStep = () => {
+const DocumentStep = ({ validationErrors = {} }) => {
   const dispatch = useDispatch();
   const documents = useSelector(getAllDocuments);
 
@@ -39,9 +40,10 @@ const DocumentStep = () => {
 
   const DocumentItem = ({ documentType, title, isRequired = false }) => {
     const fileInfo = documents[documentType];
+    const hasError = validationErrors[documentType];
 
     return (
-      <div className="flex flex-col p-4 border border-gray-200 rounded-lg">
+      <div className={`flex flex-col p-4 border rounded-lg ${hasError ? 'border-red-300' : 'border-gray-200'}`}>
         <div className="flex items-center justify-between mb-2">
           <div>
             <p className="font-medium">
@@ -86,6 +88,7 @@ const DocumentStep = () => {
             </div>
           </div>
         )}
+        <FieldError error={validationErrors[documentType]} />
       </div>
     );
   };

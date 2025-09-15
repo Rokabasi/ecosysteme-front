@@ -4,8 +4,9 @@ import {
   getIdentificationFormData,
   updateField,
 } from "../../app/reducers/identification";
+import FieldError from "../FieldError/FieldError";
 
-const IdentificationStepPart1 = () => {
+const IdentificationStepPart1 = ({ validationErrors = {} }) => {
   const dispatch = useDispatch();
   const formData = useSelector(getIdentificationFormData);
 
@@ -43,6 +44,7 @@ const IdentificationStepPart1 = () => {
             onChange={handleChange}
             placeholder="Nom de l'ONG ou ASBL"
           />
+          <FieldError error={validationErrors.denomination} />
         </div>
         <div className="flex gap-4">
           <div className="space-y-1 w-1/2">
@@ -73,6 +75,7 @@ const IdentificationStepPart1 = () => {
               max={new Date().getFullYear()}
               placeholder="2022"
             />
+            <FieldError error={validationErrors.anneeCreation} />
           </div>
         </div>
         <div className="space-y-1">
@@ -89,6 +92,7 @@ const IdentificationStepPart1 = () => {
             onChange={handleChange}
             placeholder="Ex : 23, rue de la paix, Gombe"
           />
+          <FieldError error={validationErrors.adresse} />
         </div>
         <div className="space-y-1">
           <p className="text-base font-medium text-gray-900">
@@ -104,6 +108,7 @@ const IdentificationStepPart1 = () => {
             onChange={handleChange}
             placeholder="Ex : Jean Dupont"
           />
+          <FieldError error={validationErrors.nomFonction} />
         </div>
         <div className="space-y-1">
           <p className="text-base font-medium text-gray-900">
@@ -119,6 +124,7 @@ const IdentificationStepPart1 = () => {
             onChange={handleChange}
             placeholder="Ex : Directeur Général"
           />
+          <FieldError error={validationErrors.fonction} />
         </div>
         <div className="flex gap-4">
           <div className="space-y-1 w-1/2">
@@ -135,6 +141,7 @@ const IdentificationStepPart1 = () => {
               onChange={handleChange}
               placeholder="Ex : +243 999 999 999"
             />
+            <FieldError error={validationErrors.telephone} />
           </div>
           <div className="space-y-1 w-1/2">
             <p className="text-base font-medium text-gray-900">
@@ -150,6 +157,7 @@ const IdentificationStepPart1 = () => {
               onChange={handleChange}
               placeholder="Ex : ong@exemple.com"
             />
+            <FieldError error={validationErrors.email} />
           </div>
         </div>
         <div className="space-y-1">

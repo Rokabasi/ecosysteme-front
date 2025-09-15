@@ -1,7 +1,8 @@
 import { SlQuestion } from "react-icons/sl";
 import { useSelector, useDispatch } from "react-redux";
 import { getAllAnswers, updateAnswer } from "../../app/reducers/questions";
-const QuestionStep = () => {
+import FieldError from "../FieldError/FieldError";
+const QuestionStep = ({ validationErrors = {} }) => {
   const dispatch = useDispatch();
   const answers = useSelector(getAllAnswers);
 
@@ -57,6 +58,7 @@ const QuestionStep = () => {
               Non
             </label>
           </div>
+          <FieldError error={validationErrors.priseEnCharge} />
 
           {answers.priseEnCharge === "oui" && (
             <div className="flex justify-between mt-3">
@@ -70,6 +72,7 @@ const QuestionStep = () => {
                 value={answers.occasion}
                 onChange={(e) => handleAnswerChange("occasion", e.target.value)}
               ></textarea>
+              <FieldError error={validationErrors.occasion} />
             </div>
           )}
         </div>
@@ -108,6 +111,7 @@ const QuestionStep = () => {
               Non
             </label>
           </div>
+          <FieldError error={validationErrors.associationVictimes} />
         </div>
 
         {/* Question 3 */}
@@ -146,6 +150,7 @@ const QuestionStep = () => {
               Non
             </label>
           </div>
+          <FieldError error={validationErrors.infosVictimes} />
         </div>
 
         {/* Question 4 */}
@@ -183,6 +188,7 @@ const QuestionStep = () => {
               Non
             </label>
           </div>
+          <FieldError error={validationErrors.collaborationFonarev} />
         </div>
 
         {/* Question 5 */}
@@ -219,6 +225,7 @@ const QuestionStep = () => {
               Non
             </label>
           </div>
+          <FieldError error={validationErrors.compteBancaire} />
         </div>
       </div>
     </div>
