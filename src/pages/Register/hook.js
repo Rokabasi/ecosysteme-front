@@ -195,30 +195,6 @@ export const UseRegisterConfig = () => {
     }
 
     console.log("Données structurées pour soumission:", submissionData);
-    
-    // Ici vous pouvez ajouter la logique pour envoyer les données au serveur
-    // Par exemple:
-    // try {
-    //   const response = await fetch('/api/submit-registration', {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify(submissionData),
-    //   });
-    //   
-    //   if (response.ok) {
-    //     alert("Formulaire soumis avec succès !");
-    //     resetForm();
-    //   } else {
-    //     alert("Erreur lors de la soumission du formulaire");
-    //   }
-    // } catch (error) {
-    //   console.error('Erreur:', error);
-    //   alert("Erreur lors de la soumission du formulaire");
-    // }
-    
-    alert("Formulaire soumis avec succès !");
   };
 
   // Fonction pour vérifier si le formulaire contient des données

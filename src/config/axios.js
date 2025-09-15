@@ -1,7 +1,7 @@
 import Axios from "axios";
 import { getSessionStorage } from "./auth";
 
-const url = import.meta.env.VITE_REMOTE_URL || "http://localhost:3000/api";
+const url = import.meta.env.VITE_REMOTE_URL || "http://localhost:3000";
 
 // Création des instances Axios
 const axios = Axios.create({ baseURL: url });

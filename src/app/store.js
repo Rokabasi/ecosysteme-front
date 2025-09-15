@@ -7,6 +7,7 @@ import { documentsReducer } from "./reducers/documents";
 import { identificationReducer } from "./reducers/identification";
 import { questionsReducer } from "./reducers/questions";
 import domainesReducer from "./reducers/domaines";
+import { candidatureReducer } from "./reducers/candidatures";
 
 const store = configureStore({
   reducer: {
@@ -18,6 +19,7 @@ const store = configureStore({
     identification: identificationReducer,
     questions: questionsReducer,
     domaines: domainesReducer,
+    candidature:candidatureReducer,
   },
 });
 export default store;

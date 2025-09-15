@@ -1,8 +1,11 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { UseRegisterConfig } from "./hook";
 import ConfirmationModal from "../../components/ConfirmationModal/ConfirmationModal";
 import { validateStep } from "../../utils/validation";
+import { formatSubmissionData } from "../../utils/dataFormatter";
+import { sendCandidature } from "../../app/reducers/candidatures";
 import ProvinceStep from "../../components/Stepper/ProvinceStep";
 import ZoneStep from "../../components/Stepper/ZoneStep";
 import LocaliteStep from "../../components/Stepper/LocaliteStep";
@@ -14,6 +17,9 @@ import RevisionStep from "../../components/Stepper/RevisionStep";
 
 const Register = () => {
   const navigate = useNavigate();
+  const [showSubmitConfirm, setShowSubmitConfirm] = useState(false);
+  const [pendingPayload, setPendingPayload] = useState(null);
+  const dispatch = useDispatch();
   
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -192,7 +198,18 @@ const Register = () => {
                     });
                     
                     if (allStepsValid) {
-                      submitForm();
+                      // Préparer le payload à partir de l'état courant
+                      const rawData = {
+                        selectedProvince,
+                        selectedProvinces,
+                        localites, // déjà state.localites.localites issu du hook
+                        identificationData,
+                        questionsAnswers,
+                      };
+                      const submissionData = formatSubmissionData(rawData);
+                      setPendingPayload(submissionData);
+                      // Ouvrir le modal de confirmation de soumission
+                      setShowSubmitConfirm(true);
                     } else {
                       alert("Veuillez vérifier que tous les champs obligatoires sont remplis dans toutes les étapes.");
                     }
@@ -221,6 +238,26 @@ const Register = () => {
         onClose={continueRegistration}
         onConfirm={continueRegistration}
         onCancel={handleConfirmAbandon}
+      />
+
+      {/* Modal de confirmation de soumission */}
+      <ConfirmationModal
+        isOpen={showSubmitConfirm}
+        type="question"
+        title="Confirmer la soumission"
+        message="Voulez-vous soumettre votre inscription maintenant ?"
+        confirmText="Oui, soumettre"
+        cancelText="Annuler"
+        onClose={() => setShowSubmitConfirm(false)}
+        onCancel={() => setShowSubmitConfirm(false)}
+        onConfirm={async () => {
+          // Envoie la requête via le reducer; déclenche succès/erreur dans le modal
+          const action = await dispatch(sendCandidature(pendingPayload));
+          const payload = action && action.payload;
+          if (payload && payload.status === 'failed') {
+            throw new Error(payload.message || 'Échec de la soumission');
+          }
+        }}
       />
     </div>
   );
