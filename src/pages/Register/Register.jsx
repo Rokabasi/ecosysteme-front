@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { UseRegisterConfig } from "./hook";
 import ConfirmationModal from "../../components/ConfirmationModal/ConfirmationModal";
+import { validateStep } from "../../utils/validation";
 import ProvinceStep from "../../components/Stepper/ProvinceStep";
 import ZoneStep from "../../components/Stepper/ZoneStep";
 import LocaliteStep from "../../components/Stepper/LocaliteStep";
@@ -35,6 +36,14 @@ const Register = () => {
     continueRegistration,
     validationErrors,
     clearFieldError,
+    // Données pour la validation finale
+    selectedProvince,
+    selectedProvinces,
+    selectedZones,
+    localites,
+    documents,
+    identificationData,
+    questionsAnswers,
   } = UseRegisterConfig();
 
   // Gérer le clic sur le lien "Retour à l'accueil"
@@ -157,7 +166,37 @@ const Register = () => {
 
               {currentStep === 7 ? (
                 <button
-                  onClick={submitForm}
+                  onClick={() => {
+                    // Validation finale avant soumission
+                    const allStepsValid = [1, 2, 3, 4, 5, 6].every(step => {
+                      const currentState = {
+                        selectedProvince,
+                        selectedProvinces,
+                        selectedZones,
+                        localites,
+                        documents,
+                        identificationData,
+                        questionsAnswers,
+                        formData
+                      };
+                      
+                      if (step === 5) {
+                        // Valider les deux sous-étapes de l'identification
+                        const validation1 = validateStep(5, 1, currentState);
+                        const validation2 = validateStep(5, 2, currentState);
+                        return validation1.isValid && validation2.isValid;
+                      } else {
+                        const validation = validateStep(step, 1, currentState);
+                        return validation.isValid;
+                      }
+                    });
+                    
+                    if (allStepsValid) {
+                      submitForm();
+                    } else {
+                      alert("Veuillez vérifier que tous les champs obligatoires sont remplis dans toutes les étapes.");
+                    }
+                  }}
                   className="flex justify-center items-end py-3 px-4 w-40 border-2 border-[#0089CF] rounded-md shadow-sm text-sm font-medium text-white bg-[#0089CF] hover:bg-[#117bb1] transition-colors duration-300 cursor-pointer"
                 >
                   Soumettre

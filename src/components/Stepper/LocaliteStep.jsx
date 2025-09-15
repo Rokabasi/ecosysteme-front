@@ -43,15 +43,19 @@ const LocaliteStep = ({ validationErrors = {}, clearFieldError }) => {
               {province.pro_designation}{" "}
               <span className="text-[#6a1754]">*</span>
             </p>
-            <textarea
-              className="flex-1 rounded-sm p-2 border border-[#0089CF] outline-0 w-full"
-              placeholder={`Saisissez les localités pour ${province.pro_designation}, séparées par des virgules`}
-              value={localites[province.pro_id] || ""}
-              onChange={(e) =>
-                handleLocalitesChange(province.pro_id, e.target.value)
-              }
-            />
-            <FieldError error={validationErrors[`localite_${province.pro_id}`]} />
+            <div className="w-full">
+              <textarea
+                className="flex-1 rounded-sm p-2 border border-[#0089CF] outline-0 w-full"
+                placeholder={`Saisissez les localités pour ${province.pro_designation}, séparées par des virgules`}
+                value={localites[province.pro_id] || ""}
+                onChange={(e) =>
+                  handleLocalitesChange(province.pro_id, e.target.value)
+                }
+              />
+              <FieldError
+                error={validationErrors[`localite_${province.pro_id}`]}
+              />
+            </div>
           </div>
         ))}
       </div>

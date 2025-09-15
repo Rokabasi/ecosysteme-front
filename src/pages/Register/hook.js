@@ -7,6 +7,7 @@ import { clearLocalites, getAllLocalites } from "../../app/reducers/localites";
 import { clearAnswers, getAllAnswers } from "../../app/reducers/questions";
 import { clearFormData, getIdentificationFormData } from "../../app/reducers/identification";
 import { validateStep } from "../../utils/validation";
+import { formatSubmissionData, validateSubmissionData } from "../../utils/dataFormatter";
 
 export const UseRegisterConfig = () => {
   const [currentStep, setCurrentStep] = useState(1);
@@ -171,8 +172,51 @@ export const UseRegisterConfig = () => {
   };
 
   const submitForm = () => {
-    console.log("Données du formulaire:", formData);
+    // Préparer les données pour le formatage
+    const rawData = {
+      selectedProvince,
+      selectedProvinces,
+      localites,
+      identificationData,
+      questionsAnswers
+    };
+
+    // Formater les données selon la structure demandée
+    const submissionData = formatSubmissionData(rawData);
+    
+    // Valider les données avant soumission
+    const validation = validateSubmissionData(submissionData);
+    
+    if (!validation.isValid) {
+      console.error("Erreurs de validation:", validation.errors);
+      alert("Erreur: " + validation.errors.join(", "));
+      return;
+    }
+
+    console.log("Données structurées pour soumission:", submissionData);
+    
     // Ici vous pouvez ajouter la logique pour envoyer les données au serveur
+    // Par exemple:
+    // try {
+    //   const response = await fetch('/api/submit-registration', {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //     },
+    //     body: JSON.stringify(submissionData),
+    //   });
+    //   
+    //   if (response.ok) {
+    //     alert("Formulaire soumis avec succès !");
+    //     resetForm();
+    //   } else {
+    //     alert("Erreur lors de la soumission du formulaire");
+    //   }
+    // } catch (error) {
+    //   console.error('Erreur:', error);
+    //   alert("Erreur lors de la soumission du formulaire");
+    // }
+    
     alert("Formulaire soumis avec succès !");
   };
 
@@ -285,5 +329,13 @@ export const UseRegisterConfig = () => {
     validationErrors,
     setValidationErrors,
     clearFieldError,
+    // Données pour la validation finale et la soumission
+    selectedProvince,
+    selectedProvinces,
+    selectedZones,
+    localites,
+    documents,
+    identificationData,
+    questionsAnswers,
   };
 };

@@ -1,0 +1,153 @@
+// Utilitaire pour formater les données de soumission du formulaire d'inscription
+
+// Convertir les réponses "oui"/"non" en booléens
+const convertToBool = (value) => {
+    if (typeof value === 'boolean') {
+        return value;
+    }
+    if (typeof value === 'string') {
+        return value.toLowerCase() === 'oui';
+    }
+    return false;
+};
+
+export const formatSubmissionData = (data) => {
+    const {
+        selectedProvince,
+        selectedProvinces,
+        localites,
+        identificationData,
+        questionsAnswers
+    } = data;
+
+    return {
+        // Structure data - Informations de base de l'organisation
+        str_designation: identificationData.denomination || "",
+        str_sigle: identificationData.sigle || "",
+        str_annee_creation: identificationData.anneeCreation || "",
+        str_adresse_siege_sociale: identificationData.adresse || "",
+        str_nom_representant_legal: identificationData.nomFonction || "",
+        str_fonction_representant: identificationData.fonction || "",
+        str_telephone: identificationData.telephone || "",
+        str_email: identificationData.email || "",
+        str_site_web: identificationData.site || "",
+        str_mission: identificationData.mission || "",
+        str_nombre_employe_actif: parseInt(identificationData.nombreEmployes) || 0,
+        str_resultat_operationel: identificationData.resultats || "",
+
+        // Questions responses - Réponses au questionnaire (booléens)
+        sres_prise_en_charge: convertToBool(questionsAnswers.priseEnCharge),
+        sres_prise_en_charge_description: questionsAnswers.occasion || "",
+        sres_is_association_victime: convertToBool(questionsAnswers.associationVictimes),
+        sres_is_association_victime_description: "", // Pas de description pour cette question
+        sres_infos_victime_sexuel: convertToBool(questionsAnswers.infosVictimes),
+        sres_pret_a_collaborer: convertToBool(questionsAnswers.collaborationFonarev),
+        sres_a_compte_bancaire: convertToBool(questionsAnswers.compteBancaire),
+
+        // Related data - Données relationnelles
+        provinces: formatProvinces(selectedProvince, selectedProvinces),
+        localites: formatLocalites(localites),
+        domaines: formatDomaines(identificationData.domaines)
+    };
+};
+
+// Formater les provinces (siège + opération, sans doublons)
+const formatProvinces = (selectedProvince, selectedProvinces) => {
+    const provinceIds = [];
+
+    // Ajouter la province du siège
+    if (selectedProvince && selectedProvince.pro_id) {
+        provinceIds.push(selectedProvince.pro_id);
+    }
+
+    // Ajouter les provinces d'opération
+    if (selectedProvinces && Array.isArray(selectedProvinces)) {
+        selectedProvinces.forEach(province => {
+            if (province.pro_id && !provinceIds.includes(province.pro_id)) {
+                provinceIds.push(province.pro_id);
+            }
+        });
+    }
+
+    return provinceIds;
+};
+
+// Formater les localités
+const formatLocalites = (localites) => {
+    if (!localites || typeof localites !== 'object') {
+        return [];
+    }
+
+    return Object.entries(localites)
+        .map(([pro_id, localiteString]) => {
+            if (!localiteString || typeof localiteString !== 'string') {
+                return null;
+            }
+
+            const localiteArray = localiteString
+                .split(',')
+                .map(item => item.trim())
+                .filter(item => item !== "");
+
+            if (localiteArray.length === 0) {
+                return null;
+            }
+
+            return {
+                pro_id: parseInt(pro_id),
+                localite: localiteArray
+            };
+        })
+        .filter(item => item !== null);
+};
+
+// Formater les domaines
+const formatDomaines = (domaines) => {
+    if (!domaines) {
+        return [];
+    }
+
+    if (Array.isArray(domaines)) {
+        return domaines.filter(domain => domain && domain.trim() !== "");
+    }
+
+    if (typeof domaines === 'string') {
+        return domaines.trim() !== "" ? [domaines] : [];
+    }
+
+    return [];
+};
+
+// Valider les données avant soumission
+export const validateSubmissionData = (data) => {
+    const errors = [];
+
+    // Vérifications obligatoires
+    if (!data.str_designation) errors.push("Dénomination manquante");
+    if (!data.str_annee_creation) errors.push("Année de création manquante");
+    if (!data.str_adresse_siege_sociale) errors.push("Adresse du siège manquante");
+    if (!data.str_nom_representant_legal) errors.push("Nom du représentant légal manquant");
+    if (!data.str_fonction_representant) errors.push("Fonction du représentant légal manquante");
+    if (!data.str_telephone) errors.push("Téléphone manquant");
+    if (!data.str_email) errors.push("Email manquant");
+    if (!data.str_mission) errors.push("Mission manquante");
+    if (!data.str_nombre_employe_actif) errors.push("Nombre d'employés manquant");
+    if (!data.str_resultat_operationel) errors.push("Résultats opérationnels manquants");
+
+    // Vérifications des réponses aux questions
+    if (!data.sres_prise_en_charge) errors.push("Réponse à la question sur la prise en charge manquante");
+    if (!data.sres_is_association_victime) errors.push("Réponse à la question sur l'association des victimes manquante");
+    if (!data.sres_infos_victime_sexuel) errors.push("Réponse à la question sur les informations des victimes manquante");
+    if (!data.sres_pret_a_collaborer) errors.push("Réponse à la question sur la collaboration manquante");
+    if (!data.sres_a_compte_bancaire) errors.push("Réponse à la question sur le compte bancaire manquante");
+
+    // Vérifications des données relationnelles
+    if (!data.provinces || data.provinces.length === 0) errors.push("Aucune province sélectionnée");
+    if (!data.localites || data.localites.length === 0) errors.push("Aucune localité renseignée");
+    if (!data.domaines || data.domaines.length === 0) errors.push("Aucun domaine d'intervention sélectionné");
+
+    return {
+        isValid: errors.length === 0,
+        errors
+    };
+};
