@@ -10,8 +10,7 @@ const initialState = {
 export const sendCandidature = createAsyncThunk("structure/register", async (data, { rejectWithValue }) => {
   try {
     // Utiliser l'instance configurée pour l'envoi de fichiers (FormData)
-    const client = data instanceof FormData ? protectedSendFileAxios : axios;
-    const res = await client.post("/register", data);
+    const res = await axios.post("/register", data);
     return res.data;
   } catch (error) {
     const response = error.response;

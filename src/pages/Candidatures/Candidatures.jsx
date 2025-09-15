@@ -541,6 +541,7 @@ const Candidatures = () => {
               customStyles={customStyles}
               highlightOnHover
               pointerOnHover
+              onRowClicked={(row) => window.location.href = `/admin/candidatures/${row.str_id}`}
             />
           </div>
         </div>

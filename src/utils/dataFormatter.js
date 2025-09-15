@@ -44,6 +44,7 @@ export const formatSubmissionData = (data) => {
         sres_a_compte_bancaire: convertToBool(questionsAnswers.compteBancaire),
 
         // Related data - Données relationnelles
+        str_province_siege_sociale: selectedProvince?.pro_designation || null,
         provinces: formatProvinces(selectedProvince, selectedProvinces),
         localites: formatLocalites(localites),
         domaines: formatDomaines(identificationData.domaines)
