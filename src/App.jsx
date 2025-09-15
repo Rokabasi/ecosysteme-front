@@ -23,8 +23,7 @@ function App() {
       {/* Routes Protégées englobées par ProtectedRoutes */}
       <Route element={<ProtectedRoutes />}>
         <Route path="/admin" element={<Layout />}>
-          <Route index element={<Navigate to="/admin" replace />} />
-          <Route path="" element={<Dashboard />} />
+          <Route index element={<Dashboard />} />
           <Route path="candidatures" element={<Candidatures />} />
           <Route path="candidatures/:id" element={<CandidatureDetail />} />
           <Route path="configuration" element={<Configuration />} />
