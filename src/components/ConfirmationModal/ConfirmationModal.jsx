@@ -29,12 +29,14 @@ const ConfirmationModal = ({
 }) => {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null); // 'success' | 'error' | null
+  const [errorMessage, setErrorMessage] = useState("");
 
   if (!isOpen && result === null) return null;
 
   const closeAll = () => {
     setLoading(false);
     setResult(null);
+    setErrorMessage("");
     onClose && onClose();
   };
 
@@ -54,6 +56,7 @@ const ConfirmationModal = ({
       setResult("success");
     } catch (e) {
       setResult("error");
+      setErrorMessage(e?.message || "Une erreur est survenue lors du traitement.");
     } finally {
       setLoading(false);
     }
@@ -77,7 +80,7 @@ const ConfirmationModal = ({
     result === "success"
       ? "L'opération a été réalisée avec succès."
       : result === "error"
-      ? "Une erreur est survenue lors du traitement."
+      ? (errorMessage || "Une erreur est survenue lors du traitement.")
       : message;
 
   return (

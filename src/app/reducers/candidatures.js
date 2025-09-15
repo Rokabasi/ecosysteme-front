@@ -7,7 +7,7 @@ const initialState = {
   error: null,
 };
 
-export const sendCandidature = createAsyncThunk("structure/register", async (data) => {
+export const sendCandidature = createAsyncThunk("structure/register", async (data, { rejectWithValue }) => {
   try {
     // Utiliser l'instance configurée pour l'envoi de fichiers (FormData)
     const client = data instanceof FormData ? protectedSendFileAxios : axios;
@@ -15,19 +15,12 @@ export const sendCandidature = createAsyncThunk("structure/register", async (dat
     return res.data;
   } catch (error) {
     const response = error.response;
-    if (response.status === 401) {
-      return {
-        status: "failed",
-        message: response.data.message,
-      };
+    if (response) {
+      const message = response.data?.message || "Une erreur est survenue lors de la soumission";
+      // Propager le message backend à l'UI
+      return rejectWithValue({ status: "failed", message });
     }
-    if (response.status === 409) {
-      return {
-        status: "failed",
-        message: response.data.message,
-      };
-    }
-    return Promise.reject(error);
+    return rejectWithValue({ status: "failed", message: error.message || "Erreur réseau" });
   }
 });
 
