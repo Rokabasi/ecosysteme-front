@@ -5,6 +5,8 @@ import {
   getProvinces,
   getSelectedProvinces,
   selectAllProvinces,
+  getProvincesLoading,
+  getProvincesError,
   toggleSelectedProvince,
 } from "../../app/reducers/provinces";
 import FieldError from "../FieldError/FieldError";
@@ -13,6 +15,8 @@ const ZoneStep = ({ validationErrors = {}, clearFieldError }) => {
   const dispatch = useDispatch();
   const provincesData = useSelector(selectAllProvinces);  
   const selectedProvinces = useSelector(getSelectedProvinces);  
+  const loading = useSelector(getProvincesLoading);
+  const error = useSelector(getProvincesError);
 
   useEffect(() => {
     if (provincesData.length === 0) {
@@ -38,15 +42,21 @@ const ZoneStep = ({ validationErrors = {}, clearFieldError }) => {
             <span className="text-[#6a1754]"> *</span>
           </h3>
 
-          <div className="max-h-96 overflow-y-scroll border border-[#0089CF] rounded-lg p-4 space-y-2">
-            {provincesData.map((province) => {
+          <div className="max-h-96 overflow-y-auto border border-[#0089CF] rounded-lg p-4 space-y-2 bg-white">
+            {loading ? (
+              <div className="text-gray-500">Chargement des provinces...</div>
+            ) : error ? (
+              <div className="text-red-600">Erreur de chargement des provinces</div>
+            ) : provincesData.length === 0 ? (
+              <div className="text-gray-500">Aucune province disponible.</div>
+            ) : provincesData.map((province) => {
               const isSelected = selectedProvinces.some(
                 (p) => p.pro_id === province.pro_id
               );
               return (
                 <div
                   key={province.pro_id}
-                  className={`flex items-center space-x-3 p-3 border border-[#0089CF] rounded-lg hover:bg-gray-50 transition-colors cursor-pointer ${
+                  className={`flex items-center space-x-3 p-3 border border-[#0089CF] rounded-lg bg-white hover:bg-gray-50 transition-colors cursor-pointer ${
                     isSelected ? "bg-[#0089CF]/20" : ""
                   }`}
                   onClick={() => handleProvinceToggle(province)}
@@ -54,7 +64,7 @@ const ZoneStep = ({ validationErrors = {}, clearFieldError }) => {
                   <input
                     type="checkbox"
                     checked={isSelected}
-                    readOnly
+                    onChange={() => {}}
                     className="w-4 h-4 text-[#0089CF] border-[#0089CF] rounded cursor-pointer"
                   />
                   <span className="text-sm font-medium text-gray-900">

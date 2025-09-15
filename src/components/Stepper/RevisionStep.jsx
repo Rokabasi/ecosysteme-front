@@ -18,6 +18,7 @@ const RevisionStep = () => {
   const selectedProvinces = useSelector(getSelectedProvinces);
   const selectedZones = useSelector(getSelectedZones);
   const localitesByProvince = useSelector((state) => state.localites.localites);
+  
   // Convertir l'objet localitesByProvince en tableau d'objets avec pro_id et localite
   const selectedLocalites = Object.entries(localitesByProvince).map(
     ([pro_id, localite]) => ({
@@ -25,6 +26,7 @@ const RevisionStep = () => {
       loc_designation: localite,
     })
   );
+  
   const documents = useSelector(getAllDocuments);
   const questions = useSelector(getAllAnswers);
   const domainesDetails = useSelector(selectDomainesWithDetails);

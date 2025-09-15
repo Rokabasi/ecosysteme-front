@@ -23,6 +23,7 @@ export const UseRegisterConfig = () => {
   const selectedProvinces = useSelector(getSelectedProvinces);
   const selectedZones = useSelector(getSelectedZones);
   const localites = useSelector(getAllLocalites);
+  const localitesByProvince = useSelector((state) => state.localites.localites);
   const documents = useSelector(getAllDocuments);
   const identificationData = useSelector(getIdentificationFormData);
   const questionsAnswers = useSelector(getAllAnswers);
@@ -91,7 +92,7 @@ export const UseRegisterConfig = () => {
       selectedProvince,
       selectedProvinces,
       selectedZones,
-      localites,
+      localites: localitesByProvince,
       documents,
       identificationData,
       questionsAnswers,
@@ -176,7 +177,7 @@ export const UseRegisterConfig = () => {
     const rawData = {
       selectedProvince,
       selectedProvinces,
-      localites,
+      localites: localitesByProvince,
       identificationData,
       questionsAnswers
     };

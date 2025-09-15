@@ -10,10 +10,11 @@ const LocaliteStep = ({ validationErrors = {}, clearFieldError }) => {
   const localites = useSelector(getAllLocalites);
 
   const handleLocalitesChange = (provinceId, value) => {
+    const pid = String(provinceId); // clé string stable pour l'édition UI
     if (clearFieldError) {
-      clearFieldError(`localite_${provinceId}`);
+      clearFieldError(`localite_${pid}`);
     }
-    dispatch(updateLocalites({ provinceId, value }));
+    dispatch(updateLocalites({ provinceId: pid, value }));
   };
 
   return (
@@ -33,9 +34,18 @@ const LocaliteStep = ({ validationErrors = {}, clearFieldError }) => {
       </div>
 
       <div className="space-y-6 mb-40">
-        {selectedProvinces.map((province) => (
+        {selectedProvinces.length === 0 ? (
+          <div className="text-gray-500">
+            Aucune province sélectionnée. Veuillez d'abord choisir des provinces dans l'étape précédente.
+          </div>
+        ) : (
+          selectedProvinces.map((province) => {
+            const pid = String(
+              province?.pro_id ?? province?.id ?? province?.province_id ?? province?.code
+            );
+            return (
           <div
-            key={province.pro_id}
+            key={pid}
             className="flex flex-col md:flex-row items-start gap-2 mb-4"
           >
             <p className="text-base pt-2 font-medium text-gray-900 w-full md:w-36">
@@ -46,17 +56,17 @@ const LocaliteStep = ({ validationErrors = {}, clearFieldError }) => {
               <textarea
                 className="flex-1 rounded-sm p-2 border border-[#0089CF] outline-0 w-full"
                 placeholder={`Saisissez les localités pour ${province.pro_designation}, séparées par des virgules`}
-                value={localites[province.pro_id] || ""}
-                onChange={(e) =>
-                  handleLocalitesChange(province.pro_id, e.target.value)
-                }
+                value={localites[pid] || ""}
+                onChange={(e) => handleLocalitesChange(pid, e.target.value)}
               />
               <FieldError
-                error={validationErrors[`localite_${province.pro_id}`]}
+                error={validationErrors[`localite_${pid}`]}
               />
             </div>
           </div>
-        ))}
+            );
+          })
+        )}
       </div>
     </div>
   );

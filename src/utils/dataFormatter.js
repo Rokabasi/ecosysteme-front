@@ -47,6 +47,8 @@ export const formatSubmissionData = (data) => {
         // Related data - Données relationnelles
         provinces: formatProvinces(selectedProvince, selectedProvinces),
         localites: formatLocalites(localites),
+        // Conserver aussi la source brute pour la validation
+        localitesByProvince: localites,
         domaines: formatDomaines(identificationData.domaines)
     };
 };
@@ -72,33 +74,30 @@ const formatProvinces = (selectedProvince, selectedProvinces) => {
     return provinceIds;
 };
 
-// Formater les localités
+// Formater les localités: transformer l'objet brut { [uuid|id]: "a,b" } en
+// tableau [{ pro_id: <uuid|id>, localite: ["a","b"] }]
 const formatLocalites = (localites) => {
     if (!localites || typeof localites !== 'object') {
         return [];
     }
 
     return Object.entries(localites)
-        .map(([pro_id, localiteString]) => {
-            if (!localiteString || typeof localiteString !== 'string') {
-                return null;
-            }
+        .map(([key, rawValue]) => {
+            if (!rawValue || typeof rawValue !== 'string') return null;
 
-            const localiteArray = localiteString
-                .split(',')
-                .map(item => item.trim())
-                .filter(item => item !== "");
+            const localiteArray = rawValue
+                .split(/[,;\n]/)
+                .map((item) => item.trim())
+                .filter((item) => item !== "");
 
-            if (localiteArray.length === 0) {
-                return null;
-            }
+            if (localiteArray.length === 0) return null;
 
             return {
-                pro_id: parseInt(pro_id),
-                localite: localiteArray
+                pro_id: key, // garde la clé telle quelle (UUID ou ID)
+                localite: localiteArray,
             };
         })
-        .filter(item => item !== null);
+        .filter((item) => item !== null);
 };
 
 // Formater les domaines
@@ -144,7 +143,11 @@ export const validateSubmissionData = (data) => {
 
     // Vérifications des données relationnelles
     if (!data.provinces || data.provinces.length === 0) errors.push("Aucune province sélectionnée");
-    if (!data.localites || data.localites.length === 0) errors.push("Aucune localité renseignée");
+    const hasFormattedLocalites = Array.isArray(data.localites) && data.localites.length > 0;
+    const hasRawLocalites = data.localitesByProvince && typeof data.localitesByProvince === 'object'
+        ? Object.values(data.localitesByProvince).some((v) => typeof v === 'string' && v.trim() !== "")
+        : false;
+    if (!hasFormattedLocalites && !hasRawLocalites) errors.push("Aucune localité renseignée");
     if (!data.domaines || data.domaines.length === 0) errors.push("Aucun domaine d'intervention sélectionné");
 
     return {
