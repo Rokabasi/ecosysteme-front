@@ -33,6 +33,7 @@ const Register = () => {
     handleBackToHome,
     confirmAbandon,
     continueRegistration,
+    validationErrors,
   } = UseRegisterConfig();
 
   // Gérer le clic sur le lien "Retour à l'accueil"
@@ -130,17 +131,17 @@ const Register = () => {
 
             {/* Step Content */}
             <div className="mb-12">
-              {currentStep === 1 && <ProvinceStep />}
-              {currentStep === 2 && <ZoneStep />}
-              {currentStep === 3 && <LocaliteStep />}
-              {currentStep === 4 && <DocumentStep />}
+              {currentStep === 1 && <ProvinceStep validationErrors={validationErrors} />}
+              {currentStep === 2 && <ZoneStep validationErrors={validationErrors} />}
+              {currentStep === 3 && <LocaliteStep validationErrors={validationErrors} />}
+              {currentStep === 4 && <DocumentStep validationErrors={validationErrors} />}
               {currentStep === 5 && currentSubStep === 1 && (
-                <IdentificationStepPart1 />
+                <IdentificationStepPart1 validationErrors={validationErrors} />
               )}
               {currentStep === 5 && currentSubStep === 2 && (
-                <IdentificationStepPart2 />
+                <IdentificationStepPart2 validationErrors={validationErrors} />
               )}
-              {currentStep === 6 && <QuestionStep />}
+              {currentStep === 6 && <QuestionStep validationErrors={validationErrors} />}
               {currentStep === 7 && <RevisionStep formData={formData} />}
             </div>
 

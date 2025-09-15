@@ -7,8 +7,9 @@ import {
   selectAllProvinces,
   toggleSelectedProvince,
 } from "../../app/reducers/provinces";
+import FieldError from "../FieldError/FieldError";
 
-const ZoneStep = () => {
+const ZoneStep = ({ validationErrors = {} }) => {
   const dispatch = useDispatch();
   const provincesData = useSelector(selectAllProvinces);  
   const selectedProvinces = useSelector(getSelectedProvinces);  
@@ -59,6 +60,7 @@ const ZoneStep = () => {
               );
             })}
           </div>
+          <FieldError error={validationErrors.selectedProvinces} />
         </div>
 
         {/* Colonne des provinces sélectionnées */}

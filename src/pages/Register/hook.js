@@ -6,12 +6,14 @@ import { clearZones, getSelectedZones } from "../../app/reducers/zones";
 import { clearLocalites, getAllLocalites } from "../../app/reducers/localites";
 import { clearAnswers, getAllAnswers } from "../../app/reducers/questions";
 import { clearFormData, getIdentificationFormData } from "../../app/reducers/identification";
+import { validateStep } from "../../utils/validation";
 
 export const UseRegisterConfig = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [currentSubStep, setCurrentSubStep] = useState(1);
   const [formData, setFormData] = useState({});
   const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [validationErrors, setValidationErrors] = useState({});
 
   const dispatch = useDispatch();
   
@@ -83,6 +85,28 @@ export const UseRegisterConfig = () => {
   }, [currentStep]);
 
   const nextStep = () => {
+    // Valider l'étape courante avant de passer à la suivante
+    const currentState = {
+      selectedProvince,
+      selectedProvinces,
+      selectedZones,
+      localites,
+      documents,
+      identificationData,
+      questionsAnswers,
+      formData
+    };
+
+    const validation = validateStep(currentStep, currentSubStep, currentState);
+    
+    if (!validation.isValid) {
+      setValidationErrors(validation.fieldErrors);
+      return; // Empêcher la navigation si la validation échoue
+    }
+
+    // Effacer les erreurs si la validation réussit
+    setValidationErrors({});
+
     const currentStepData = steps[currentStep - 1];
 
     if (currentStepData.hasSubSteps) {
@@ -223,6 +247,7 @@ export const UseRegisterConfig = () => {
     setCurrentStep(1);
     setCurrentSubStep(1);
     setFormData({});
+    setValidationErrors({});
 
     // Réinitialiser les états Redux
     dispatch(clearAllDocuments());
@@ -248,5 +273,7 @@ export const UseRegisterConfig = () => {
     confirmAbandon,
     continueRegistration,
     hasFormData,
+    validationErrors,
+    setValidationErrors,
   };
 };

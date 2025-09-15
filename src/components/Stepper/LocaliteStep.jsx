@@ -2,8 +2,9 @@ import { useSelector, useDispatch } from "react-redux";
 import { LuMapPin } from "react-icons/lu";
 import { getSelectedProvinces } from "../../app/reducers/provinces";
 import { getAllLocalites, updateLocalites } from "../../app/reducers/localites";
+import FieldError from "../FieldError/FieldError";
 
-const LocaliteStep = () => {
+const LocaliteStep = ({ validationErrors = {} }) => {
   const dispatch = useDispatch();
   const selectedProvinces = useSelector(getSelectedProvinces);
   const localites = useSelector(getAllLocalites);
@@ -46,6 +47,7 @@ const LocaliteStep = () => {
                 handleLocalitesChange(province.pro_id, e.target.value)
               }
             />
+            <FieldError error={validationErrors[`localite_${province.pro_id}`]} />
           </div>
         ))}
       </div>

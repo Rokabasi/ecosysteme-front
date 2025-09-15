@@ -10,8 +10,9 @@ import {
   getSelectedProvince,
   setSelectedProvince,
 } from "../../app/reducers/provinces";
+import FieldError from "../FieldError/FieldError";
 
-const ProvinceStep = () => {
+const ProvinceStep = ({ validationErrors = {} }) => {
   const dispatch = useDispatch();
   const provincesData = useSelector(selectAllProvinces);
   const loading = useSelector(getProvincesLoading);
@@ -106,6 +107,7 @@ const ProvinceStep = () => {
             }}
             isClearable
           />
+          <FieldError error={validationErrors.selectedProvince} />
         </div>
       </div>
     </div>
