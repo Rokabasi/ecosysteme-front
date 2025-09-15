@@ -8,7 +8,6 @@ import FieldError from "../FieldError/FieldError";
 const IdentificationStepPart2 = ({ validationErrors = {}, clearFieldError }) => {
   const dispatch = useDispatch();
   const formData = useSelector(getIdentificationFormData);
-  const domainesLabels = useSelector(selectAllDomaines);
   const domainesDetails = useSelector(selectDomainesWithDetails);
   const loading = useSelector(selectDomainesLoading);
   const error = useSelector(selectDomainesError);
@@ -27,21 +26,20 @@ const IdentificationStepPart2 = ({ validationErrors = {}, clearFieldError }) => 
     dispatch(updateField({ field: name, value }));
   };
   
-  const handleDomainToggle = (domain) => {
-    // Effacer l'erreur dès que l'utilisateur modifie les domaines
+  const handleDomainToggle = (domainId) => {
     if (clearFieldError) {
       clearFieldError('domaines');
     }
     
-    const updatedDomains = formData.domaines
-      ? formData.domaines.includes(domain)
-        ? formData.domaines.filter(d => d !== domain)
-        : [...formData.domaines, domain]
-      : [domain];
-    
+    const currentDomains = formData.domaines || [];
+    const updatedDomains = currentDomains.includes(domainId)
+      ? currentDomains.filter(id => id !== domainId)
+      : [...currentDomains, domainId];
+      
     dispatch(updateField({ field: 'domaines', value: updatedDomains }));
   };
-  const selectedDomains = formData.domaines ? [...formData.domaines] : [];
+
+  const selectedDomains = formData.domaines || [];
   
   if (loading) return <div>Chargement des domaines d'intervention...</div>;
   if (error) return <div className="text-red-500">Erreur lors du chargement des domaines: {error}</div>;
@@ -96,28 +94,21 @@ const IdentificationStepPart2 = ({ validationErrors = {}, clearFieldError }) => 
             Domaines d'intervention <span className="text-[#6a1754]"> *</span>
           </p>
           <div className="flex flex-wrap gap-2 items-center border border-[#0089CF] rounded-lg p-3">
-            {domainesLabels.map((domain, index) => (
+            {domainesDetails.map((domain) => (
               <div
-                key={domain}
+                key={domain.dom_id}
                 className="flex items-center space-x-1 p-2 transition-colors cursor-pointer"
-                onClick={() => handleDomainToggle(domain)}
+                onClick={() => handleDomainToggle(domain.dom_id)}
               >
                 <input
                   type="checkbox"
-                  checked={selectedDomains.includes(domain)}
-                  onChange={() => {}}
+                  checked={selectedDomains.includes(domain.dom_id)}
+                  readOnly
                   className="w-4 h-4 text-[#0089CF] border-[#0089CF] rounded pointer-events-none"
                 />
-                <div className="relative group">
-                  <span className="text-sm font-medium text-gray-900">
-                    {domain}
-                  </span>
-                  {domainesDetails[index]?.dom_description && (
-                    <div className="absolute z-10 hidden group-hover:block w-64 p-2 mt-1 text-xs text-gray-600 bg-white border border-gray-200 rounded shadow-lg">
-                      {domainesDetails[index].dom_description}
-                    </div>
-                  )}
-                </div>
+                <span className="text-sm font-medium text-gray-900">
+                  {domain.dom_designation}
+                </span>
               </div>
             ))}
           </div>

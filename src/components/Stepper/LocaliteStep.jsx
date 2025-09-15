@@ -10,7 +10,6 @@ const LocaliteStep = ({ validationErrors = {}, clearFieldError }) => {
   const localites = useSelector(getAllLocalites);
 
   const handleLocalitesChange = (provinceId, value) => {
-    // Effacer l'erreur dès que l'utilisateur modifie le champ
     if (clearFieldError) {
       clearFieldError(`localite_${provinceId}`);
     }

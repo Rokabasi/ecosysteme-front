@@ -41,17 +41,17 @@ const provincesSlice = createSlice({
       state.selectedProvinces = action.payload; // [{ pro_id, pro_designation }]
     },
     toggleSelectedProvince: (state, action) => {
-      const province = action.payload;
+      const provinceToAddOrRemove = action.payload;
       const existingIndex = state.selectedProvinces.findIndex(
-        (p) => p.pro_id === province.pro_id
+        (p) => p.pro_id === provinceToAddOrRemove.pro_id
       );
 
       if (existingIndex >= 0) {
-        // Retirer la province si elle est déjà sélectionnée
-        state.selectedProvinces.splice(existingIndex, 1);
+        state.selectedProvinces = state.selectedProvinces.filter(
+          (p) => p.pro_id !== provinceToAddOrRemove.pro_id
+        );
       } else {
-        // Ajouter la province si elle n'est pas sélectionnée
-        state.selectedProvinces.push(province);
+        state.selectedProvinces.push(provinceToAddOrRemove);
       }
     },
   },
