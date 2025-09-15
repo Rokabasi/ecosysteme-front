@@ -17,6 +17,7 @@ const Register = () => {
   const navigate = useNavigate();
   const [showSubmitConfirm, setShowSubmitConfirm] = useState(false);
   const [pendingPayload, setPendingPayload] = useState(null);
+  const [afterSubmitSuccess, setAfterSubmitSuccess] = useState(false);
   
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -45,15 +46,14 @@ const Register = () => {
     identificationData,
     questionsAnswers,
     onSubmitForm,
+    resetForm,
   } = UseRegisterConfig();
 
   // Gérer le clic sur le lien "Retour à l'accueil"
   const handleBackClick = (e) => {
     e.preventDefault();
-    const canNavigate = handleBackToHome();
-    if (canNavigate) {
-      navigate("/");
-    }
+    // Retourner directement à l'accueil sans afficher le modal
+    navigate("/");
   };
 
   // Gérer la confirmation d'abandon
@@ -243,9 +243,21 @@ const Register = () => {
         message="Etes-vous sur de vouloir soumettre votre candidature ?"
         confirmText="Oui"
         cancelText="Annuler"
-        onClose={() => setShowSubmitConfirm(false)}
+        onClose={() => {
+          setShowSubmitConfirm(false);
+          if (afterSubmitSuccess) {
+            // Réinitialiser et revenir à l'accueil après succès
+            // resetForm est fourni par le hook
+            try { resetForm && resetForm(); } catch (_) {}
+            navigate("/");
+            setAfterSubmitSuccess(false);
+          }
+        }}
         onCancel={() => setShowSubmitConfirm(false)}
-        onConfirm={() => onSubmitForm(pendingPayload)}
+        onConfirm={async () => {
+          await onSubmitForm(pendingPayload);
+          setAfterSubmitSuccess(true);
+        }}
       />
     </div>
   );
