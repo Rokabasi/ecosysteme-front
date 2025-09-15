@@ -55,8 +55,8 @@ export const formatSubmissionData = (data) => {
     }
 
     // Ajouter conditionnellement sres_is_association_victime_description si non vide
-    if (questionsAnswers.sres_is_association_victime_description && String(questionsAnswers.sres_is_association_victime_description).trim() !== "") {
-        payload.sres_is_association_victime_description = questionsAnswers.sres_is_association_victime_description;
+    if (questionsAnswers.associationVictimesDescription && String(questionsAnswers.associationVictimesDescription).trim() !== "") {
+        payload.sres_is_association_victime_description = questionsAnswers.associationVictimesDescription;
     }
 
     return payload;

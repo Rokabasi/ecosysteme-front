@@ -19,6 +19,18 @@ const IdentificationStepPart2 = ({ validationErrors = {}, clearFieldError }) => 
   
   const handleChange = (e) => {
     const { name, value } = e.target;
+    
+    // Validation du nombre de mots pour mission et resultats
+    if (name === 'mission') {
+      const words = value.trim() === '' ? [] : value.trim().split(/\s+/);
+      if (words.length > 100) return; // Bloquer si plus de 100 mots
+    }
+    
+    if (name === 'resultats') {
+      const words = value.trim() === '' ? [] : value.trim().split(/\s+/);
+      if (words.length > 150) return; // Bloquer si plus de 150 mots
+    }
+    
     // Effacer l'erreur dès que l'utilisateur modifie le champ
     if (clearFieldError) {
       clearFieldError(name);
@@ -26,6 +38,12 @@ const IdentificationStepPart2 = ({ validationErrors = {}, clearFieldError }) => 
     dispatch(updateField({ field: name, value }));
   };
   
+  // Fonction pour compter les mots
+  const getWordCount = (text) => {
+    if (!text || text.trim() === '') return 0;
+    return text.trim().split(/\s+/).length;
+  };
+
   const handleDomainToggle = (domainId) => {
     if (clearFieldError) {
       clearFieldError('domaines');
@@ -71,6 +89,9 @@ const IdentificationStepPart2 = ({ validationErrors = {}, clearFieldError }) => 
             value={formData.mission || ''}
             onChange={handleChange}
           ></textarea>
+          <div className="text-sm text-gray-500 text-right">
+            {getWordCount(formData.mission || '')}/100 mots
+          </div>
           <FieldError error={validationErrors.mission} />
         </div>
         <div className="space-y-1">
@@ -121,13 +142,15 @@ const IdentificationStepPart2 = ({ validationErrors = {}, clearFieldError }) => 
           </p>
           <textarea
             className="rounded-sm p-2 border border-[#0089CF] outline-0 w-full"
-            type="text"
             name="resultats"
             id="resultats"
             value={formData.resultats || ''}
             onChange={handleChange}
             placeholder="Décrivez vos réalisations en 150 mots maximum..."
           />
+          <div className="text-sm text-gray-500 text-right">
+            {getWordCount(formData.resultats || '')}/150 mots
+          </div>
           <FieldError error={validationErrors.resultats} />
         </div>
       </form>
