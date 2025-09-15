@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getCandidatures, selectAllCandidatures } from '../../app/reducers/candidatures';
 
 // Données de test plus complètes
 const generateMockData = () => {
@@ -125,7 +127,9 @@ const customStyles = {
 };
 
 const useCandidatures = () => {
-  const [candidatures, setCandidatures] = useState([]);
+
+  const dispatch = useDispatch();
+  const candidatureData = useSelector(selectAllCandidatures);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -137,9 +141,6 @@ const useCandidatures = () => {
         await new Promise(resolve => setTimeout(resolve, 800));
         
         // Génération des données de test
-        const mockData = generateMockData();
-        
-        setCandidatures(mockData);
         setLoading(false);
       } catch (err) {
         console.error('Erreur lors du chargement des candidatures:', err);
@@ -151,37 +152,17 @@ const useCandidatures = () => {
     fetchCandidatures();
   }, []);
 
-  const getCandidatureById = (id) => {
-    return candidatures.find(cand => cand.str_id === id);
-  };
-  
-  // Fonction pour mettre à jour le statut d'une candidature
-  const updateCandidatureStatus = (id, newStatus) => {
-    setCandidatures(prevCandidatures => 
-      prevCandidatures.map(cand => 
-        cand.str_id === id 
-          ? { 
-              ...cand, 
-              str_statut: newStatus,
-              str_statut_label: {
-                'soumis': 'En attente',
-                'en_cours': 'En cours de traitement',
-                'approuvé': 'Approuvé',
-                'rejeté': 'Rejeté'
-              }[newStatus]
-            } 
-          : cand
-      )
-    );
-  };
+console.log(candidatureData);
+
+  useEffect(()=>{
+    dispatch(getCandidatures());
+  },[])
 
   return {
-    candidatures,
     loading,
     error,
-    getCandidatureById,
-    updateCandidatureStatus,
-    customStyles
+    customStyles,
+    candidatureData
   };
 };
 

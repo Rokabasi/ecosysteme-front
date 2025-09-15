@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   FiUser,
   FiLogOut,
@@ -7,6 +7,7 @@ import {
   FiMail,
   FiBriefcase,
   FiAward,
+  FiMenu
 } from "react-icons/fi";
 import Logo from "../../assets/fonarev-logo.webp";
 
