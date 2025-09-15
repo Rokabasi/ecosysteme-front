@@ -2,7 +2,7 @@ import { IoDocumentTextOutline } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { getIdentificationFormData, updateField } from "../../app/reducers/identification";
-import { selectAllDomaines, selectDomainesLoading, selectDomainesError, fetchDomaines, selectDomainesWithDetails } from "../../app/reducers/domaines";
+import { selectDomainesLoading, selectDomainesError, fetchDomaines, selectDomainesWithDetails } from "../../app/reducers/domaines";
 import FieldError from "../FieldError/FieldError";
 
 const IdentificationStepPart2 = ({ validationErrors = {}, clearFieldError }) => {

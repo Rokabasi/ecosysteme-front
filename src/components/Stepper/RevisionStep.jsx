@@ -9,6 +9,7 @@ import { getSelectedZones } from "../../app/reducers/zones";
 import { getLocalitesByProvince } from "../../app/reducers/localites";
 import { getAllDocuments } from "../../app/reducers/documents";
 import { getAllAnswers } from "../../app/reducers/questions";
+import { selectDomainesWithDetails } from "../../app/reducers/domaines";
 
 const RevisionStep = () => {
   // Récupération des données de toutes les étapes
@@ -26,6 +27,8 @@ const RevisionStep = () => {
   );
   const documents = useSelector(getAllDocuments);
   const questions = useSelector(getAllAnswers);
+  const domainesDetails = useSelector(selectDomainesWithDetails);
+  const domaineLabels = Object.fromEntries((domainesDetails || []).map(d => [String(d.dom_id), d.dom_designation]));
 
   // Formater la date de création
   const formatDate = (dateString) => {
@@ -290,12 +293,12 @@ const RevisionStep = () => {
                   </p>
                   <div className="flex flex-wrap gap-2">
                     {formData.domaines && formData.domaines.length > 0 ? (
-                      formData.domaines.map((domaine, index) => (
+                      formData.domaines.map((domaineId, index) => (
                         <span
                           key={index}
                           className="bg-[#6a1754]/10 text-[#6a1754] text-sm px-3 py-1 rounded-full"
                         >
-                          {domaine}
+                          {domaineLabels[String(domaineId)] || String(domaineId)}
                         </span>
                       ))
                     ) : (
