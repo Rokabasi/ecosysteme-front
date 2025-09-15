@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { getSessionStorage, deleteSessionToken } from '../../config/auth';
 import Sidebar from '../Sidebar/Sidebar';
 import NavBar from '../Navbar/Navbar';
 
-const Layout = () => {
+const Layout = ({ onLogout }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
+  const [isMobile, setIsMobile] = useState(false);
+  const navigate = useNavigate();
 
-  // Handle window resize
   useEffect(() => {
     const handleResize = () => {
       const isMobileView = window.innerWidth < 1024;
@@ -27,6 +29,16 @@ const Layout = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  const handleLogout = () => {
+    try {
+      getSessionStorage().deleteSessionToken();
+      if (onLogout) onLogout();
+      navigate('/auth/login');
+    } catch (error) {
+      console.error('Erreur lors de la déconnexion:', error);
+    }
+  };
+
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
@@ -37,11 +49,12 @@ const Layout = () => {
     }
   };
 
+
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
       {/* Navbar */}
       <div className="fixed top-0 left-0 right-0 h-16 bg-white shadow-sm z-40">
-        <NavBar onMenuToggle={toggleSidebar} />
+        <NavBar onMenuToggle={toggleSidebar} onLogout={handleLogout} />
       </div>
 
       <div className="flex flex-1 pt-16">

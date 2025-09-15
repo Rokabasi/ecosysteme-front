@@ -10,11 +10,11 @@ const initialState = {
 
 export const loginUser = createAsyncThunk("user/login", async (data) => {
   try {
-    const res = await axios.post("/users/login", data);
+    const res = await axios.post("/auth/login", data);
     return res.data;
   } catch (error) {
     const response = error.response;
-    if (response.status === 404) {
+    if (response.status === 401) {
       return {
         status: "failed",
         message: response.data.message,

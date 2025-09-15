@@ -37,6 +37,16 @@ const Sidebar = ({ onMobileNavigate, isCollapsed = false }) => {
       icon: <HiOutlineChartSquareBar className="w-5 h-5 flex-shrink-0" />,
     },
     {
+      path: "/admin/candidatures",
+      label: "Candidatures",
+      icon: <HiOutlineChartSquareBar className="w-5 h-5 flex-shrink-0" />,
+    },
+    {
+      path: "/dossiers",
+      label: "Dossiers",
+      icon: <HiOutlineChartSquareBar className="w-5 h-5 flex-shrink-0" />,
+    },
+    {
       path: "/admin/configuration",
       label: "Configuration",
       icon: <HiOutlineCog className="w-5 h-5 flex-shrink-0" />,
