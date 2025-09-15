@@ -63,7 +63,7 @@ const Register = () => {
 
   return (
     <div className="flex">
-      <div className="flex flex-col items-start bg-[#0f172a] gap-1 w-[280px] h-screen px-5 pt-20 sticky top-0">
+      <div className="flex flex-col items-start bg-[#0f172a] gap-1 w-[280px] h-screen px-5 pt-10 sticky top-0">
         {steps.map((step, index) => (
           <div className="flex gap-2" key={index}>
             <div className="flex flex-col items-center gap-1">
@@ -119,7 +119,7 @@ const Register = () => {
         <div className="border-b border-gray-200 bg-white px-8 py-4">
           <button
             onClick={handleBackClick}
-            className="text-sm font-medium text-[#6a1754] hover:text-[#0089CF] transition-colors duration-300 bg-transparent border-none cursor-pointer"
+            className="text-sm font-medium text-gray-600 hover:text-[#0089CF] transition-colors duration-300 bg-transparent border-none cursor-pointer"
           >
             ← Retour à l'accueil
           </button>
@@ -128,8 +128,8 @@ const Register = () => {
         <div className="p-8 flex justify-center">
           <div className="w-full max-w-5xl">
             <div className="mb-8">
-              <h1 className="text-2xl font-semibold text-[#0089CF] mb-2">
-                Étape {currentStep} : {steps[currentStep - 1].title}
+              <h1 className="text-xl font-semibold text-[#0089CF] mb-2">
+                Etape {currentStep} : {steps[currentStep - 1].title}
                 {steps[currentStep - 1].hasSubSteps && (
                   <span className="text-lg text-gray-600 ml-2">
                     -{" "}
@@ -159,7 +159,7 @@ const Register = () => {
               <button
                 onClick={prevStep}
                 disabled={currentStep === 1 && currentSubStep === 1}
-                className="flex justify-center py-3 px-4 w-32 border-2 border-[#6a1754] rounded-md shadow-sm text-sm font-medium text-[#6a1754] bg-transparent  hover:bg-[#6a1754] hover:text-white transition-colors duration-300 disabled:opacity-70 disabled:cursor-not-allowed cursor-pointer active:bg-[#913376]"
+                className="flex justify-center py-2 px-2 w-32 border-2 border-gray-400 rounded-md shadow-sm text-sm font-medium text-gray-600 bg-transparent  hover:bg-gray-400 hover:text-white transition-colors duration-300 disabled:opacity-70 disabled:cursor-not-allowed cursor-pointer active:bg-[#0089CF]"
               >
                 ← Précédent
               </button>
@@ -197,7 +197,7 @@ const Register = () => {
                       alert("Veuillez vérifier que tous les champs obligatoires sont remplis dans toutes les étapes.");
                     }
                   }}
-                  className="flex justify-center items-end py-3 px-4 w-40 border-2 border-[#0089CF] rounded-md shadow-sm text-sm font-medium text-white bg-[#0089CF] hover:bg-[#117bb1] transition-colors duration-300 cursor-pointer"
+                  className="flex justify-center items-end py-2 px-2 w-40 border-2 border-[#0089CF] rounded-md shadow-sm text-sm font-medium text-white bg-[#0089CF] hover:bg-[#117bb1] transition-colors duration-300 cursor-pointer"
                 >
                   Soumettre
                 </button>
@@ -205,7 +205,7 @@ const Register = () => {
                 <button
                   onClick={nextStep}
                   disabled={currentStep === steps.length}
-                  className="flex justify-center items-end py-3 px-4 w-32 border-2 border-[#6a1754]  rounded-md shadow-sm text-sm font-medium text-white bg-[#6a1754] hover:bg-[#5c1949] transition-colors duration-300 disabled:opacity-70 disabled:cursor-not-allowed cursor-pointer active:bg-[#913376]"
+                  className="flex justify-center items-end py-2 px-2 w-32 border-2 border-[#6a1754]  rounded-md shadow-sm text-sm font-medium text-white bg-[#6a1754] hover:bg-[#5c1949] transition-colors duration-300 disabled:opacity-70 disabled:cursor-not-allowed cursor-pointer active:bg-[#913376]"
                 >
                   Suivant →
                 </button>

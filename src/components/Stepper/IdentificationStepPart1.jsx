@@ -30,7 +30,7 @@ const IdentificationStepPart1 = ({ validationErrors = {}, clearFieldError }) => 
         </h2>
 
         <p className="text-gray-600 text-lg leading-relaxed">
-          Veuillez remplir les informations de base de votre ONG ou ASBL.
+          Veuillez remplir les informations d’identification de votre ONG ou ASBL.
         </p>
       </div>
       <form className="space-y-6">

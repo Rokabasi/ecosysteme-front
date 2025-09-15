@@ -39,7 +39,7 @@ const LocaliteStep = ({ validationErrors = {}, clearFieldError }) => {
             key={province.pro_id}
             className="flex flex-col md:flex-row items-start gap-2 mb-4"
           >
-            <p className="text-base font-medium text-gray-900 w-full md:w-36">
+            <p className="text-base pt-2 font-medium text-gray-900 w-full md:w-36">
               {province.pro_designation}{" "}
               <span className="text-[#6a1754]">*</span>
             </p>
