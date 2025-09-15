@@ -251,8 +251,44 @@ const Register = () => {
         onClose={() => setShowSubmitConfirm(false)}
         onCancel={() => setShowSubmitConfirm(false)}
         onConfirm={async () => {
+          // Construire le FormData avec la structure + fichiers
+          const fd = new FormData();
+          // Ajouter la structure formatée
+          fd.append('structure', JSON.stringify(pendingPayload));
+
+          // Ajouter les fichiers selon les clés demandées
+          const docs = documents || {};
+          if (docs.statuts) fd.append('statutNotarie', docs.statuts);
+          if (docs.reglements) fd.append("regledordreinterieur", docs.reglements);
+          if (docs.personnalite) fd.append('personnalitejuridique', docs.personnalite);
+          if (docs.organigramme) fd.append('organigramme', docs.organigramme);
+
+          // Rapports (supporte File unique ou tableau de Files)
+          if (docs.rapports) {
+            if (Array.isArray(docs.rapports)) {
+              if (docs.rapports[0]) fd.append('rapport1', docs.rapports[0]);
+              if (docs.rapports[1]) fd.append('rapport2', docs.rapports[1]);
+              if (docs.rapports[2]) fd.append('rapport3', docs.rapports[2]);
+            } else {
+              fd.append('rapport1', docs.rapports);
+            }
+          }
+
+          // États financiers (supporte File unique ou tableau de Files)
+          if (docs.etatsFinanciers) {
+            if (Array.isArray(docs.etatsFinanciers)) {
+              if (docs.etatsFinanciers[0]) fd.append('etatfin1', docs.etatsFinanciers[0]);
+              if (docs.etatsFinanciers[1]) fd.append('etatfin2', docs.etatsFinanciers[1]);
+              if (docs.etatsFinanciers[2]) fd.append('etatfin3', docs.etatsFinanciers[2]);
+            } else {
+              fd.append('etatfin1', docs.etatsFinanciers);
+            }
+          }
+
+          if (docs.pvAssemblee) fd.append('dernierpv', docs.pvAssemblee);
+
           // Envoie la requête via le reducer; déclenche succès/erreur dans le modal
-          const action = await dispatch(sendCandidature(pendingPayload));
+          const action = await dispatch(sendCandidature(fd));
           const payload = action && action.payload;
           if (payload && payload.status === 'failed') {
             throw new Error(payload.message || 'Échec de la soumission');
