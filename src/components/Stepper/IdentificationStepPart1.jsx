@@ -12,6 +12,18 @@ const IdentificationStepPart1 = ({ validationErrors = {}, clearFieldError }) => 
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    
+    // Validation spéciale pour l'année de création
+    // if (name === 'anneeCreation') {
+    //   // Vérifier que c'est un nombre de 4 chiffres et <= année courante
+    //   const currentYear = new Date().getFullYear();
+    //   const yearValue = parseInt(value);
+      
+    //   if (value && (value.length !== 4 || yearValue > currentYear || yearValue < 1000)) {
+    //     return; // Ne pas mettre à jour si la validation échoue
+    //   }
+    // }
+    
     // Effacer l'erreur dès que l'utilisateur modifie le champ
     if (clearFieldError) {
       clearFieldError(name);
@@ -75,8 +87,8 @@ const IdentificationStepPart1 = ({ validationErrors = {}, clearFieldError }) => 
               id="anneeCreation"
               value={formData.anneeCreation || ""}
               onChange={handleChange}
-              min="1900"
-              max={new Date().getFullYear()}
+              //min="1900"
+              //max={new Date().getFullYear()}
               placeholder="2022"
             />
             <FieldError error={validationErrors.anneeCreation} />

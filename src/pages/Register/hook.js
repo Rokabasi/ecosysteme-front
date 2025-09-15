@@ -282,6 +282,8 @@ export const UseRegisterConfig = () => {
 
   const onSubmitForm = async (structuredPayload) => {
           const fd = new FormData();
+          console.log(documents);
+          
 
           fd.append('structure', JSON.stringify(structuredPayload));
 
@@ -290,27 +292,12 @@ export const UseRegisterConfig = () => {
           if (docs.reglements) fd.append("regledordreinterieur", docs.reglements);
           if (docs.personnalite) fd.append('personnalitejuridique', docs.personnalite);
           if (docs.organigramme) fd.append('organigramme', docs.organigramme);
-
-          if (docs.rapports) {
-            if (Array.isArray(docs.rapports)) {
-              if (docs.rapports[0]) fd.append('rapport1', docs.rapports[0]);
-              if (docs.rapports[1]) fd.append('rapport2', docs.rapports[1]);
-              if (docs.rapports[2]) fd.append('rapport3', docs.rapports[2]);
-            } else {
-              fd.append('rapport1', docs.rapports);
-            }
-          }
-
-          if (docs.etatsFinanciers) {
-            if (Array.isArray(docs.etatsFinanciers)) {
-              if (docs.etatsFinanciers[0]) fd.append('etatfin1', docs.etatsFinanciers[0]);
-              if (docs.etatsFinanciers[1]) fd.append('etatfin2', docs.etatsFinanciers[1]);
-              if (docs.etatsFinanciers[2]) fd.append('etatfin3', docs.etatsFinanciers[2]);
-            } else {
-              fd.append('etatfin1', docs.etatsFinanciers);
-            }
-          }
-
+          if (docs.rapport1) fd.append('rapport1', docs.rapport1);
+          if (docs.rapport2) fd.append('rapport2', docs.rapport2);
+          if (docs.rapport3) fd.append('rapport3', docs.rapport3);
+          if (docs.etatfin1) fd.append('etatfin1', docs.etatfin1);
+          if (docs.etatfin2) fd.append('etatfin2', docs.etatfin2);
+          if (docs.etatfin3) fd.append('etatfin3', docs.etatfin3);
           if (docs.pvAssemblee) fd.append('dernierpv', docs.pvAssemblee);
 
           const action = await dispatch(sendCandidature(fd));

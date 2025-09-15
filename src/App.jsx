@@ -7,9 +7,9 @@ import CheckStatut from "./pages/CheckStatut/CheckStatut";
 import Home from "./pages/Home/Home";
 import Configuration from "./pages/Configuration/Configuration";
 import Dashboard from "./pages/Dashboard/Dashboard";
-import CandidatureDetail from "./pages/Candidatures/CandidatureDetail";
 import Login from "./pages/Auth/Login";
 import Candidatures from "./pages/Candidatures/Candidatures";
+import CandidatureDetail from './pages/Candidatures/CandidatureDetail/CandidatureDetail';
 
 function App() {
   return (

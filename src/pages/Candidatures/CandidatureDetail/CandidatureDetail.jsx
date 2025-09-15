@@ -1,125 +1,15 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { FiArrowLeft, FiMail, FiPhone, FiMapPin, FiCalendar, FiUser, FiFileText, FiUsers, FiTarget } from 'react-icons/fi';
-
-// Données de test pour la candidature
-const mockCandidature = {
-  "str_id": "588ac48d-9aa5-4190-80fb-02af99ab542d",
-  "str_designation": "UBABANK RDC",
-  "str_sigle": "UBA",
-  "str_annee_creation": "2025",
-  "str_adresse_siege_sociale": "avenue colonel mondjiba gombe",
-  "str_province_siege_sociale": "Kivu",
-  "str_nom_representant_legal": "KABASI ROMAIN",
-  "str_fonction_representant": "Directeur général",
-  "str_telephone": "+243819600518",
-  "str_email": "kabasiromain@gmail.com",
-  "str_site_web": "www.mazaya.com",
-  "str_mission": "Mission non encore determinée",
-  "str_nombre_employe_actif": 12,
-  "str_resultat_operationel": "Beaucoup de resultat en attente",
-  "str_niveau_risque": null,
-  "str_statut": "soumis",
-  "str_statut_verification": "soumis",
-  "str_is_reset": null,
-  "str_is_affected": null,
-  "createdAt": "2025-09-15T18:53:24.000Z",
-  "updatedAt": "2025-09-15T18:53:24.000Z",
-  "Province_structures": [
-    {
-      "pstr_id": "54a2990c-4344-45c5-8c9e-bd73820b421d",
-      "pro_id": "1a8a510a-c012-47ac-b6b7-1c042610b6e8",
-      "str_id": "588ac48d-9aa5-4190-80fb-02af99ab542d",
-      "Province": {
-        "pro_designation": "Nord-Kivu"
-      },
-      "Localite_operationnelles": [
-        {
-          "loc_id": "991f4747-6a4e-4c0a-97b5-73c72748945e",
-          "pstr_id": "54a2990c-4344-45c5-8c9e-bd73820b421d",
-          "loc_designation": "Goma"
-        }
-      ]
-    },
-    {
-      "pstr_id": "e4dfa839-66de-4b85-af6d-5c2912b5875b",
-      "pro_id": "13077a32-da28-4408-b4f3-8aa2ba1f9fa6",
-      "str_id": "588ac48d-9aa5-4190-80fb-02af99ab542d",
-      "Province": {
-        "pro_designation": "Sud-Kivu"
-      },
-      "Localite_operationnelles": [
-        {
-          "loc_id": "2b510fd0-223a-4028-8d20-45e71550fc46",
-          "pstr_id": "e4dfa839-66de-4b85-af6d-5c2912b5875b",
-          "loc_designation": "bunia"
-        },
-        {
-          "loc_id": "53c0df80-3feb-45e8-a554-f50a8532d2fe",
-          "pstr_id": "e4dfa839-66de-4b85-af6d-5c2912b5875b",
-          "loc_designation": "Bukavu"
-        }
-      ]
-    }
-  ],
-  "Domaine_structures": [
-    {
-      "dos_id": "22fa391f-513c-48f2-8a04-9602e5815ca2",
-      "dom_id": "04c73ff9-a748-428f-94b4-36a91772c584",
-      "str_id": "588ac48d-9aa5-4190-80fb-02af99ab542d",
-      "Domaine": {
-        "dom_designation": "Éducation à la paix"
-      }
-    },
-    {
-      "dos_id": "e4b6f60a-285b-48ac-baf7-0c10a420d263",
-      "dom_id": "6ec143fe-2a2a-4aff-b7cf-8aa38b0fdb8c",
-      "str_id": "588ac48d-9aa5-4190-80fb-02af99ab542d",
-      "Domaine": {
-        "dom_designation": "Lutte contre les VBG"
-      }
-    }
-  ],
-  "Documents": [
-    {
-      "doc_id": "4f265311-792c-4790-a6db-45ad739fabdb",
-      "str_id": "588ac48d-9aa5-4190-80fb-02af99ab542d",
-      "doc_path": "C:\\Users\\pc\\Documents\\web_prod\\Ecosysteme\\Ecosysteme-back\\public\\documents\\Doc_10e061d3142.pdf",
-      "doc_name": "Doc_10e061d3142.pdf",
-      "doc_size": "80753",
-      "doc_designation": "Règlement d'ordre intérieurs"
-    },
-    {
-      "doc_id": "575fa902-dc55-4448-9b9f-17e3a4ad7ed1",
-      "str_id": "588ac48d-9aa5-4190-80fb-02af99ab542d",
-      "doc_path": "C:\\Users\\pc\\Documents\\web_prod\\Ecosysteme\\Ecosysteme-back\\public\\documents\\Doc_d4b6745f77.pdf",
-      "doc_name": "Doc_d4b6745f77.pdf",
-      "doc_size": "80753",
-      "doc_designation": "Statuts notariés de l'ASBL/ONG"
-    },
-    {
-      "doc_id": "e20a2f29-d10e-41b7-b401-bc561f1fb266",
-      "str_id": "588ac48d-9aa5-4190-80fb-02af99ab542d",
-      "doc_path": "C:\\Users\\pc\\Documents\\web_prod\\Ecosysteme\\Ecosysteme-back\\public\\documents\\Doc_4c0f8d6629.pdf",
-      "doc_name": "Doc_4c0f8d6629.pdf",
-      "doc_size": "80753",
-      "doc_designation": "Organigramme"
-    },
-    {
-      "doc_id": "eba14142-5a08-43aa-a04a-87c3239c32a1",
-      "str_id": "588ac48d-9aa5-4190-80fb-02af99ab542d",
-      "doc_path": "C:\\Users\\pc\\Documents\\web_prod\\Ecosysteme\\Ecosysteme-back\\public\\documents\\Doc_1436566e1d1.pdf",
-      "doc_name": "Doc_1436566e1d1.pdf",
-      "doc_size": "80753",
-      "doc_designation": "Personnalité juridique"
-    }
-  ]
-};
+import { FiArrowLeft, FiMail, FiPhone, FiMapPin, FiCalendar, FiUser, FiFileText, FiUsers, FiTarget, FiInfo } from 'react-icons/fi';
+import useCandidatures from './hook';
 
 const CandidatureDetail = () => {
+
+  const { candidature } = useCandidatures();
+
   const { id } = useParams();
   const navigate = useNavigate();
-  const candidature = mockCandidature; // Utiliser les données de test
+   // Utiliser les données de test
 
   if (!candidature) {
     return (
@@ -381,8 +271,7 @@ const CandidatureDetail = () => {
               </div>
             </div>
 
-            {/* Actions */}
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
               <h2 className="text-lg font-semibold text-gray-900 mb-4">Actions</h2>
               <div className="space-y-3">
                 <select className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#6a1754] focus:border-transparent">
@@ -396,38 +285,86 @@ const CandidatureDetail = () => {
                   Affecter le dossier
                 </button>
                 
-                <button className="w-full px-4 py-2 border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 font-medium rounded-md transition-colors">
-                  Télécharger le dossier complet
-                </button>
               </div>
             </div>
 
-            {/* Informations système */}
+            {/* Renseignements de la structure */}
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">Informations système</h2>
-              <dl className="space-y-3 text-sm">
-                <div>
-                  <dt className="font-medium text-gray-500">ID de candidature</dt>
-                  <dd className="mt-1 text-gray-900 font-mono text-xs break-all">{candidature.str_id}</dd>
+              <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                <FiInfo className="mr-2 h-5 w-5 text-[#6a1754]" />
+                Renseignements de la structure
+              </h2>
+              {candidature.Structure_renseignements && candidature.Structure_renseignements.length > 0 && (
+                <div className="space-y-4">
+                  {candidature.Structure_renseignements.map((renseignement, index) => (
+                    <div key={index} className="space-y-3">
+                      {/* Prise en charge */}
+                      <div className="flex items-start space-x-3">
+                        <div className={`flex-shrink-0 w-2 h-2 rounded-full mt-2 ${renseignement.sres_prise_en_charge ? 'bg-green-500' : 'bg-red-500'}`}></div>
+                        <div className="flex-1">
+                          <p className="text-sm font-medium text-gray-900">Prise en charge de victimes</p>
+                          <p className="text-sm text-gray-600">
+                            {renseignement.sres_prise_en_charge ? 'Oui' : 'Non'}
+                            {renseignement.sres_prise_en_charge_description && (
+                              <span className="ml-2 text-[#6a1754]">({renseignement.sres_prise_en_charge_description})</span>
+                            )}
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Association de victimes */}
+                      <div className="flex items-start space-x-3">
+                        <div className={`flex-shrink-0 w-2 h-2 rounded-full mt-2 ${renseignement.sres_is_association_victime ? 'bg-green-500' : 'bg-red-500'}`}></div>
+                        <div className="flex-1">
+                          <p className="text-sm font-medium text-gray-900">Association de victimes</p>
+                          <p className="text-sm text-gray-600">
+                            {renseignement.sres_is_association_victime ? 'Oui' : 'Non'}
+                            {renseignement.sres_is_association_victime_description && (
+                              <span className="ml-2 text-[#6a1754]">({renseignement.sres_is_association_victime_description})</span>
+                            )}
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Informations sur victimes de violences sexuelles */}
+                      <div className="flex items-start space-x-3">
+                        <div className={`flex-shrink-0 w-2 h-2 rounded-full mt-2 ${renseignement.sres_infos_victime_sexuel ? 'bg-green-500' : 'bg-red-500'}`}></div>
+                        <div className="flex-1">
+                          <p className="text-sm font-medium text-gray-900">Informations sur victimes de violences sexuelles</p>
+                          <p className="text-sm text-gray-600">
+                            {renseignement.sres_infos_victime_sexuel ? 'Oui' : 'Non'}
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Prêt à collaborer */}
+                      <div className="flex items-start space-x-3">
+                        <div className={`flex-shrink-0 w-2 h-2 rounded-full mt-2 ${renseignement.sres_pret_a_collaborer ? 'bg-green-500' : 'bg-red-500'}`}></div>
+                        <div className="flex-1">
+                          <p className="text-sm font-medium text-gray-900">Prêt à collaborer</p>
+                          <p className="text-sm text-gray-600">
+                            {renseignement.sres_pret_a_collaborer ? 'Oui' : 'Non'}
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Compte bancaire */}
+                      <div className="flex items-start space-x-3">
+                        <div className={`flex-shrink-0 w-2 h-2 rounded-full mt-2 ${renseignement.sres_a_compte_bancaire ? 'bg-green-500' : 'bg-red-500'}`}></div>
+                        <div className="flex-1">
+                          <p className="text-sm font-medium text-gray-900">Dispose d'un compte bancaire</p>
+                          <p className="text-sm text-gray-600">
+                            {renseignement.sres_a_compte_bancaire ? 'Oui' : 'Non'}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-                <div>
-                  <dt className="font-medium text-gray-500">Date de soumission</dt>
-                  <dd className="mt-1 text-gray-900">{new Date(candidature.createdAt).toLocaleDateString('fr-FR')}</dd>
-                </div>
-                <div>
-                  <dt className="font-medium text-gray-500">Dernière modification</dt>
-                  <dd className="mt-1 text-gray-900">{new Date(candidature.updatedAt).toLocaleDateString('fr-FR')}</dd>
-                </div>
-                <div>
-                  <dt className="font-medium text-gray-500">Statut de vérification</dt>
-                  <dd className="mt-1">
-                    <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                      {candidature.str_statut_verification}
-                    </span>
-                  </dd>
-                </div>
-              </dl>
+              )}
             </div>
+
+            {/* Actions */}
           </div>
         </div>
       </div>

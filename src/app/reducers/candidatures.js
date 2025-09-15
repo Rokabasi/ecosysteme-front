@@ -5,6 +5,7 @@ const initialState = {
   candidatures: null,
   loading: false,
   error: null,
+  candidatureDetail:null
 };
 
 export const sendCandidature = createAsyncThunk("structure/register", async (data, { rejectWithValue }) => {
@@ -26,6 +27,22 @@ export const sendCandidature = createAsyncThunk("structure/register", async (dat
 export const getCandidatures = createAsyncThunk("candidatures-get", async () => {
   try {
     const res = await protectedAxios.get("/candidatures");
+    return res.data;
+  } catch (error) {
+    const response = error.response;
+    if (response.status === 404) {
+      return {
+        status: "failed",
+        message: response.data.message,
+      };
+    }
+    return Promise.reject(error);
+  }
+});
+
+export const getCandidatureDetails = createAsyncThunk("candidatures-get-detail", async (id) => {
+  try {
+    const res = await protectedAxios.get(`/candidatures/${id}`);
     return res.data;
   } catch (error) {
     const response = error.response;
@@ -67,9 +84,23 @@ export const { reducer: candidatureReducer, actions } = createSlice({
     builder.addCase(getCandidatures.rejected, (state) => {
       state.loading = false;
     });
+
+    builder.addCase(getCandidatureDetails.pending, (state) => {
+      state.loading = true;
+    });
+
+    builder.addCase(getCandidatureDetails.fulfilled, (state,action) => {
+      state.loading = false;
+      state.candidatureDetail = action.payload;
+    });
+
+    builder.addCase(getCandidatureDetails.rejected, (state) => {
+      state.loading = false;
+    });
   },
 });
 
 export const selectAllCandidatures = (state) => state.candidature.candidatures;
 export const getLoadingCandidature = (state) => state.candidature.loading;
 export const getErrorCandidature = (state) => state.candidature.error;
+export const selectCandidatureDetails = (state) => state.candidature.candidatureDetail;
