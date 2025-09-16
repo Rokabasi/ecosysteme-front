@@ -1,21 +1,24 @@
-import React, { useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { FiArrowLeft, FiMail, FiPhone, FiMapPin, FiCalendar, FiUser, FiFileText, FiUsers, FiTarget, FiInfo } from 'react-icons/fi';
 import useCandidatures from './hook';
 import Loader from '../../../components/Loader/Loader';
 import ConfirmationModal from '../../../components/ConfirmationModal/ConfirmationModal';
-import { affectationCandidature } from '../../../app/reducers/candidatures';
-import { getSessionUser } from '../../../config/auth';
 
 const CandidatureDetail = () => {
-  const [selectedDirection, setSelectedDirection] = useState('');
-  const [showConfirmModal, setShowConfirmModal] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const { candidature, error, loading } = useCandidatures();
-  const dispatch = useDispatch();
-  const { id } = useParams();
+  const {
+    candidature,
+    error,
+    loading,
+    selectedDirection,
+    setSelectedDirection,
+    showConfirmModal,
+    setShowConfirmModal,
+    isSubmitting,
+    handleAffectation,
+    handleSuccessModalClose
+  } = useCandidatures();
+  
   const navigate = useNavigate();
    // Utiliser les données de test
 
@@ -83,31 +86,6 @@ const CandidatureDetail = () => {
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
   };
 
-  const handleAffectation = async () => {
-    try {
-      setIsSubmitting(true);
-      
-      // Récupérer les données utilisateur depuis sessionStorage
-      const userData = getSessionUser();
-      
-      const affectationData = {
-        str_id: candidature.str_id,
-        direction: selectedDirection,
-        user: userData
-      };
-
-      const result = await dispatch(affectationCandidature(affectationData)).unwrap();
-      
-      // Si succès, naviguer vers la liste des candidatures
-      navigate('/admin/candidatures');
-      
-    } catch (error) {
-      // L'erreur sera gérée par le modal de confirmation
-      throw error;
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
@@ -432,7 +410,7 @@ const CandidatureDetail = () => {
         cancelText="Annuler"
         onConfirm={handleAffectation}
         onCancel={() => setShowConfirmModal(false)}
-        onClose={() => setShowConfirmModal(false)}
+        onClose={handleSuccessModalClose}
       />
     </div>
   );

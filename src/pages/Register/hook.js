@@ -301,12 +301,11 @@ export const UseRegisterConfig = () => {
           if (docs.pvAssemblee) fd.append('dernierpv', docs.pvAssemblee);
           console.log(structuredPayload);
           
-
-          // const action = await dispatch(sendCandidature(fd));
-          // // Déclencher l'affichage d'échec dans le modal en cas d'erreur
-          // if (action?.meta?.requestStatus === 'rejected' || (action?.payload && action.payload.status === 'failed')) {
-          //   throw new Error(action?.payload?.message || 'Échec de la soumission');
-          // }
+          const action = await dispatch(sendCandidature(fd));
+          // Déclencher l'affichage d'échec dans le modal en cas d'erreur
+          if (action?.meta?.requestStatus === 'rejected' || (action?.payload && action.payload.status === 'failed')) {
+            throw new Error(action?.payload?.message || 'Échec de la soumission');
+          }
   }
 
   // Fonction pour effacer l'erreur d'un champ spécifique quand il est modifié
