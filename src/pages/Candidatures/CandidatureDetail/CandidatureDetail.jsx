@@ -284,12 +284,14 @@ const CandidatureDetail = () => {
               <div className="space-y-3">
                 <select className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#6a1754] focus:border-transparent">
                   <option value="">Affecter à une direction</option>
-                  <option value="direction1">Direction des Affaires Juridiques</option>
-                  <option value="direction2">Direction des Opérations</option>
-                  <option value="direction3">Direction Administrative</option>
+                  <option value="ETUDES">Etudes</option>
+                  <option value="REPARATIONS">Réparations</option>
+                  <option value="ACCES A LA JUSTICE la justice">Accès à la justice</option>
                 </select>
                 
-                <button className="w-full px-4 py-2 bg-[#6a1754] text-white rounded-md hover:bg-[#5c1949] font-medium transition-colors">
+                <button 
+                
+                  className="w-full px-4 py-2 bg-[#6a1754] text-white rounded-md hover:bg-[#5c1949] font-medium transition-colors">
                   Affecter le dossier
                 </button>
                 
