@@ -10,6 +10,7 @@ const RiskLevelModal = ({
 }) => {
   const [riskLevel, setRiskLevel] = useState('');
   const [files, setFiles] = useState([]);
+  const [comment, setComment] = useState('');
   const [showResult, setShowResult] = useState(null);
   const [showConfirmation, setShowConfirmation] = useState(false);
   
@@ -17,6 +18,7 @@ const RiskLevelModal = ({
     if (isOpen) {
       setRiskLevel('');
       setFiles([]);
+      setComment('');
       setShowResult(null);
       setShowConfirmation(false);
     }
@@ -26,12 +28,8 @@ const RiskLevelModal = ({
 
   const handleConfirm = async () => {
     setShowConfirmation(false);
-    try {
-      await onConfirm(riskLevel, files);
-      setShowResult('success');
-    } catch (error) {
-      setShowResult('error');
-    }
+    await onConfirm(riskLevel, files, comment);
+    onSuccessClose();
   };
 
   const handleInitialConfirm = () => {
@@ -41,6 +39,8 @@ const RiskLevelModal = ({
   const handleFileChange = (e) => {
     const newFiles = Array.from(e.target.files);
     setFiles(prev => [...prev, ...newFiles]);
+    // Reset the input value to allow selecting the same file again
+    e.target.value = '';
   };
 
   const removeFile = (index) => {
@@ -55,8 +55,8 @@ const RiskLevelModal = ({
     }
   };
 
-  // Validation: au moins un niveau de risque et un fichier
-  const isFormValid = riskLevel && files.length > 0;
+  // Validation: au moins un niveau de risque, un fichier et un commentaire
+  const isFormValid = riskLevel && files.length > 0 && comment.trim();
 
   if (showResult === 'success') {
     return (
@@ -117,8 +117,11 @@ const RiskLevelModal = ({
           </div>
           <div className="p-6">
             <p className="text-gray-700 mb-4">
-              Êtes-vous sûr de vouloir ajouter le niveau de risque <strong>"{riskLevel}"</strong> avec {files.length} document(s) ?
+              Êtes-vous sûr de vouloir ajouter le niveau de risque <strong>"{riskLevel}"</strong> avec {files.length} document(s) et le commentaire suivant ?
             </p>
+            <div className="bg-gray-50 p-3 rounded-md mb-4">
+              <p className="text-sm text-gray-700 italic">"{comment}"</p>
+            </div>
             <p className="text-sm text-gray-500">
               Cette action ne peut pas être annulée.
             </p>
@@ -174,8 +177,22 @@ const RiskLevelModal = ({
               <option value="Faible">Faible</option>
               <option value="Modéré">Modéré</option>
               <option value="Élevé">Élevé</option>
-              <option value="Très Élevé">Très Élevé</option>
+              <option value="Très élevé">Très Élevé</option>
             </select>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Commentaire <span className="text-red-500">*</span>
+            </label>
+            <textarea
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+              name="commentaire"
+              rows={3}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-[#6a1754] focus:border-transparent resize-none"
+              placeholder="Ajoutez votre commentaire sur l'évaluation du niveau de risque..."
+            />
           </div>
 
           <div>

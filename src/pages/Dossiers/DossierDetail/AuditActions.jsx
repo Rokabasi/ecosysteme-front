@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import RiskLevelModal from './RiskLevelModal';
+import ValidationModal from '../../../components/ValidationModal/ValidationModal';
 import { niveauRisqueDossier, getDossierDetails } from '../../../app/reducers/dossiers';
 import { getSessionUser } from '../../../config/auth';
 import { useDispatch, useSelector } from 'react-redux';
@@ -7,28 +8,46 @@ import { getLoadingCandidature } from '../../../app/reducers/candidatures';
 
 const AuditActions = ({ dossier }) => {
   const dispatch = useDispatch();
-  const loading = useSelector(getLoadingCandidature);
   const [showRiskModal, setShowRiskModal] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [localLoading, setLocalLoading] = useState(false);
+  const [requestResult, setRequestResult] = useState(null);
 
-  const handleRiskConfirm = async (riskLevel, files) => {
-    const userData = getSessionUser();
-    const formData = new FormData();
+  const handleRiskConfirm = async (riskLevel, files, comment) => {
+    setLocalLoading(true);
+    try {
+      const userData = getSessionUser();
+      const formData = new FormData();
 
-    // Append each field individually to FormData
-    formData.append('str_id', dossier.str_id);
-    formData.append('risque', riskLevel);
-    formData.append('user', JSON.stringify(userData));
-    
-    files.forEach((file, index) => {
-      formData.append(`documentsduediligence`, file);
-    });
+      // Append each field individually to FormData
+      formData.append('str_id', dossier.str_id);
+      formData.append('risque', riskLevel);
+      formData.append('commentaire', comment);
+      formData.append('user', JSON.stringify(userData));
+      
+      files.forEach((file, index) => {
+        formData.append(`documentsduediligence`, file);
+      });
 
-    await dispatch(niveauRisqueDossier(formData)).unwrap();
-    await dispatch(getDossierDetails(dossier.str_id));
+      await dispatch(niveauRisqueDossier(formData)).unwrap();
+      setRequestResult('success');
+    } catch (error) {
+      setRequestResult('error');
+    } finally {
+      setLocalLoading(false);
+    }
   };
 
   const handleRiskModalClose = () => {
     setShowRiskModal(false);
+    if (requestResult) {
+      setShowSuccessModal(true);
+    }
+  };
+
+  const handleSuccessModalClose = () => {
+    setShowSuccessModal(false);
+    setRequestResult(null);
     dispatch(getDossierDetails(dossier.str_id));
   };
 
@@ -51,7 +70,17 @@ const AuditActions = ({ dossier }) => {
         onConfirm={handleRiskConfirm}
         onCancel={() => setShowRiskModal(false)}
         onSuccessClose={handleRiskModalClose}
-        loading={loading}
+        loading={localLoading}
+      />
+
+      <ValidationModal
+        isOpen={showSuccessModal}
+        type={requestResult === 'success' ? 'audit' : 'error'}
+        onConfirm={() => {}}
+        onCancel={handleSuccessModalClose}
+        onSuccessClose={handleSuccessModalClose}
+        loading={false}
+        showSuccessOnly={true}
       />
     </>
   );

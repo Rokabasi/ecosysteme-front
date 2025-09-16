@@ -70,16 +70,38 @@ const DossierDetail = () => {
     
     const statusClasses = {
       'soumis': 'bg-blue-100 text-blue-800',
-      'validé': 'bg-green-100 text-green-800',
+      'admis à la due diligence': 'bg-green-100 text-green-800',
+      "accepté dans l'écosystème": 'bg-green-100 text-green-800',
       'rejeté': 'bg-red-100 text-red-800',
       'default': 'bg-gray-100 text-gray-800'
     };
     
-    const statusClass = statusClasses[status] || statusClasses['default'];
+    const statusClass = statusClasses[status] || statusClasses.default;
     
     return (
       <span className={`${baseClasses} ${statusClass}`}>
         {status === 'soumis' ? 'Soumis' : status}
+      </span>
+    );
+  };
+
+  const getRiskLevelBadge = (riskLevel) => {
+    if (!riskLevel) return null;
+    
+    const baseClasses = "inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ml-2";
+    
+    const riskLevelClasses = {
+      'Faible': 'bg-green-500 text-white',
+      'Modéré': 'bg-orange-500 text-white',
+      'Élevé': 'bg-red-500 text-white',
+      'Très élevé': 'bg-red-700 text-white'
+    };
+    
+    const riskClass = riskLevelClasses[riskLevel] || 'bg-gray-500 text-white';
+    
+    return (
+      <span className={`${baseClasses} ${riskClass}`}>
+        {riskLevel}
       </span>
     );
   };
@@ -107,7 +129,10 @@ const DossierDetail = () => {
           <div className="flex justify-between items-center">
             <h1 className="text-3xl font-bold text-gray-900">{dossier.str_designation}</h1>
             <div className="flex items-center space-x-3">
-              {getStatusBadge(dossier.str_statut)}
+              <div className="flex items-center">
+                statut : {getStatusBadge(dossier.str_statut)}
+                Niveau de risque : {getRiskLevelBadge(dossier.str_niveau_risque)}
+              </div>
               <span className="text-sm text-gray-500">
                 Soumis le {new Date(dossier.createdAt).toLocaleDateString('fr-FR')}
               </span>

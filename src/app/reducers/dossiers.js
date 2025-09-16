@@ -157,42 +157,42 @@ export const { reducer: dossierReducer, actions } = createSlice({
       state.loading = false;
     });
 
-    builder.addCase(rejetedDossier.pending, (state) => {
-      state.loading = true;
-    });
+    // builder.addCase(rejetedDossier.pending, (state) => {
+    //   state.loading = true;
+    // });
 
-    builder.addCase(rejetedDossier.fulfilled, (state,action) => {
-      state.loading = false;
-      state.dossierDetail = action.payload;
-    });
+    // builder.addCase(rejetedDossier.fulfilled, (state,action) => {
+    //   state.loading = false;
+    //   state.dossierDetail = action.payload;
+    // });
 
-    builder.addCase(rejetedDossier.rejected, (state) => {
-      state.loading = false;
-    });
+    // builder.addCase(rejetedDossier.rejected, (state) => {
+    //   state.loading = false;
+    // });
 
-    builder.addCase(validatedDossier.pending, (state) => {
-      state.loading = true;
-    });
+    // builder.addCase(validatedDossier.pending, (state) => {
+    //   state.loading = true;
+    // });
 
-    builder.addCase(validatedDossier.fulfilled, (state,action) => {
-      state.loading = false;
-    });
+    // builder.addCase(validatedDossier.fulfilled, (state,action) => {
+    //   state.loading = false;
+    // });
 
-    builder.addCase(validatedDossier.rejected, (state) => {
-      state.loading = false;
-    });
+    // builder.addCase(validatedDossier.rejected, (state) => {
+    //   state.loading = false;
+    // });
 
-    builder.addCase(niveauRisqueDossier.pending, (state) => {
-      state.loading = true;
-    });
+    // builder.addCase(niveauRisqueDossier.pending, (state) => {
+    //   state.loading = true;
+    // });
 
-    builder.addCase(niveauRisqueDossier.fulfilled, (state,action) => {
-      state.loading = false;
-    });
+    // builder.addCase(niveauRisqueDossier.fulfilled, (state,action) => {
+    //   state.loading = false;
+    // });
 
-    builder.addCase(niveauRisqueDossier.rejected, (state) => {
-      state.loading = false;
-    });
+    // builder.addCase(niveauRisqueDossier.rejected, (state) => {
+    //   state.loading = false;
+    // });
 
   },
 });
