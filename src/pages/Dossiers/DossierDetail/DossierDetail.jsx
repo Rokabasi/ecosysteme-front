@@ -4,7 +4,7 @@ import useCandidatures from './hook';
 import Loader from '../../../components/Loader/Loader';
 import AffectationModal from '../../../components/AffectationModal/AffectationModal';
 import ValidationModal from '../../../components/ValidationModal/ValidationModal';
-import { validatedDossier, rejetedDossier } from '../../../app/reducers/dossiers';
+import { validatedDossier, rejetedDossier, getDossierDetails } from '../../../app/reducers/dossiers';
 import { getSessionUser } from '../../../config/auth';
 
 const DossierDetail = () => {
@@ -35,7 +35,8 @@ const DossierDetail = () => {
 
   const handleSuccessModalCloseWithNavigation = () => {
     setShowSuccessModal(false);
-    navigate('/admin/dossiers');
+    // Re-fetch dossier details to show updated status
+    dispatch(getDossierDetails(dossier.str_id));
   };
 
   const handleValidation = () => {
