@@ -63,16 +63,11 @@ export const formatSubmissionData = (data) => {
     return payload;
 };
 
-// Formater les provinces (siège + opération, sans doublons)
+// Formater les provinces (seulement les provinces d'opération, pas le siège)
 const formatProvinces = (selectedProvince, selectedProvinces) => {
     const provinceIds = [];
 
-    // Ajouter la province du siège
-    if (selectedProvince && selectedProvince.pro_id) {
-        provinceIds.push(selectedProvince.pro_id);
-    }
-
-    // Ajouter les provinces d'opération
+    // Ajouter seulement les provinces d'opération
     if (selectedProvinces && Array.isArray(selectedProvinces)) {
         selectedProvinces.forEach(province => {
             if (province.pro_id && !provinceIds.includes(province.pro_id)) {
