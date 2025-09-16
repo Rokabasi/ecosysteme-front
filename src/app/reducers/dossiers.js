@@ -64,7 +64,7 @@ export const rejetedDossier = createAsyncThunk("dossiers-rejeted",
 export const validatedDossier = createAsyncThunk("dossiers-validated",
   async (data, { rejectWithValue }) => {
     try {
-      const res = await protectedAxios.patch("/candidatures/validation", data);
+      const res = await protectedAxios.patch("/dossiers/validation", data);
       return res.data;
     } catch (error) {
       const response = error.response;

@@ -3,6 +3,9 @@ import { FiArrowLeft, FiMail, FiPhone, FiMapPin, FiCalendar, FiUser, FiFileText,
 import useCandidatures from './hook';
 import Loader from '../../../components/Loader/Loader';
 import AffectationModal from '../../../components/AffectationModal/AffectationModal';
+import ValidationModal from '../../../components/ValidationModal/ValidationModal';
+import { validatedDossier, rejetedDossier } from '../../../app/reducers/dossiers';
+import { getSessionUser } from '../../../config/auth';
 
 const DossierDetail = () => {
   const {
@@ -17,8 +20,13 @@ const DossierDetail = () => {
     setShowSuccessModal,
     handleModalClose,
     handleSuccessModalClose,
+    dispatch,
     navigate
   } = useCandidatures();
+
+  const [showValidationModal, setShowValidationModal] = React.useState(false);
+  const [showRejectionModal, setShowRejectionModal] = React.useState(false);
+  const [validationType, setValidationType] = React.useState(''); // 'validation' | 'rejection'
 
   const handleModalCloseWithNavigation = () => {
     setShowConfirmModal(false);
@@ -28,6 +36,46 @@ const DossierDetail = () => {
   const handleSuccessModalCloseWithNavigation = () => {
     setShowSuccessModal(false);
     navigate('/admin/dossiers');
+  };
+
+  const handleValidation = () => {
+    setValidationType('validation');
+    setShowValidationModal(true);
+  };
+
+  const handleRejection = () => {
+    setValidationType('rejection');
+    setShowRejectionModal(true);
+  };
+
+  const handleValidationConfirm = async (comment) => {
+    const userData = getSessionUser();
+    const validationData = {
+      str_id: dossier.str_id,
+      commentaire: comment,
+      user: userData
+    };
+    await dispatch(validatedDossier(validationData)).unwrap();
+  };
+
+  const handleRejectionConfirm = async (comment) => {
+    const userData = getSessionUser();
+    const rejectionData = {
+      str_id: dossier.str_id,
+      commentaire: comment,
+      user: userData
+    };
+    await dispatch(rejetedDossier(rejectionData)).unwrap();
+  };
+
+  const handleValidationModalClose = () => {
+    setShowValidationModal(false);
+    setShowSuccessModal(true);
+  };
+
+  const handleRejectionModalClose = () => {
+    setShowRejectionModal(false);
+    setShowSuccessModal(true);
   };
   
    // Utiliser les données de test
@@ -303,12 +351,14 @@ const DossierDetail = () => {
               <h2 className="text-lg font-semibold text-gray-900 mb-4">Actions</h2>
               <div className="space-y-3">
                 <button 
+                  onClick={handleValidation}
                   className="w-full px-4 py-2 rounded-md font-medium transition-colors cursor-pointer bg-green-600 text-white hover:bg-green-700"
                 >
                   Valider
                 </button>
                 
                 <button 
+                  onClick={handleRejection}
                   className="w-full px-4 py-2 rounded-md font-medium transition-colors cursor-pointer bg-red-600 text-white hover:bg-red-700"
                 >
                   Rejeter
@@ -450,22 +500,32 @@ const DossierDetail = () => {
         </div>
       </div>
 
-      {/* Modal de confirmation d'affectation */}
-      <AffectationModal
-        isOpen={showConfirmModal}
-        direction={selectedDirection}
-        //onConfirm={handleAffectation}
-        onCancel={handleModalClose}
-        onSuccessClose={handleModalCloseWithNavigation}
+      {/* Modal de validation */}
+      <ValidationModal
+        isOpen={showValidationModal}
+        type="validation"
+        onConfirm={handleValidationConfirm}
+        onCancel={() => setShowValidationModal(false)}
+        onSuccessClose={handleValidationModalClose}
+        loading={loading}
+      />
+
+      {/* Modal de rejet */}
+      <ValidationModal
+        isOpen={showRejectionModal}
+        type="rejection"
+        onConfirm={handleRejectionConfirm}
+        onCancel={() => setShowRejectionModal(false)}
+        onSuccessClose={handleRejectionModalClose}
         loading={loading}
       />
 
       {/* Modal de succès */}
-      <AffectationModal
+      <ValidationModal
         isOpen={showSuccessModal}
-        direction={selectedDirection}
+        type={validationType}
         onConfirm={() => {}}
-        onCancel={handleSuccessModalClose}
+        onCancel={() => setShowSuccessModal(false)}
         onSuccessClose={handleSuccessModalCloseWithNavigation}
         loading={false}
         showSuccessOnly={true}
