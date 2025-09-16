@@ -31,7 +31,7 @@ const StatusBadge = ({ status }) => {
       icon: <FiRefreshCw className="mr-1 animate-spin" />,
       label: 'En cours de traitement'
     },
-    'approuvé': { 
+    'validé': { 
       bg: 'bg-green-50', 
       text: 'text-green-800',
       icon: <FiCheckCircle className="mr-1" />,
