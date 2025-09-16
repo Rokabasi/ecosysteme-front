@@ -54,6 +54,23 @@ const Sidebar = ({ onMobileNavigate, isCollapsed = false }) => {
   ];
 
   const isActive = (path) => {
+    // Pour les candidatures, activer si la route commence par /admin/candidatures
+    if (path === "/admin/candidatures" && activePath.startsWith("/admin/candidatures")) {
+      return true;
+    }
+    // Pour la configuration, activer si la route commence par /admin/configuration
+    if (path === "/admin/configuration" && activePath.startsWith("/admin/configuration")) {
+      return true;
+    }
+    // Pour les dossiers, activer si la route commence par /dossiers
+    if (path === "/dossiers" && activePath.startsWith("/dossiers")) {
+      return true;
+    }
+    // Pour le dashboard, activer seulement si c'est exactement /admin
+    if (path === "/admin") {
+      return activePath === "/admin";
+    }
+    // Logique existante pour requisition
     if (path === "/requisition" && activePath.startsWith("/requisition")) {
       return true;
     }
