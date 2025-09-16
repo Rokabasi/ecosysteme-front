@@ -58,51 +58,6 @@ const RiskLevelModal = ({
   // Validation: au moins un niveau de risque, un fichier et un commentaire
   const isFormValid = riskLevel && files.length > 0 && comment.trim();
 
-  if (showResult === 'success') {
-    return (
-      <div className="fixed inset-0 flex items-center justify-center z-50 bg-black/50">
-        <div className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4">
-          <div className="flex items-center justify-between p-6 border-b border-gray-200">
-            <h3 className="text-lg font-semibold text-green-600">Succès</h3>
-            <button onClick={handleClose} className="text-gray-400 hover:text-gray-600">
-              <FiX className="h-5 w-5" />
-            </button>
-          </div>
-          <div className="p-6">
-            <p className="text-gray-700">Le niveau de risque a été ajouté avec succès.</p>
-          </div>
-          <div className="flex justify-end p-6 pt-0">
-            <button onClick={handleClose} className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">
-              OK
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (showResult === 'error') {
-    return (
-      <div className="fixed inset-0 flex items-center justify-center z-50 bg-black/50">
-        <div className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4">
-          <div className="flex items-center justify-between p-6 border-b border-gray-200">
-            <h3 className="text-lg font-semibold text-red-600">Erreur</h3>
-            <button onClick={handleClose} className="text-gray-400 hover:text-gray-600">
-              <FiX className="h-5 w-5" />
-            </button>
-          </div>
-          <div className="p-6">
-            <p className="text-gray-700">Une erreur s'est produite lors de l'ajout du niveau de risque.</p>
-          </div>
-          <div className="flex justify-end p-6 pt-0">
-            <button onClick={handleClose} className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700">
-              OK
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   // Modal de confirmation
   if (showConfirmation) {

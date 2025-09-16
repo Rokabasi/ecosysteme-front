@@ -31,18 +31,21 @@ const AuditActions = ({ dossier }) => {
 
       await dispatch(niveauRisqueDossier(formData)).unwrap();
       setRequestResult('success');
+      setLocalLoading(false);
+      // Fermer le modal de saisie et afficher directement le modal de notification
+      setShowRiskModal(false);
+      setShowSuccessModal(true);
     } catch (error) {
       setRequestResult('error');
-    } finally {
       setLocalLoading(false);
+      // Fermer le modal de saisie et afficher le modal d'erreur
+      setShowRiskModal(false);
+      setShowSuccessModal(true);
     }
   };
 
   const handleRiskModalClose = () => {
     setShowRiskModal(false);
-    if (requestResult) {
-      setShowSuccessModal(true);
-    }
   };
 
   const handleSuccessModalClose = () => {
