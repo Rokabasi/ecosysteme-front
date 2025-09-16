@@ -2,14 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import { Link, useLocation } from "react-router-dom";
 import {
-  HiOutlineHome,
-  HiOutlineDocumentText,
   HiOutlineCog,
   HiOutlineChartSquareBar,
-  HiOutlineUsers,
-  HiOutlineCalendar,
-  HiOutlineChartBar,
-  HiOutlineDocumentReport,
 } from "react-icons/hi";
 import { canAccessConfiguration, canAccessCandidatures, canAccessDossiers } from "../../utils/permissions";
 
@@ -18,7 +12,6 @@ const Sidebar = ({ onMobileNavigate, isCollapsed = false }) => {
   const location = useLocation();
   const [activePath, setActivePath] = useState(location.pathname);
 
-  // Update active path when location changes
   useEffect(() => {
     setActivePath(location.pathname);
   }, [location]);
@@ -59,30 +52,24 @@ const Sidebar = ({ onMobileNavigate, isCollapsed = false }) => {
   ];
 
   const isActive = (path) => {
-    // Pour les candidatures, activer si la route commence par /admin/candidatures
     if (path === "/admin/candidatures" && activePath.startsWith("/admin/candidatures")) {
       return true;
     }
-    // Pour la configuration, activer si la route commence par /admin/configuration
     if (path === "/admin/configuration" && activePath.startsWith("/admin/configuration")) {
       return true;
     }
-    // Pour les dossiers, activer si la route commence par /dossiers
     if (path === "/admin/dossiers" && activePath.startsWith("/admin/dossiers")) {
       return true;
     }
-    // Pour le dashboard, activer seulement si c'est exactement /admin
     if (path === "/admin") {
       return activePath === "/admin";
     }
-    // Logique existante pour requisition
     if (path === "/requisition" && activePath.startsWith("/requisition")) {
       return true;
     }
     return activePath === path;
   };
 
-  // Check if user has required role for menu item
   const hasPermission = (permission) => {
     if (!permission) return true;
     

@@ -1,12 +1,8 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import { FiArrowLeft, FiMail, FiPhone, FiMapPin, FiCalendar, FiUser, FiFileText, FiUsers, FiTarget, FiInfo } from 'react-icons/fi';
 import useCandidatures from './hook';
 import Loader from '../../../components/Loader/Loader';
-import FieldError from '../../../components/FieldError/FieldError';
 import AffectationModal from '../../../components/AffectationModal/AffectationModal';
-import { affectationCandidature } from '../../../app/reducers/candidatures';
-import { getSessionUser } from '../../../config/auth';
 
 const DossierDetail = () => {
   const {
@@ -21,10 +17,8 @@ const DossierDetail = () => {
     setShowSuccessModal,
     handleModalClose,
     handleSuccessModalClose,
-    dispatch,
     navigate
   } = useCandidatures();
-
 
   const handleModalCloseWithNavigation = () => {
     setShowConfirmModal(false);
@@ -71,8 +65,7 @@ const DossierDetail = () => {
     if (loading || !dossier) {
     return(
       <Loader />
-    )
-    
+    ) 
   }
 
   const getStatusBadge = (status) => {
@@ -305,32 +298,21 @@ const DossierDetail = () => {
               </div>
             </div>
 
-                        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                        {/* Actions */}
+            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
               <h2 className="text-lg font-semibold text-gray-900 mb-4">Actions</h2>
               <div className="space-y-3">
-                <select 
-                  value={selectedDirection}
-                  onChange={(e) => setSelectedDirection(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#6a1754] focus:border-transparent"
-                >
-                  <option value="">Affecter à une direction</option>
-                  <option value="ETUDES">Etudes</option>
-                  <option value="REPARATIONS">Réparations</option>
-                  <option value="ACCES A LA JUSTICE">Accès à la justice</option>
-                </select>
-                
                 <button 
-                  onClick={() => setShowConfirmModal(true)}
-                  disabled={!selectedDirection}
-                  className={`w-full px-4 py-2 rounded-md font-medium transition-colors cursor-pointer ${
-                    !selectedDirection
-                      ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                      : 'bg-[#6a1754] text-white hover:bg-[#5c1949]'
-                  }`}
+                  className="w-full px-4 py-2 rounded-md font-medium transition-colors cursor-pointer bg-green-600 text-white hover:bg-green-700"
                 >
-                  Affecter le dossier
+                  Valider
                 </button>
                 
+                <button 
+                  className="w-full px-4 py-2 rounded-md font-medium transition-colors cursor-pointer bg-red-600 text-white hover:bg-red-700"
+                >
+                  Rejeter
+                </button>
               </div>
             </div>
 
@@ -409,6 +391,59 @@ const DossierDetail = () => {
                 </div>
               )}
             </div>
+
+            {/* Affectations */}
+            {dossier.Affectations && dossier.Affectations.length > 0 && (
+              <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h2 className="text-lg font-semibold text-gray-900 mb-4">Affectations</h2>
+                <div className="space-y-3">
+                  {dossier.Affectations.map((affectation, index) => (
+                    <div key={index} className="p-3 border border-gray-200 rounded-lg">
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-sm font-medium text-gray-900">Direction : {affectation.aff_direction}</span>
+                        <span className="text-xs text-gray-500">
+                          {new Date(affectation.createdAt).toLocaleDateString('fr-FR')}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Traitements */}
+            {dossier.Traitements && dossier.Traitements.length > 0 && (
+              <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h2 className="text-lg font-semibold text-gray-900 mb-4">Traitements</h2>
+                <div className="space-y-3">
+                  {dossier.Traitements.map((traitement, index) => (
+                    <div key={index} className="p-3 border border-gray-200 rounded-lg">
+                      <div className="flex items-center justify-between mb-2">
+                        <span className={`text-sm font-medium px-2 py-1 rounded-full ${
+                          traitement.tr_statut === 'valide' ? 'bg-green-100 text-green-800' :
+                          traitement.tr_statut === 'rejete' ? 'bg-red-100 text-red-800' :
+                          'bg-gray-100 text-gray-800'
+                        }`}>
+                          {traitement.tr_statut}
+                        </span>
+                        <span className="text-xs text-gray-500">
+                          {new Date(traitement.createdAt).toLocaleDateString('fr-FR')}
+                        </span>
+                      </div>
+                      <p className="text-sm text-gray-600">Par : {traitement.tr_usr_nom} </p>
+                      {traitement.tr_commentaire && (
+                        <p className="text-sm text-gray-600 mt-1">Commentaire : {traitement.tr_commentaire}</p>
+                      )}
+                      {traitement.tr_action && (
+                        <p className="text-sm text-gray-600 mt-1">Action : {traitement.tr_action}</p>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+
 
             {/* Actions */}
           </div>

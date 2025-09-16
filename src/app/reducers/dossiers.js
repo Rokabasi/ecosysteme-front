@@ -45,6 +45,38 @@ export const getDossierDetails = createAsyncThunk("dossiers-get-detail", async (
   }
 });
 
+export const rejetedDossier = createAsyncThunk("dossiers-rejeted",
+  async (data, { rejectWithValue }) => {
+    try {
+      const res = await protectedAxios.patch("/dossiers/rejet", data);
+      return res.data;
+    } catch (error) {
+      const response = error.response;
+      if (response) {
+        const message = response.data?.message || "Une erreur est survenue lors de la soumission";
+        // Propager le message backend à l'UI
+        return rejectWithValue({ status: "failed", message });
+      }
+      return rejectWithValue({ status: "failed", message: error.message || "Erreur réseau" });
+    }
+});
+
+export const validatedDossier = createAsyncThunk("dossiers-validated",
+  async (data, { rejectWithValue }) => {
+    try {
+      const res = await protectedAxios.patch("/candidatures/validation", data);
+      return res.data;
+    } catch (error) {
+      const response = error.response;
+      if (response) {
+        const message = response.data?.message || "Une erreur est survenue lors de la soumission";
+        // Propager le message backend à l'UI
+        return rejectWithValue({ status: "failed", message });
+      }
+      return rejectWithValue({ status: "failed", message: error.message || "Erreur réseau" });
+    }
+});
+
 export const { reducer: dossierReducer, actions } = createSlice({
   name: "dossier",
   initialState,
