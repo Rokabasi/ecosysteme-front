@@ -1,5 +1,6 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import ProtectedRoutes from './components/ProtectedRoutes/ProtectedRoutes';
+import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 import "./App.css";
 import Layout from "./components/Layout/Layout";
 import Register from "./pages/Register/Register";
@@ -24,9 +25,21 @@ function App() {
       <Route element={<ProtectedRoutes />}>
         <Route path="/admin" element={<Layout />}>
           <Route index element={<Dashboard />} />
-          <Route path="candidatures" element={<Candidatures />} />
-          <Route path="candidatures/:id" element={<CandidatureDetail />} />
-          <Route path="configuration" element={<Configuration />} />
+          <Route path="candidatures" element={
+            <ProtectedRoute requiredPermission="candidatures">
+              <Candidatures />
+            </ProtectedRoute>
+          } />
+          <Route path="candidatures/:id" element={
+            <ProtectedRoute requiredPermission="candidatures">
+              <CandidatureDetail />
+            </ProtectedRoute>
+          } />
+          <Route path="configuration" element={
+            <ProtectedRoute requiredPermission="configuration">
+              <Configuration />
+            </ProtectedRoute>
+          } />
         </Route>
       </Route>
 

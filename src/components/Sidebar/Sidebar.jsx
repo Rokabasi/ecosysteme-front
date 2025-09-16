@@ -11,6 +11,7 @@ import {
   HiOutlineChartBar,
   HiOutlineDocumentReport,
 } from "react-icons/hi";
+import { canAccessConfiguration, canAccessCandidatures } from "../../utils/permissions";
 
 const Sidebar = ({ onMobileNavigate, isCollapsed = false }) => {
   const navigate = useNavigate();
@@ -35,21 +36,25 @@ const Sidebar = ({ onMobileNavigate, isCollapsed = false }) => {
       path: "/admin",
       label: "Dashboard",
       icon: <HiOutlineChartSquareBar className="w-5 h-5 flex-shrink-0" />,
+      permission: null,
     },
     {
       path: "/admin/candidatures",
       label: "Candidatures",
       icon: <HiOutlineChartSquareBar className="w-5 h-5 flex-shrink-0" />,
+      permission: "candidatures",
     },
     {
       path: "/dossiers",
       label: "Dossiers",
       icon: <HiOutlineChartSquareBar className="w-5 h-5 flex-shrink-0" />,
+      permission: null,
     },
     {
       path: "/admin/configuration",
       label: "Configuration",
       icon: <HiOutlineCog className="w-5 h-5 flex-shrink-0" />,
+      permission: "configuration",
     },
   ];
 
@@ -78,6 +83,18 @@ const Sidebar = ({ onMobileNavigate, isCollapsed = false }) => {
   };
 
   // Check if user has required role for menu item
+  const hasPermission = (permission) => {
+    if (!permission) return true;
+    
+    switch (permission) {
+      case 'configuration':
+        return canAccessConfiguration();
+      case 'candidatures':
+        return canAccessCandidatures();
+      default:
+        return true;
+    }
+  };
 
   return (
     <div className="h-full w-full text-white flex flex-col">
@@ -85,32 +102,34 @@ const Sidebar = ({ onMobileNavigate, isCollapsed = false }) => {
 
       {/* Menu principal */}
       <nav className="flex-1 px-2 py-4 space-y-1 overflow-y-auto pt-12">
-        {menuItems.map((item) => {
-          const active = isActive(item.path);
-          return (
-            <Link
-              key={item.path}
-              to={item.path}
-              onClick={() => handleNavigation(item.path)}
-              className={`group flex items-center px-3 py-3 text-sm font-medium rounded-md transition-colors duration-200 ${
-                active
-                  ? "bg-[#6a1754] text-white"
-                  : "text-white/70 hover:bg-[#1e293b] hover:text-white"
-              }`}
-            >
-              <span
-                className={`transition-colors duration-200 ${
-                  active ? "text-white" : "text-white/90 group-hover:text-white"
+        {menuItems
+          .filter(item => hasPermission(item.permission))
+          .map((item) => {
+            const active = isActive(item.path);
+            return (
+              <Link
+                key={item.path}
+                to={item.path}
+                onClick={() => handleNavigation(item.path)}
+                className={`group flex items-center px-3 py-3 text-sm font-medium rounded-md transition-colors duration-200 ${
+                  active
+                    ? "bg-[#6a1754] text-white"
+                    : "text-white/70 hover:bg-[#1e293b] hover:text-white"
                 }`}
               >
-                {item.icon}
-              </span>
-              {!isCollapsed && (
-                <span className="ml-3 truncate text-white">{item.label}</span>
-              )}
-            </Link>
-          );
-        })}
+                <span
+                  className={`transition-colors duration-200 ${
+                    active ? "text-white" : "text-white/90 group-hover:text-white"
+                  }`}
+                >
+                  {item.icon}
+                </span>
+                {!isCollapsed && (
+                  <span className="ml-3 truncate text-white">{item.label}</span>
+                )}
+              </Link>
+            );
+          })}
       </nav>
     </div>
   );

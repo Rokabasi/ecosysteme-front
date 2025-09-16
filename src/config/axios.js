@@ -9,12 +9,29 @@ const protectedAxios = Axios.create({ baseURL: url });
 const protectedSendFileAxios = Axios.create({
   baseURL: url,
   timeout: 60000,
+  withCredentials:true,
   maxContentLength: 60 * 1024 * 1024,
   maxBodyLength: 60 * 1024 * 1024,
   headers: {
     "Content-Type": "multipart/form-data",
   },
 });
+
+const injectToken = (config) => {
+  const { getSessionToken } = getSessionStorage();
+  const token = getSessionToken();
+  
+  if (token) {
+    config.headers['x-access-token'] = token;
+  } else {
+    // Gestion plus élégante que la redirection immédiate
+    return Promise.reject(new Error('Token manquant - redirection vers login'));
+  }
+  return config;
+};
+
+protectedAxios.interceptors.request.use(injectToken);
+protectedSendFileAxios.interceptors.request.use(injectToken);
 
 // Intercepteur pour injecter le token d'authentification
 const authInterceptor = (config) => {

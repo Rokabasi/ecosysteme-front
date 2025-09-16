@@ -2,16 +2,17 @@ import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { FiArrowLeft, FiMail, FiPhone, FiMapPin, FiCalendar, FiUser, FiFileText, FiUsers, FiTarget, FiInfo } from 'react-icons/fi';
 import useCandidatures from './hook';
+import Loader from '../../../components/Loader/Loader';
 
 const CandidatureDetail = () => {
 
-  const { candidature } = useCandidatures();
+  const { candidature,error,loading } = useCandidatures();
 
   const { id } = useParams();
   const navigate = useNavigate();
    // Utiliser les données de test
 
-  if (!candidature) {
+  if (error) {
     return (
       <div className="p-4">
         <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4">
@@ -39,6 +40,13 @@ const CandidatureDetail = () => {
         </div>
       </div>
     );
+  }
+
+    if (loading || !candidature) {
+    return(
+      <Loader />
+    )
+    
   }
 
   const getStatusBadge = (status) => {

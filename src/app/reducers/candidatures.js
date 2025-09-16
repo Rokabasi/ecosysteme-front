@@ -77,12 +77,13 @@ export const { reducer: candidatureReducer, actions } = createSlice({
     });
 
     builder.addCase(getCandidatures.fulfilled, (state,action) => {
-      state.loading = false;
       state.candidatures = action.payload;
+      state.loading = false;
     });
 
     builder.addCase(getCandidatures.rejected, (state) => {
       state.loading = false;
+      state.error = true
     });
 
     builder.addCase(getCandidatureDetails.pending, (state) => {
