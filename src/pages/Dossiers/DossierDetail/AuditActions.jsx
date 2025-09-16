@@ -14,21 +14,17 @@ const AuditActions = ({ dossier }) => {
     const userData = getSessionUser();
     const formData = new FormData();
 
-    const data = {
-      'str_id': dossier.str_id,
-      'risque': riskLevel,
-      'user': userData
-    };
-    console.log(data);
-    
-    formData.append('infoData', data);
-    console.log(data,formData);
+    // Append each field individually to FormData
+    formData.append('str_id', dossier.str_id);
+    formData.append('risque', riskLevel);
+    formData.append('user', JSON.stringify(userData));
     
     files.forEach((file, index) => {
       formData.append(`documentsduediligence`, file);
     });
 
     await dispatch(niveauRisqueDossier(formData)).unwrap();
+    await dispatch(getDossierDetails(dossier.str_id));
   };
 
   const handleRiskModalClose = () => {
