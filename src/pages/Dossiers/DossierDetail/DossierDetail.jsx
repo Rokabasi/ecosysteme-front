@@ -348,24 +348,29 @@ const DossierDetail = () => {
             </div>
 
                         {/* Actions */}
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">Actions</h2>
-              <div className="space-y-3">
-                <button 
-                  onClick={handleValidation}
-                  className="w-full px-4 py-2 rounded-md font-medium transition-colors cursor-pointer bg-green-600 text-white hover:bg-green-700"
-                >
-                  Valider
-                </button>
-                
-                <button 
-                  onClick={handleRejection}
-                  className="w-full px-4 py-2 rounded-md font-medium transition-colors cursor-pointer bg-red-600 text-white hover:bg-red-700"
-                >
-                  Rejeter
-                </button>
+            {
+              dossier.str_statut === "soumis" && (
+              <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h2 className="text-lg font-semibold text-gray-900 mb-4">Actions</h2>
+                <div className="space-y-3">
+                  <button 
+                    onClick={handleValidation}
+                    className="w-full px-4 py-2 rounded-md font-medium transition-colors cursor-pointer bg-green-600 text-white hover:bg-green-700"
+                  >
+                    Valider
+                  </button>
+                  
+                  <button 
+                    onClick={handleRejection}
+                    className="w-full px-4 py-2 rounded-md font-medium transition-colors cursor-pointer bg-red-600 text-white hover:bg-red-700"
+                  >
+                    Rejeter
+                  </button>
+                </div>
               </div>
-            </div>
+          
+              )
+            }
 
             {/* Renseignements de la structure */}
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
