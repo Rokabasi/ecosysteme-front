@@ -16,6 +16,7 @@ const LocaliteStep = ({ validationErrors = {}, clearFieldError }) => {
     }
     dispatch(updateLocalites({ provinceId: pid, value }));
   };
+console.log(localites);
 
   return (
     <div className="max-w-2xl mx-auto">
