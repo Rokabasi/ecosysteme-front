@@ -14,3 +14,11 @@ export const canAccessCandidatures = () => {
   if (!user) return false;
   return user.direction === 'AUDIT' && user.profil === 'Controleur';
 };
+
+export const canAccessDossiers = () => {
+  const user = getSessionUser();
+  
+  if (!user) return false;
+  
+  return (user.direction === 'ETUDES' || user.direction === 'REPARATIONS' || user.direction === 'ACCES A LA JUSTICE' ) && ( user.profil === 'Analyste' || user.profil === 'Directeur');
+};

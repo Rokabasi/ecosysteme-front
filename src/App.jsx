@@ -11,6 +11,8 @@ import Dashboard from "./pages/Dashboard/Dashboard";
 import Login from "./pages/Auth/Login";
 import Candidatures from "./pages/Candidatures/Candidatures";
 import CandidatureDetail from './pages/Candidatures/CandidatureDetail/CandidatureDetail';
+import Dossiers from './pages/Dossiers/Dossiers';
+import DossierDetail from './pages/Dossiers/DossierDetail/DossierDetail';
 
 function App() {
   return (
@@ -30,9 +32,19 @@ function App() {
               <Candidatures />
             </ProtectedRoute>
           } />
+           <Route path="dossiers" element={
+             <ProtectedRoute requiredPermission="dossiers">
+              <Dossiers />
+             </ProtectedRoute>
+          } />
           <Route path="candidatures/:id" element={
             <ProtectedRoute requiredPermission="candidatures">
               <CandidatureDetail />
+            </ProtectedRoute>
+          } />
+          <Route path="dossiers/:id" element={
+            <ProtectedRoute requiredPermission="dossiers">
+              <DossierDetail />
             </ProtectedRoute>
           } />
           <Route path="configuration" element={

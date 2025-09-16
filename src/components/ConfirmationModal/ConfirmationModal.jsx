@@ -34,10 +34,11 @@ const ConfirmationModal = ({
   if (!isOpen && result === null) return null;
 
   const closeAll = () => {
+    const currentResult = result;
     setLoading(false);
     setResult(null);
     setErrorMessage("");
-    onClose && onClose();
+    onClose && onClose(currentResult);
   };
 
   const handleCancel = () => {

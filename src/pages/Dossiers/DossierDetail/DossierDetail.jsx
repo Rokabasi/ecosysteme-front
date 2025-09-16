@@ -8,9 +8,9 @@ import AffectationModal from '../../../components/AffectationModal/AffectationMo
 import { affectationCandidature } from '../../../app/reducers/candidatures';
 import { getSessionUser } from '../../../config/auth';
 
-const CandidatureDetail = () => {
+const DossierDetail = () => {
   const {
-    candidature,
+    dossier,
     error,
     loading,
     selectedDirection,
@@ -25,15 +25,6 @@ const CandidatureDetail = () => {
     navigate
   } = useCandidatures();
 
-  const handleAffectation = async () => {
-    const userData = getSessionUser();
-    const affectationData = {
-      str_id: candidature.str_id,
-      direction: selectedDirection,
-      user: userData
-    };
-    await dispatch(affectationCandidature(affectationData)).unwrap();
-  };
 
   const handleModalCloseWithNavigation = () => {
     setShowConfirmModal(false);
@@ -42,7 +33,7 @@ const CandidatureDetail = () => {
 
   const handleSuccessModalCloseWithNavigation = () => {
     setShowSuccessModal(false);
-    navigate('/admin/candidatures');
+    navigate('/admin/dossiers');
   };
   
    // Utiliser les données de test
@@ -59,7 +50,7 @@ const CandidatureDetail = () => {
             </div>
             <div className="ml-3">
               <p className="text-sm text-yellow-700">
-                Aucune candidature trouvée avec l'identifiant
+                Aucun dossier trouvée avec l'identifiant
               </p>
             </div>
           </div>
@@ -77,7 +68,7 @@ const CandidatureDetail = () => {
     );
   }
 
-    if (loading || !candidature) {
+    if (loading || !dossier) {
     return(
       <Loader />
     )
@@ -116,7 +107,7 @@ const CandidatureDetail = () => {
       <div className="max-w-7xl mx-auto">
         <div className="mb-6">
           <button 
-            onClick={() => navigate('/admin/candidatures')}
+            onClick={() => navigate('/admin/dossiers')}
             className="flex cursor-pointer items-center px-4 py-2 mb-4 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50"
           >
             <FiArrowLeft className="mr-2 h-4 w-4" />
@@ -124,11 +115,11 @@ const CandidatureDetail = () => {
           </button>
           
           <div className="flex justify-between items-center">
-            <h1 className="text-3xl font-bold text-gray-900">{candidature.str_designation}</h1>
+            <h1 className="text-3xl font-bold text-gray-900">{dossier.str_designation}</h1>
             <div className="flex items-center space-x-3">
-              {getStatusBadge(candidature.str_statut)}
+              {getStatusBadge(dossier.str_statut)}
               <span className="text-sm text-gray-500">
-                Soumis le {new Date(candidature.createdAt).toLocaleDateString('fr-FR')}
+                Soumis le {new Date(dossier.createdAt).toLocaleDateString('fr-FR')}
               </span>
             </div>
           </div>
@@ -146,24 +137,24 @@ const CandidatureDetail = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label className="text-sm font-medium text-gray-500">Dénomination</label>
-                  <p className="mt-1 text-lg font-semibold text-gray-900">{candidature.str_designation}</p>
+                  <p className="mt-1 text-lg font-semibold text-gray-900">{dossier.str_designation}</p>
                 </div>
                 <div>
                   <label className="text-sm font-medium text-gray-500">Sigle</label>
-                  <p className="mt-1 text-gray-900">{candidature.str_sigle || 'Non renseigné'}</p>
+                  <p className="mt-1 text-gray-900">{dossier.str_sigle || 'Non renseigné'}</p>
                 </div>
                 <div>
                   <label className="text-sm font-medium text-gray-500">Année de création</label>
                   <p className="mt-1 text-gray-900 flex items-center">
                     <FiCalendar className="mr-2 h-4 w-4 text-gray-400" />
-                    {candidature.str_annee_creation}
+                    {dossier.str_annee_creation}
                   </p>
                 </div>
                 <div>
                   <label className="text-sm font-medium text-gray-500">Nombre d'employés</label>
                   <p className="mt-1 text-gray-900 flex items-center">
                     <FiUsers className="mr-2 h-4 w-4 text-gray-400" />
-                    {candidature.str_nombre_employe_actif}
+                    {dossier.str_nombre_employe_actif}
                   </p>
                 </div>
               </div>
@@ -179,11 +170,11 @@ const CandidatureDetail = () => {
                 <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
                   <div>
                     <label className="text-sm font-medium text-gray-500">Province du siège social</label>
-                    <p className="mt-1 text-gray-900">{candidature.str_province_siege_sociale}</p>
+                    <p className="mt-1 text-gray-900">{dossier.str_province_siege_sociale}</p>
                   </div>
                   <div>
                     <label className="text-sm font-medium text-gray-500">Adresse du siège social</label>
-                    <p className="mt-1 text-gray-900">{candidature.str_adresse_siege_sociale}</p>
+                    <p className="mt-1 text-gray-900">{dossier.str_adresse_siege_sociale}</p>
                   </div>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -191,25 +182,25 @@ const CandidatureDetail = () => {
                     <label className="text-sm font-medium text-gray-500">Téléphone</label>
                     <p className="mt-1 text-gray-900 flex items-center">
                       <FiPhone className="mr-2 h-4 w-4 text-gray-400" />
-                      {candidature.str_telephone}
+                      {dossier.str_telephone}
                     </p>
                   </div>
                   <div>
                     <label className="text-sm font-medium text-gray-500">Email</label>
                     <p className="mt-1 text-blue-600 flex items-center">
                       <FiMail className="mr-2 h-4 w-4 text-gray-400" />
-                      <a href={`mailto:${candidature.str_email}`} className="hover:underline">
-                        {candidature.str_email}
+                      <a href={`mailto:${dossier.str_email}`} className="hover:underline">
+                        {dossier.str_email}
                       </a>
                     </p>
                   </div>
                 </div>
-                {candidature.str_site_web && (
+                {dossier.str_site_web && (
                   <div>
                     <label className="text-sm font-medium text-gray-500">Site web</label>
                     <p className="mt-1 text-blue-600">
-                      <a href={`http://${candidature.str_site_web}`} target="_blank" rel="noopener noreferrer" className="hover:underline">
-                        {candidature.str_site_web}
+                      <a href={`http://${dossier.str_site_web}`} target="_blank" rel="noopener noreferrer" className="hover:underline">
+                        {dossier.str_site_web}
                       </a>
                     </p>
                   </div>
@@ -226,11 +217,11 @@ const CandidatureDetail = () => {
               <div className="space-y-4">
                 <div>
                   <label className="text-sm font-medium text-gray-500">Mission de l'organisation</label>
-                  <p className="mt-2 text-gray-900 leading-relaxed">{candidature.str_mission}</p>
+                  <p className="mt-2 text-gray-900 leading-relaxed">{dossier.str_mission}</p>
                 </div>
                 <div>
                   <label className="text-sm font-medium text-gray-500">Résultats opérationnels</label>
-                  <p className="mt-2 text-gray-900 leading-relaxed">{candidature.str_resultat_operationel}</p>
+                  <p className="mt-2 text-gray-900 leading-relaxed">{dossier.str_resultat_operationel}</p>
                 </div>
               </div>
             </div>
@@ -239,7 +230,7 @@ const CandidatureDetail = () => {
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
               <h2 className="text-xl font-semibold text-gray-900 mb-6">Zones d'intervention</h2>
               <div className="space-y-4">
-                {candidature.Province_structures.map((province, index) => (
+                {dossier.Province_structures.map((province, index) => (
                   <div key={index} className="border-l-4 border-[#6a1754] pl-4">
                     <h3 className="font-semibold text-gray-900">{province.Province.pro_designation}</h3>
                     <div className="mt-2 flex flex-wrap gap-2">
@@ -258,7 +249,7 @@ const CandidatureDetail = () => {
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
               <h2 className="text-xl font-semibold text-gray-900 mb-6">Domaines d'intervention</h2>
               <div className="flex flex-wrap gap-3">
-                {candidature.Domaine_structures.map((domaine, index) => (
+                {dossier.Domaine_structures.map((domaine, index) => (
                   <span key={index} className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-[#6a1754] text-white">
                     {domaine.Domaine.dom_designation}
                   </span>
@@ -273,7 +264,7 @@ const CandidatureDetail = () => {
                 Documents joints
               </h2>
               <div className="space-y-3">
-                {candidature.Documents.map((doc, index) => (
+                {dossier.Documents.map((doc, index) => (
                   <div key={index} className="flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50">
                     <div className="flex items-center space-x-3">
                       <FiFileText className="h-5 w-5 text-gray-400" />
@@ -305,10 +296,10 @@ const CandidatureDetail = () => {
                 </div>
                 <div>
                   <h3 className="font-medium text-gray-900">
-                    {candidature.str_nom_representant_legal || 'Non renseigné'}
+                    {dossier.str_nom_representant_legal || 'Non renseigné'}
                   </h3>
                   <p className="text-sm text-gray-500">
-                    {candidature.str_fonction_representant || 'Fonction non renseignée'}
+                    {dossier.str_fonction_representant || 'Fonction non renseignée'}
                   </p>
                 </div>
               </div>
@@ -349,9 +340,9 @@ const CandidatureDetail = () => {
                 <FiInfo className="mr-2 h-5 w-5 text-[#6a1754]" />
                 Renseignements de la structure
               </h2>
-              {candidature.Structure_renseignements && candidature.Structure_renseignements.length > 0 && (
+              {dossier.Structure_renseignements && dossier.Structure_renseignements.length > 0 && (
                 <div className="space-y-4">
-                  {candidature.Structure_renseignements.map((renseignement, index) => (
+                  {dossier.Structure_renseignements.map((renseignement, index) => (
                     <div key={index} className="space-y-3">
                       {/* Prise en charge */}
                       <div className="flex items-start space-x-3">
@@ -428,7 +419,7 @@ const CandidatureDetail = () => {
       <AffectationModal
         isOpen={showConfirmModal}
         direction={selectedDirection}
-        onConfirm={handleAffectation}
+        //onConfirm={handleAffectation}
         onCancel={handleModalClose}
         onSuccessClose={handleModalCloseWithNavigation}
         loading={loading}
@@ -448,4 +439,4 @@ const CandidatureDetail = () => {
   );
 };
 
-export default CandidatureDetail;
+export default DossierDetail;

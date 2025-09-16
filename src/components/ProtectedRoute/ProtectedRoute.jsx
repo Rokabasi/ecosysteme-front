@@ -1,6 +1,6 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-import { canAccessConfiguration, canAccessCandidatures } from '../../utils/permissions';
+import { canAccessConfiguration, canAccessCandidatures, canAccessDossiers } from '../../utils/permissions';
 
 const ProtectedRoute = ({ children, requiredPermission }) => {
   let hasPermission = false;
@@ -12,6 +12,8 @@ const ProtectedRoute = ({ children, requiredPermission }) => {
     case 'candidatures':
       hasPermission = canAccessCandidatures();
       break;
+      case 'dossiers':
+      hasPermission = canAccessDossiers();
     default:
       hasPermission = true;
   }

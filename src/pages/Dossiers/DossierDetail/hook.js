@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { getCandidatureDetails, getErrorCandidature, getLoadingCandidature, selectCandidatureDetails } from '../../../app/reducers/candidatures';
 import { useParams } from 'react-router';
+import { getDossierDetails, getErrorDossier, getLoadingDossier, selectDossierDetails } from '../../../app/reducers/dossiers';
 
 const useCandidatures = () => {
   const [selectedDirection, setSelectedDirection] = useState('');
@@ -12,13 +12,13 @@ const useCandidatures = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const candidature = useSelector(selectCandidatureDetails);
-  const loading = useSelector(getLoadingCandidature)
-  const error = useSelector(getErrorCandidature);
+  const dossier = useSelector(selectDossierDetails);
+  const loading = useSelector(getLoadingDossier)
+  const error = useSelector(getErrorDossier);
   const { id }= useParams();
 
   useEffect(()=>{
-    dispatch(getCandidatureDetails(id));
+    dispatch(getDossierDetails(id));
   },[])
 
   const handleModalClose = () => {
@@ -30,7 +30,7 @@ const useCandidatures = () => {
   };
 
   return {
-    candidature,
+    dossier,
     error,
     loading,
     selectedDirection,

@@ -11,7 +11,7 @@ import {
   HiOutlineChartBar,
   HiOutlineDocumentReport,
 } from "react-icons/hi";
-import { canAccessConfiguration, canAccessCandidatures } from "../../utils/permissions";
+import { canAccessConfiguration, canAccessCandidatures, canAccessDossiers } from "../../utils/permissions";
 
 const Sidebar = ({ onMobileNavigate, isCollapsed = false }) => {
   const navigate = useNavigate();
@@ -45,10 +45,10 @@ const Sidebar = ({ onMobileNavigate, isCollapsed = false }) => {
       permission: "candidatures",
     },
     {
-      path: "/dossiers",
+      path: "/admin/dossiers",
       label: "Dossiers",
       icon: <HiOutlineChartSquareBar className="w-5 h-5 flex-shrink-0" />,
-      permission: null,
+      permission: "dossiers",
     },
     {
       path: "/admin/configuration",
@@ -68,7 +68,7 @@ const Sidebar = ({ onMobileNavigate, isCollapsed = false }) => {
       return true;
     }
     // Pour les dossiers, activer si la route commence par /dossiers
-    if (path === "/dossiers" && activePath.startsWith("/dossiers")) {
+    if (path === "/admin/dossiers" && activePath.startsWith("/admin/dossiers")) {
       return true;
     }
     // Pour le dashboard, activer seulement si c'est exactement /admin
@@ -91,6 +91,8 @@ const Sidebar = ({ onMobileNavigate, isCollapsed = false }) => {
         return canAccessConfiguration();
       case 'candidatures':
         return canAccessCandidatures();
+      case 'dossiers':
+        return canAccessDossiers();
       default:
         return true;
     }
