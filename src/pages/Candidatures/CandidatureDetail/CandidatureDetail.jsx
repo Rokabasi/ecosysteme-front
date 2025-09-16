@@ -1,13 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { FiArrowLeft, FiMail, FiPhone, FiMapPin, FiCalendar, FiUser, FiFileText, FiUsers, FiTarget, FiInfo } from 'react-icons/fi';
 import useCandidatures from './hook';
 import Loader from '../../../components/Loader/Loader';
+import ConfirmationModal from '../../../components/ConfirmationModal/ConfirmationModal';
+import { affectationCandidature } from '../../../app/reducers/candidatures';
+import { getSessionUser } from '../../../config/auth';
 
 const CandidatureDetail = () => {
+  const [selectedDirection, setSelectedDirection] = useState('');
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const { candidature,error,loading } = useCandidatures();
-
+  const { candidature, error, loading } = useCandidatures();
+  const dispatch = useDispatch();
   const { id } = useParams();
   const navigate = useNavigate();
    // Utiliser les données de test
@@ -74,6 +81,32 @@ const CandidatureDetail = () => {
     const sizes = ["Bytes", "KB", "MB", "GB"];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
+  };
+
+  const handleAffectation = async () => {
+    try {
+      setIsSubmitting(true);
+      
+      // Récupérer les données utilisateur depuis sessionStorage
+      const userData = getSessionUser();
+      
+      const affectationData = {
+        str_id: candidature.str_id,
+        direction: selectedDirection,
+        user: userData
+      };
+
+      const result = await dispatch(affectationCandidature(affectationData)).unwrap();
+      
+      // Si succès, naviguer vers la liste des candidatures
+      navigate('/admin/candidatures');
+      
+    } catch (error) {
+      // L'erreur sera gérée par le modal de confirmation
+      throw error;
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -282,17 +315,27 @@ const CandidatureDetail = () => {
                         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
               <h2 className="text-lg font-semibold text-gray-900 mb-4">Actions</h2>
               <div className="space-y-3">
-                <select className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#6a1754] focus:border-transparent">
+                <select 
+                  value={selectedDirection}
+                  onChange={(e) => setSelectedDirection(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#6a1754] focus:border-transparent"
+                >
                   <option value="">Affecter à une direction</option>
                   <option value="ETUDES">Etudes</option>
                   <option value="REPARATIONS">Réparations</option>
-                  <option value="ACCES A LA JUSTICE la justice">Accès à la justice</option>
+                  <option value="ACCES A LA JUSTICE">Accès à la justice</option>
                 </select>
                 
                 <button 
-                
-                  className="w-full px-4 py-2 bg-[#6a1754] text-white rounded-md hover:bg-[#5c1949] font-medium transition-colors">
-                  Affecter le dossier
+                  onClick={() => setShowConfirmModal(true)}
+                  disabled={!selectedDirection || isSubmitting}
+                  className={`w-full px-4 py-2 rounded-md font-medium transition-colors cursor-pointer ${
+                    !selectedDirection || isSubmitting
+                      ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                      : 'bg-[#6a1754] text-white hover:bg-[#5c1949]'
+                  }`}
+                >
+                  {isSubmitting ? 'Affectation en cours...' : 'Affecter le dossier'}
                 </button>
                 
               </div>
@@ -378,6 +421,19 @@ const CandidatureDetail = () => {
           </div>
         </div>
       </div>
+
+      {/* Modal de confirmation */}
+      <ConfirmationModal
+        isOpen={showConfirmModal}
+        type="confirm"
+        title="Confirmation d'affectation"
+        message={`Êtes-vous sûr de vouloir affecter ce dossier de candidature à la direction "${selectedDirection}" ?`}
+        confirmText="Oui"
+        cancelText="Annuler"
+        onConfirm={handleAffectation}
+        onCancel={() => setShowConfirmModal(false)}
+        onClose={() => setShowConfirmModal(false)}
+      />
     </div>
   );
 };

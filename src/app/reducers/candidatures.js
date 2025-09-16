@@ -123,6 +123,10 @@ export const { reducer: candidatureReducer, actions } = createSlice({
     builder.addCase(affectationCandidature.fulfilled, (state) => {
       state.loading = false;
     });
+
+    builder.addCase(affectationCandidature.rejected, (state) => {
+      state.loading = false;
+    });
   },
 });
 
