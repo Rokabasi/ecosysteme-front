@@ -11,12 +11,14 @@ const RiskLevelModal = ({
   const [riskLevel, setRiskLevel] = useState('');
   const [files, setFiles] = useState([]);
   const [showResult, setShowResult] = useState(null);
+  const [showConfirmation, setShowConfirmation] = useState(false);
   
   useEffect(() => {
     if (isOpen) {
       setRiskLevel('');
       setFiles([]);
       setShowResult(null);
+      setShowConfirmation(false);
     }
   }, [isOpen]);
   
@@ -25,10 +27,16 @@ const RiskLevelModal = ({
   const handleConfirm = async () => {
     try {
       await onConfirm(riskLevel, files);
+      setShowConfirmation(false);
       setShowResult('success');
     } catch (error) {
+      setShowConfirmation(false);
       setShowResult('error');
     }
+  };
+
+  const handleInitialConfirm = () => {
+    setShowConfirmation(true);
   };
 
   const handleFileChange = (e) => {
@@ -48,6 +56,9 @@ const RiskLevelModal = ({
     }
   };
 
+  // Validation: au moins un niveau de risque et un fichier
+  const isFormValid = riskLevel && files.length > 0;
+
   if (showResult === 'success') {
     return (
       <div className="fixed inset-0 flex items-center justify-center z-50 bg-black/50">
@@ -64,6 +75,52 @@ const RiskLevelModal = ({
           <div className="flex justify-end p-6 pt-0">
             <button onClick={handleClose} className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">
               OK
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Modal de confirmation
+  if (showConfirmation) {
+    return (
+      <div className="fixed inset-0 flex items-center justify-center z-50 bg-black/50">
+        <div className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4">
+          <div className="flex items-center justify-between p-6 border-b border-gray-200">
+            <h3 className="text-lg font-semibold text-gray-900">Confirmation</h3>
+            <button onClick={() => setShowConfirmation(false)} className="text-gray-400 hover:text-gray-600">
+              <FiX className="h-5 w-5" />
+            </button>
+          </div>
+          <div className="p-6">
+            <p className="text-gray-700 mb-4">
+              Êtes-vous sûr de vouloir ajouter le niveau de risque <strong>"{riskLevel}"</strong> avec {files.length} document(s) ?
+            </p>
+            <p className="text-sm text-gray-500">
+              Cette action ne peut pas être annulée.
+            </p>
+          </div>
+          <div className="flex justify-end gap-3 p-6 pt-0 border-t border-gray-200">
+            <button 
+              onClick={() => setShowConfirmation(false)} 
+              className="px-4 py-2 border border-gray-300 font-medium text-gray-700 rounded-md hover:bg-gray-50 transition-colors"
+            >
+              Annuler
+            </button>
+            <button
+              onClick={handleConfirm}
+              disabled={loading}
+              className={`inline-flex items-center justify-center px-4 py-2 rounded-md text-white font-medium cursor-pointer transition-colors ${
+                loading
+                  ? 'bg-gray-300 cursor-not-allowed'
+                  : 'bg-[#6a1754] hover:bg-[#5c1949]'
+              }`}
+            >
+              {loading && (
+                <span className="mr-2 inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+              )}
+              Confirmer
             </button>
           </div>
         </div>
@@ -160,10 +217,10 @@ const RiskLevelModal = ({
             Annuler
           </button>
           <button
-            onClick={handleConfirm}
-            disabled={!riskLevel || loading}
+            onClick={handleInitialConfirm}
+            disabled={!isFormValid || loading}
             className={`inline-flex items-center justify-center px-4 py-2 rounded-md text-white font-medium cursor-pointer transition-colors ${
-              !riskLevel || loading
+              !isFormValid || loading
                 ? 'bg-gray-300 cursor-not-allowed'
                 : 'bg-[#6a1754] hover:bg-[#5c1949]'
             }`}

@@ -15,12 +15,14 @@ const AuditActions = ({ dossier }) => {
     const formData = new FormData();
 
     const data = {
-      str_id: dossier.str_id,
-      risque: riskLevel,
-      user: userData
+      'str_id': dossier.str_id,
+      'risque': riskLevel,
+      'user': userData
     };
+    console.log(data);
     
-    formData.append('data', data);
+    formData.append('infoData', data);
+    console.log(data,formData);
     
     files.forEach((file, index) => {
       formData.append(`documentsduediligence`, file);
