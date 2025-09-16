@@ -2,9 +2,8 @@ import React from 'react';
 import { FiArrowLeft, FiMail, FiPhone, FiMapPin, FiCalendar, FiUser, FiFileText, FiUsers, FiTarget, FiInfo } from 'react-icons/fi';
 import useCandidatures from './hook';
 import Loader from '../../../components/Loader/Loader';
-import AffectationModal from '../../../components/AffectationModal/AffectationModal';
-import ValidationModal from '../../../components/ValidationModal/ValidationModal';
-import { validatedDossier, rejetedDossier, getDossierDetails } from '../../../app/reducers/dossiers';
+import ValidationActions from './ValidationActions';
+import AuditActions from './AuditActions';
 import { getSessionUser } from '../../../config/auth';
 
 const DossierDetail = () => {
@@ -24,60 +23,9 @@ const DossierDetail = () => {
     navigate
   } = useCandidatures();
 
-  const [showValidationModal, setShowValidationModal] = React.useState(false);
-  const [showRejectionModal, setShowRejectionModal] = React.useState(false);
-  const [validationType, setValidationType] = React.useState(''); // 'validation' | 'rejection'
+  // Get user direction from session storage
+  const userData = getSessionUser();
 
-  const handleModalCloseWithNavigation = () => {
-    setShowConfirmModal(false);
-    setShowSuccessModal(true);
-  };
-
-  const handleSuccessModalCloseWithNavigation = () => {
-    setShowSuccessModal(false);
-    // Re-fetch dossier details to show updated status
-    dispatch(getDossierDetails(dossier.str_id));
-  };
-
-  const handleValidation = () => {
-    setValidationType('validation');
-    setShowValidationModal(true);
-  };
-
-  const handleRejection = () => {
-    setValidationType('rejection');
-    setShowRejectionModal(true);
-  };
-
-  const handleValidationConfirm = async (comment) => {
-    const userData = getSessionUser();
-    const validationData = {
-      str_id: dossier.str_id,
-      commentaire: comment,
-      user: userData
-    };
-    await dispatch(validatedDossier(validationData)).unwrap();
-  };
-
-  const handleRejectionConfirm = async (comment) => {
-    const userData = getSessionUser();
-    const rejectionData = {
-      str_id: dossier.str_id,
-      commentaire: comment,
-      user: userData
-    };
-    await dispatch(rejetedDossier(rejectionData)).unwrap();
-  };
-
-  const handleValidationModalClose = () => {
-    setShowValidationModal(false);
-    setShowSuccessModal(true);
-  };
-
-  const handleRejectionModalClose = () => {
-    setShowRejectionModal(false);
-    setShowSuccessModal(true);
-  };
   
    // Utiliser les données de test
 
@@ -272,11 +220,11 @@ const DossierDetail = () => {
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
               <h2 className="text-xl font-semibold text-gray-900 mb-6">Zones d'intervention</h2>
               <div className="space-y-4">
-                {dossier.Province_structures.map((province, index) => (
+                {dossier?.Province_structures?.map((province, index) => (
                   <div key={index} className="border-l-4 border-[#6a1754] pl-4">
                     <h3 className="font-semibold text-gray-900">{province.Province.pro_designation}</h3>
                     <div className="mt-2 flex flex-wrap gap-2">
-                      {province.Localite_operationnelles.map((localite, idx) => (
+                      {province.Localite_operationnelles?.map((localite, idx) => (
                         <span key={idx} className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
                           {localite.loc_designation}
                         </span>
@@ -291,7 +239,7 @@ const DossierDetail = () => {
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
               <h2 className="text-xl font-semibold text-gray-900 mb-6">Domaines d'intervention</h2>
               <div className="flex flex-wrap gap-3">
-                {dossier.Domaine_structures.map((domaine, index) => (
+                {dossier?.Domaine_structures?.map((domaine, index) => (
                   <span key={index} className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-[#6a1754] text-white">
                     {domaine.Domaine.dom_designation}
                   </span>
@@ -306,7 +254,7 @@ const DossierDetail = () => {
                 Documents joints
               </h2>
               <div className="space-y-3">
-                {dossier.Documents.map((doc, index) => (
+                {dossier?.Documents?.map((doc, index) => (
                   <div key={index} className="flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50">
                     <div className="flex items-center space-x-3">
                       <FiFileText className="h-5 w-5 text-gray-400" />
@@ -347,30 +295,10 @@ const DossierDetail = () => {
               </div>
             </div>
 
-                        {/* Actions */}
-            {
-              dossier.str_statut === "soumis" && (
-              <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                <h2 className="text-lg font-semibold text-gray-900 mb-4">Actions</h2>
-                <div className="space-y-3">
-                  <button 
-                    onClick={handleValidation}
-                    className="w-full px-4 py-2 rounded-md font-medium transition-colors cursor-pointer bg-green-600 text-white hover:bg-green-700"
-                  >
-                    Valider
-                  </button>
-                  
-                  <button 
-                    onClick={handleRejection}
-                    className="w-full px-4 py-2 rounded-md font-medium transition-colors cursor-pointer bg-red-600 text-white hover:bg-red-700"
-                  >
-                    Rejeter
-                  </button>
-                </div>
-              </div>
-          
-              )
-            }
+            {/* Actions conditionnelles selon la direction */}
+            {((userData.direction === 'ETUDES' || userData.direction === 'REPARATIONS' || userData.direction === 'ACCES A LA JUSTICE' ) && ( userData.profil === 'Analyste' || userData.profil === 'Directeur')) && <ValidationActions dossier={dossier} />}
+
+            {(userData.direction === 'AUDIT' &&  userData.profil === 'Auditeur') && <AuditActions dossier={dossier} />}
 
             {/* Renseignements de la structure */}
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
@@ -380,7 +308,7 @@ const DossierDetail = () => {
               </h2>
               {dossier.Structure_renseignements && dossier.Structure_renseignements.length > 0 && (
                 <div className="space-y-4">
-                  {dossier.Structure_renseignements.map((renseignement, index) => (
+                  {dossier.Structure_renseignements?.map((renseignement, index) => (
                     <div key={index} className="space-y-3">
                       {/* Prise en charge */}
                       <div className="flex items-start space-x-3">
@@ -453,7 +381,7 @@ const DossierDetail = () => {
               <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
                 <h2 className="text-lg font-semibold text-gray-900 mb-4">Affectations</h2>
                 <div className="space-y-3">
-                  {dossier.Affectations.map((affectation, index) => (
+                  {dossier.Affectations?.map((affectation, index) => (
                     <div key={index} className="p-3 border border-gray-200 rounded-lg">
                       <div className="flex items-center justify-between mb-2">
                         <span className="text-sm font-medium text-gray-900">Direction : {affectation.aff_direction}</span>
@@ -472,12 +400,12 @@ const DossierDetail = () => {
               <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
                 <h2 className="text-lg font-semibold text-gray-900 mb-4">Traitements</h2>
                 <div className="space-y-3">
-                  {dossier.Traitements.map((traitement, index) => (
+                  {dossier.Traitements?.map((traitement, index) => (
                     <div key={index} className="p-3 border border-gray-200 rounded-lg">
                       <div className="flex items-center justify-between mb-2">
                         <span className={`text-sm font-medium px-2 py-1 rounded-full ${
-                          traitement.tr_statut === 'valide' ? 'bg-green-100 text-green-800' :
-                          traitement.tr_statut === 'rejete' ? 'bg-red-100 text-red-800' :
+                          traitement.tr_statut === 'validé' ? 'bg-green-100 text-green-800' :
+                          traitement.tr_statut === 'rejeté' ? 'bg-red-100 text-red-800' :
                           'bg-gray-100 text-gray-800'
                         }`}>
                           {traitement.tr_statut}
@@ -506,36 +434,6 @@ const DossierDetail = () => {
         </div>
       </div>
 
-      {/* Modal de validation */}
-      <ValidationModal
-        isOpen={showValidationModal}
-        type="validation"
-        onConfirm={handleValidationConfirm}
-        onCancel={() => setShowValidationModal(false)}
-        onSuccessClose={handleValidationModalClose}
-        loading={loading}
-      />
-
-      {/* Modal de rejet */}
-      <ValidationModal
-        isOpen={showRejectionModal}
-        type="rejection"
-        onConfirm={handleRejectionConfirm}
-        onCancel={() => setShowRejectionModal(false)}
-        onSuccessClose={handleRejectionModalClose}
-        loading={loading}
-      />
-
-      {/* Modal de succès */}
-      <ValidationModal
-        isOpen={showSuccessModal}
-        type={validationType}
-        onConfirm={() => {}}
-        onCancel={() => setShowSuccessModal(false)}
-        onSuccessClose={handleSuccessModalCloseWithNavigation}
-        loading={false}
-        showSuccessOnly={true}
-      />
     </div>
   );
 };

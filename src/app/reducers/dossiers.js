@@ -10,12 +10,28 @@ const initialState = {
 
 
 export const getDossiers = createAsyncThunk("dossiers-get", async (direction) => {
-    console.log(direction);
     
   try {
     const res = await protectedAxios.get("/dossiers",{
         params: { direction }
       });
+    return res.data;
+  } catch (error) {
+    const response = error.response;
+    if (response.status === 404) {
+      return {
+        status: "failed",
+        message: response.data.message,
+      };
+    }
+    return Promise.reject(error);
+  }
+});
+
+export const getAuditDossiers = createAsyncThunk("dossiers-audit-get", async (direction) => {
+    
+  try {
+    const res = await protectedAxios.get("/dossiers/audit");
     return res.data;
   } catch (error) {
     const response = error.response;
@@ -77,6 +93,23 @@ export const validatedDossier = createAsyncThunk("dossiers-validated",
     }
 });
 
+export const niveauRisqueDossier = createAsyncThunk("dossiers-risque",
+  async (data, { rejectWithValue }) => {
+    try {
+      const res = await protectedAxios.patch("/dossiers/duediligence", data);
+      return res.data;
+    } catch (error) {
+      const response = error.response;
+      if (response) {
+        const message = response.data?.message || "Une erreur est survenue lors de la soumission";
+        // Propager le message backend à l'UI
+        return rejectWithValue({ status: "failed", message });
+      }
+      return rejectWithValue({ status: "failed", message: error.message || "Erreur réseau" });
+    }
+});
+
+
 export const { reducer: dossierReducer, actions } = createSlice({
   name: "dossier",
   initialState,
@@ -97,6 +130,20 @@ export const { reducer: dossierReducer, actions } = createSlice({
       state.error = true
     });
 
+    builder.addCase(getAuditDossiers.pending, (state) => {
+      state.loading = true;
+    });
+
+    builder.addCase(getAuditDossiers.fulfilled, (state,action) => {
+      state.dossiers = action.payload;
+      state.loading = false;
+    });
+
+    builder.addCase(getAuditDossiers.rejected, (state) => {
+      state.loading = false;
+      state.error = true
+    });
+
     builder.addCase(getDossierDetails.pending, (state) => {
       state.loading = true;
     });
@@ -107,6 +154,43 @@ export const { reducer: dossierReducer, actions } = createSlice({
     });
 
     builder.addCase(getDossierDetails.rejected, (state) => {
+      state.loading = false;
+    });
+
+    builder.addCase(rejetedDossier.pending, (state) => {
+      state.loading = true;
+    });
+
+    builder.addCase(rejetedDossier.fulfilled, (state,action) => {
+      state.loading = false;
+      state.dossierDetail = action.payload;
+    });
+
+    builder.addCase(rejetedDossier.rejected, (state) => {
+      state.loading = false;
+    });
+
+    builder.addCase(validatedDossier.pending, (state) => {
+      state.loading = true;
+    });
+
+    builder.addCase(validatedDossier.fulfilled, (state,action) => {
+      state.loading = false;
+    });
+
+    builder.addCase(validatedDossier.rejected, (state) => {
+      state.loading = false;
+    });
+
+    builder.addCase(niveauRisqueDossier.pending, (state) => {
+      state.loading = true;
+    });
+
+    builder.addCase(niveauRisqueDossier.fulfilled, (state,action) => {
+      state.loading = false;
+    });
+
+    builder.addCase(niveauRisqueDossier.rejected, (state) => {
       state.loading = false;
     });
 
