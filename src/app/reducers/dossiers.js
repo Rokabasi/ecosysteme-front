@@ -62,6 +62,23 @@ export const getJuridiqueDossiers = createAsyncThunk("dossiers-juridique-get", a
   }
 });
 
+export const getFinanceDossiers = createAsyncThunk("dossiers-finance-get", async (direction) => {
+    
+  try {
+    const res = await protectedAxios.get("/dossiers/finance");
+    return res.data;
+  } catch (error) {
+    const response = error.response;
+    if (response.status === 404) {
+      return {
+        status: "failed",
+        message: response.data.message,
+      };
+    }
+    return Promise.reject(error);
+  }
+});
+
 export const getDossierDetails = createAsyncThunk("dossiers-get-detail", async (id) => {
   try {
     const res = await protectedAxios.get(`/dossiers/${id}`);
@@ -187,7 +204,18 @@ export const { reducer: dossierReducer, actions } = createSlice({
       state.loading = false;
     });
 
-    
+     builder.addCase(getFinanceDossiers.pending, (state) => {
+      state.loading = true;
+    });
+
+    builder.addCase(getFinanceDossiers.fulfilled, (state,action) => {
+      state.loading = false;
+      state.dossiers = action.payload;
+    });
+
+    builder.addCase(getFinanceDossiers.rejected, (state) => {
+      state.loading = false;
+    });
 
   },
 });

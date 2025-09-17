@@ -20,5 +20,5 @@ export const canAccessDossiers = () => {
   
   if (!user) return false;
   
-  return ((user.direction === 'JURIDIQUE') && ( user.profil === 'Juriste')) || ((user.direction === 'AUDIT') && ( user.profil === 'Auditeur')) || ((user.direction === 'ETUDES' || user.direction === 'REPARATIONS' || user.direction === 'ACCES A LA JUSTICE' ) && ( user.profil === 'Analyste' || user.profil === 'Directeur'));
+  return ((user.direction === 'FINANCE') && ( user.profil === 'Financier')) || ((user.direction === 'JURIDIQUE') && ( user.profil === 'Juriste')) || ((user.direction === 'AUDIT') && ( user.profil === 'Auditeur')) || ((user.direction === 'ETUDES' || user.direction === 'REPARATIONS' || user.direction === 'ACCES A LA JUSTICE' ) && ( user.profil === 'Analyste' || user.profil === 'Directeur'));
 };
