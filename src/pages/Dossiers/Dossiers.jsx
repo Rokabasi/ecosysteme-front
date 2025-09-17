@@ -37,11 +37,23 @@ const StatusBadge = ({ status }) => {
       icon: <FiCheckCircle className="mr-1" />,
       label: 'Approuvé'
     },
+    "accepté dans l'écosystème": { 
+      bg: 'bg-green-50', 
+      text: 'text-green-800',
+      icon: <FiCheckCircle className="mr-1" />,
+      label: "accepté dans l'écosystème"
+    },
     'rejeté': { 
       bg: 'bg-red-50', 
       text: 'text-red-800',
       icon: <FiXCircle className="mr-1" />,
       label: 'Rejeté'
+    },
+    'rejeté après due diligence': { 
+      bg: 'bg-red-50', 
+      text: 'text-red-800',
+      icon: <FiXCircle className="mr-1" />,
+      label: 'rejeté après due diligence'
     }
   };
 
@@ -219,7 +231,7 @@ const Dossiers = () => {
       selector: row => row.str_statut,
       sortable: true,
       cell: row => <StatusBadge status={row.str_statut} />,
-      width: '180px'
+      width: '220px'
     },
   ];
 
@@ -237,7 +249,7 @@ const Dossiers = () => {
           {/* En-tête de la page */}
           <div className="bg-white shadow-sm border-b border-gray-200 p-4 rounded-lg">
             <div className="flex items-center justify-between">
-              <h1 className="text-2xl font-semibold text-gray-800">Gestion des candidatures</h1>
+              <h1 className="text-2xl font-semibold text-gray-800">Liste des dossiers </h1>
               <div className="flex items-center space-x-3">
                 <button
                   
@@ -446,7 +458,7 @@ const Dossiers = () => {
               paginationRowsPerPageOptions={[10, 25, 50, 100]}
               noDataComponent={
                 <div className="py-8 text-center text-gray-500">
-                  Aucune candidature trouvée
+                  Aucun dossier trouvé
                 </div>
               }
               customStyles={customStyles}

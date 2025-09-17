@@ -54,6 +54,10 @@ const AuditActions = ({ dossier }) => {
     dispatch(getDossierDetails(dossier.str_id));
   };
 
+  if (dossier.str_niveau_risque) {
+    return null;
+  }
+
   return (
     <>
       <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAuditDossiers, getDossiers, getErrorDossier, getLoadingDossier, selectAllDossiers } from '../../app/reducers/dossiers';
+import { getAuditDossiers, getDossiers, getErrorDossier, getJuridiqueDossiers, getLoadingDossier, selectAllDossiers } from '../../app/reducers/dossiers';
 import { getSessionUser } from '../../config/auth';
 
 const customStyles = {
@@ -48,17 +48,12 @@ const useDossiers = () => {
   const error = useSelector(getErrorDossier);
   const user = getSessionUser();
 
-  useEffect(()=>{
-    dispatch(getDossiers(user.direction));
-  },[])
-
-
     useEffect(()=>{
       if(user.direction === 'AUDIT' &&  user.profil === 'Auditeur'){        
         dispatch(getAuditDossiers());
-      }else{
-        dispatch(getDossiers(user.direction));
-      }
+      }else if(user.direction === 'JURIDIQUE' &&  user.profil === 'Juriste'){
+        dispatch(getJuridiqueDossiers());
+      }else dispatch(getAuditDossiers());
     },[])
 
   return {

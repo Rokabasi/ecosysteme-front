@@ -11,15 +11,6 @@ const DossierDetail = () => {
     dossier,
     error,
     loading,
-    selectedDirection,
-    setSelectedDirection,
-    showConfirmModal,
-    setShowConfirmModal,
-    showSuccessModal,
-    setShowSuccessModal,
-    handleModalClose,
-    handleSuccessModalClose,
-    dispatch,
     navigate
   } = useCandidatures();
 
@@ -73,11 +64,12 @@ const DossierDetail = () => {
       'admis à la due diligence': 'bg-green-100 text-green-800',
       "accepté dans l'écosystème": 'bg-green-100 text-green-800',
       'rejeté': 'bg-red-100 text-red-800',
+      'rejeté après due diligence': 'bg-red-100 text-red-800',
       'default': 'bg-gray-100 text-gray-800'
     };
     
     const statusClass = statusClasses[status] || statusClasses.default;
-    
+
     return (
       <span className={`${baseClasses} ${statusClass}`}>
         {status === 'soumis' ? 'Soumis' : status}
@@ -85,7 +77,7 @@ const DossierDetail = () => {
     );
   };
 
-  const getRiskLevelBadge = (riskLevel) => {
+  const getRiskLevelBadge = (riskLevel='faible') => {
     if (!riskLevel) return null;
     
     const baseClasses = "inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ml-2";
