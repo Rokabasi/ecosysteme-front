@@ -1,12 +1,12 @@
 import { createSlice, createAsyncThunk, createSelector } from "@reduxjs/toolkit";
-import axios from "axios";
+import { axios } from "../../config/axios";
 
 // Thunk pour récupérer les domaines depuis l'API
 export const fetchDomaines = createAsyncThunk(
   'domaines/fetchDomaines',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get('http://localhost:3009/domaines');
+      const response = await axios.get('/domaines');
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || 'Erreur lors du chargement des domaines');
