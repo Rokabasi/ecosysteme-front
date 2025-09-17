@@ -28,6 +28,23 @@ export const getDossiers = createAsyncThunk("dossiers-get", async (direction) =>
   }
 });
 
+export const getControleurDossiers = createAsyncThunk("dossiers-controleur-get", async (direction) => {
+    
+  try {
+    const res = await protectedAxios.get("/dossiers/controleurs");
+    return res.data;
+  } catch (error) {
+    const response = error.response;
+    if (response.status === 404) {
+      return {
+        status: "failed",
+        message: response.data.message,
+      };
+    }
+    return Promise.reject(error);
+  }
+});
+
 export const getAuditDossiers = createAsyncThunk("dossiers-audit-get", async (direction) => {
     
   try {
@@ -214,6 +231,19 @@ export const { reducer: dossierReducer, actions } = createSlice({
     });
 
     builder.addCase(getFinanceDossiers.rejected, (state) => {
+      state.loading = false;
+    });
+
+     builder.addCase(getControleurDossiers.pending, (state) => {
+      state.loading = true;
+    });
+
+    builder.addCase(getControleurDossiers.fulfilled, (state,action) => {
+      state.loading = false;
+      state.dossiers = action.payload;
+    });
+
+    builder.addCase(getControleurDossiers.rejected, (state) => {
       state.loading = false;
     });
 
