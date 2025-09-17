@@ -9,6 +9,7 @@ import { questionsReducer } from "./reducers/questions";
 import domainesReducer from "./reducers/domaines";
 import { candidatureReducer } from "./reducers/candidatures";
 import { dossierReducer } from "./reducers/dossiers";
+import { projetReducer } from "./reducers/projet";
 
 const store = configureStore({
   reducer: {

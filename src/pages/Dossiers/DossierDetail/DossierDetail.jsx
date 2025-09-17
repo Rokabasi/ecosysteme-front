@@ -4,6 +4,7 @@ import useCandidatures from './hook';
 import Loader from '../../../components/Loader/Loader';
 import ValidationActions from './ValidationActions';
 import AuditActions from './AuditActions';
+import ProjectCreationActions from './ProjectCreationActions';
 import { getSessionUser } from '../../../config/auth';
 
 const DossierDetail = () => {
@@ -241,6 +242,61 @@ const DossierDetail = () => {
               </div>
             </div>
 
+            {/* Projets */}
+            {dossier?.Projets && dossier.Projets.length > 0 && (
+              <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
+                  <FiTarget className="mr-3 h-5 w-5 text-[#6a1754]" />
+                  Projets
+                </h2>
+                <div className="space-y-4">
+                  {dossier.Projets.map((projet, index) => (
+                    <div key={index} className="border border-gray-200 rounded-lg p-4">
+                      <div className="flex justify-between items-start mb-3">
+                        <div>
+                          <h3 className="font-semibold text-gray-900">{projet.pro_intitule}</h3>
+                          <p className="text-sm text-gray-500">Code: {projet.pro_code}</p>
+                        </div>
+                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                          projet.pro_statut === 'En cours' ? 'bg-blue-100 text-blue-800' :
+                          projet.pro_statut === 'Terminé' ? 'bg-green-100 text-green-800' :
+                          projet.pro_statut === 'Planifié' ? 'bg-yellow-100 text-yellow-800' :
+                          'bg-gray-100 text-gray-800'
+                        }`}>
+                          {projet.pro_statut}
+                        </span>
+                      </div>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3">
+                        <div>
+                          <label className="text-xs font-medium text-gray-500">Zone d'intervention</label>
+                          <p className="text-sm text-gray-900">{projet.pro_zone}</p>
+                        </div>
+                        <div>
+                          <label className="text-xs font-medium text-gray-500">Coût</label>
+                          <p className="text-sm text-gray-900">{projet.pro_cout}</p>
+                        </div>
+                        <div>
+                          <label className="text-xs font-medium text-gray-500">Date de début</label>
+                          <p className="text-sm text-gray-900">{new Date(projet.pro_date_debut).toLocaleDateString('fr-FR')}</p>
+                        </div>
+                        <div>
+                          <label className="text-xs font-medium text-gray-500">Date de fin</label>
+                          <p className="text-sm text-gray-900">{new Date(projet.pro_date_fin).toLocaleDateString('fr-FR')}</p>
+                        </div>
+                      </div>
+                      <div>
+                        <label className="text-xs font-medium text-gray-500">Résultat attendu</label>
+                        <p className="text-sm text-gray-900 mt-1">{projet.pro_resultat}</p>
+                      </div>
+                      <div className="mt-2 text-xs text-gray-400">
+                        Créé le {new Date(projet.createdAt).toLocaleDateString('fr-FR')}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
             {/* Zones d'intervention */}
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
               <h2 className="text-xl font-semibold text-gray-900 mb-6">Zones d'intervention</h2>
@@ -276,27 +332,89 @@ const DossierDetail = () => {
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
               <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
                 <FiFileText className="mr-3 h-5 w-5 text-[#6a1754]" />
-                Documents joints
+                Documents
               </h2>
-              <div className="space-y-3">
-                {dossier?.Documents?.map((doc, index) => (
-                  <div key={index} className="flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50">
-                    <div className="flex items-center space-x-3">
-                      <FiFileText className="h-5 w-5 text-gray-400" />
-                      <div>
-                        <p className="font-medium text-gray-900">{doc.doc_designation}</p>
-                        <p className="text-sm text-gray-500">{doc.doc_name} • {formatFileSize(parseInt(doc.doc_size))}</p>
+              
+              {/* Rapport Due Diligence */}
+              {dossier?.Documents?.filter(doc => doc.doc_designation.toLowerCase().includes('rapport due diligence')).length > 0 && (
+                <div className="mb-6">
+                  <h3 className="text-lg font-medium text-gray-900 mb-3">Rapport Due Diligence</h3>
+                  <div className="space-y-3">
+                    {dossier.Documents.filter(doc => doc.doc_designation.toLowerCase().includes('rapport due diligence')).map((doc, index) => (
+                      <div key={index} className="flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50">
+                        <div className="flex items-center space-x-3">
+                          <FiFileText className="h-5 w-5 text-gray-400" />
+                          <div>
+                            <p className="font-medium text-gray-900">{doc.doc_designation}</p>
+                            <p className="text-sm text-gray-500">{doc.doc_name} • {formatFileSize(parseInt(doc.doc_size))}</p>
+                          </div>
+                        </div>
+                        <button className="text-[#6a1754] hover:text-[#5c1949] text-sm font-medium">
+                          <a href={`${import.meta.env.VITE_REMOTE_URL}/documents/${doc.doc_name}`} className="flex items-center gap-2" target="_blank" rel="noopener noreferrer">
+                            <span>Aperçu</span>
+                          </a>
+                        </button>
                       </div>
-                    </div>
-                    <button className="text-[#6a1754] hover:text-[#5c1949] text-sm font-medium">
-                      <a href={`${import.meta.env.VITE_REMOTE_URL}/documents/${doc.doc_name}`} className="flex items-center gap-2" target="_blank" rel="noopener noreferrer">
-                              
-                              <span>Aperçu</span>
-                        </a>
-                    </button>
+                    ))}
                   </div>
-                ))}
-              </div>
+                </div>
+              )}
+
+              {/* Contrat de Projet */}
+              {dossier?.Documents?.filter(doc => doc.doc_designation.toLowerCase().includes('contrat de projet')).length > 0 && (
+                <div className="mb-6">
+                  <h3 className="text-lg font-medium text-gray-900 mb-3">Contrat de Projet</h3>
+                  <div className="space-y-3">
+                    {dossier.Documents.filter(doc => doc.doc_designation.toLowerCase().includes('contrat de projet')).map((doc, index) => (
+                      <div key={index} className="flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50">
+                        <div className="flex items-center space-x-3">
+                          <FiFileText className="h-5 w-5 text-gray-400" />
+                          <div>
+                            <p className="font-medium text-gray-900">{doc.doc_designation}</p>
+                            <p className="text-sm text-gray-500">{doc.doc_name} • {formatFileSize(parseInt(doc.doc_size))}</p>
+                          </div>
+                        </div>
+                        <button className="text-[#6a1754] hover:text-[#5c1949] text-sm font-medium">
+                          <a href={`${import.meta.env.VITE_REMOTE_URL}/documents/${doc.doc_name}`} className="flex items-center gap-2" target="_blank" rel="noopener noreferrer">
+                            <span>Aperçu</span>
+                          </a>
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Documents Joints */}
+              {dossier?.Documents?.filter(doc => 
+                !doc.doc_designation.toLowerCase().includes('rapport due diligence') && 
+                !doc.doc_designation.toLowerCase().includes('contrat de projet')
+              ).length > 0 && (
+                <div>
+                  <h3 className="text-lg font-medium text-gray-900 mb-3">Documents Joints</h3>
+                  <div className="space-y-3">
+                    {dossier.Documents.filter(doc => 
+                      !doc.doc_designation.toLowerCase().includes('rapport due diligence') && 
+                      !doc.doc_designation.toLowerCase().includes('contrat de projet')
+                    ).map((doc, index) => (
+                      <div key={index} className="flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50">
+                        <div className="flex items-center space-x-3">
+                          <FiFileText className="h-5 w-5 text-gray-400" />
+                          <div>
+                            <p className="font-medium text-gray-900">{doc.doc_designation}</p>
+                            <p className="text-sm text-gray-500">{doc.doc_name} • {formatFileSize(parseInt(doc.doc_size))}</p>
+                          </div>
+                        </div>
+                        <button className="text-[#6a1754] hover:text-[#5c1949] text-sm font-medium">
+                          <a href={`${import.meta.env.VITE_REMOTE_URL}/documents/${doc.doc_name}`} className="flex items-center gap-2" target="_blank" rel="noopener noreferrer">
+                            <span>Aperçu</span>
+                          </a>
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 
@@ -324,6 +442,8 @@ const DossierDetail = () => {
             {((userData.direction === 'ETUDES' || userData.direction === 'REPARATIONS' || userData.direction === 'ACCES A LA JUSTICE' ) && ( userData.profil === 'Analyste' || userData.profil === 'Directeur')) && <ValidationActions dossier={dossier} />}
 
             {(userData.direction === 'AUDIT' &&  userData.profil === 'Auditeur') && <AuditActions dossier={dossier} />}
+
+            {(userData.direction === 'JURIDIQUE' && userData.profil === 'Juriste') && <ProjectCreationActions dossier={dossier} />}
 
             {/* Renseignements de la structure */}
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
