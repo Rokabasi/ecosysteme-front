@@ -10,20 +10,15 @@ import {
   FiMenu
 } from "react-icons/fi";
 import Logo from "../../assets/fonarev-logo.webp";
-
-// Mock user data
-const userData = {
-  name: "John Doe",
-  email: "john.doe@fonarev.cd",
-  department: "Direction des Systèmes d'Information",
-  position: "Chef de Projet",
-  role: "Administrateur",
-};
+import { getSessionUser } from "../../config/auth";
 
 const NavBar = ({ onMenuToggle, onLogout }) => {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const userMenuRef = useRef(null);
   const navigate = useNavigate();
+  
+  // Get user data from session
+  const userData = getSessionUser();
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -87,6 +82,10 @@ const NavBar = ({ onMenuToggle, onLogout }) => {
               <div className="h-8 w-8 rounded-full bg-gradient-to-r from-[#8e1f71] to-[#0089cf] flex items-center justify-center text-white">
                 <FiUser className="h-5 w-5" />
               </div>
+              <div className="hidden sm:block">
+                <div className="text-sm font-medium text-gray-900">{userData?.nom} {userData?.prenom}</div>
+                <div className="text-xs text-gray-500">{userData?.profil}</div>
+              </div>
               <FiChevronDown
                 className={`h-4 w-4 text-gray-500 transition-transform ${
                   isUserMenuOpen ? "transform rotate-180" : ""
@@ -104,8 +103,8 @@ const NavBar = ({ onMenuToggle, onLogout }) => {
                       <FiUser className="h-6 w-6 text-white" />
                     </div>
                     <div>
-                      <h3 className="font-semibold text-lg">{userData.name}</h3>
-                      <p className="text-sm text-white/90">{userData.role}</p>
+                      <h3 className="font-semibold text-lg">{userData?.nom} {userData?.prenom}</h3>
+                      <p className="text-sm text-white/90">{userData?.profil}</p>
                     </div>
                   </div>
                 </div>
@@ -116,7 +115,7 @@ const NavBar = ({ onMenuToggle, onLogout }) => {
                     <FiMail className="h-5 w-5 text-[#8e1f71] mt-0.5 flex-shrink-0" />
                     <div>
                       <p className="text-xs text-gray-500">Email</p>
-                      <p className="text-sm text-gray-800">{userData.email}</p>
+                      <p className="text-sm text-gray-800">{userData?.email}</p>
                     </div>
                   </div>
                   <div className="flex items-start space-x-3">
@@ -124,7 +123,7 @@ const NavBar = ({ onMenuToggle, onLogout }) => {
                     <div>
                       <p className="text-xs text-gray-500">Direction</p>
                       <p className="text-sm text-gray-800">
-                        {userData.department}
+                        {userData?.direction}
                       </p>
                     </div>
                   </div>
@@ -133,7 +132,7 @@ const NavBar = ({ onMenuToggle, onLogout }) => {
                     <div>
                       <p className="text-xs text-gray-500">Fonction</p>
                       <p className="text-sm text-gray-800">
-                        {userData.position}
+                        {userData?.profil}
                       </p>
                     </div>
                   </div>

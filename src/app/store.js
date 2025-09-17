@@ -21,7 +21,8 @@ const store = configureStore({
     questions: questionsReducer,
     domaines: domainesReducer,
     candidature:candidatureReducer,
-    dossier:dossierReducer
+    dossier:dossierReducer,
+    projet:projetReducer
   },
 });
 export default store;
