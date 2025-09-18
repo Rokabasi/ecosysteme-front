@@ -139,8 +139,8 @@ export const validateSubmissionData = (data) => {
     if (!data.str_resultat_operationel) errors.push("Résultats opérationnels manquants");
 
     // Vérifications des réponses aux questions
-    
-    if (data.sres_prise_en_charge == null ) errors.push("Réponse à la question sur la prise en charge manquante");
+
+    if (data.sres_prise_en_charge == null) errors.push("Réponse à la question sur la prise en charge manquante");
     if (data.sres_is_association_victime == null) errors.push("Réponse à la question sur l'association des victimes manquante");
     if (data.sres_infos_victime_sexuel == null) errors.push("Réponse à la question sur les informations des victimes manquante");
     if (data.sres_pret_a_collaborer == null) errors.push("Réponse à la question sur la collaboration manquante");
