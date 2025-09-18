@@ -306,7 +306,9 @@ const DossierDetail = () => {
                               <span>Aperçu</span>
                             </a>
                           ) : (
-                            <a href={`${import.meta.env.VITE_REMOTE_URL}/${doc.doc_name.toLowerCase().match(/\.(jpg|jpeg|png|gif|bmp|webp|svg|tiff|ico|heic|heif)$/i) ? 'images' : 'documents'}/${doc.doc_name}`} className="flex items-center gap-2" download>
+                            <a 
+                            target='_blank'
+                            href={`${import.meta.env.VITE_REMOTE_URL}/${doc.doc_name.toLowerCase().match(/\.(jpg|jpeg|png|gif|bmp|webp|svg|tiff|ico|heic|heif)$/i) ? 'images' : 'documents'}/${doc.doc_name}`} className="flex items-center gap-2" download>
                               <span>Télécharger</span>
                             </a>
                           )}
