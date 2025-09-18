@@ -119,9 +119,9 @@ const DossierDetail = () => {
             Retour à la liste
           </button>
           
-          <div className="flex justify-between items-center">
+          <div className="space-y-4">
             <h1 className="text-3xl font-bold text-gray-900">{dossier.str_designation}</h1>
-            <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-3">
+            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-3 lg:space-y-0">
               <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
                 <div className="flex items-center">
                   <span className="text-sm font-medium text-gray-700 mr-2">Statut :</span>
@@ -306,7 +306,7 @@ const DossierDetail = () => {
                               <span>Aperçu</span>
                             </a>
                           ) : (
-                            <a href={`${import.meta.env.VITE_REMOTE_URL}/documents/${doc.doc_name}`} className="flex items-center gap-2" download>
+                            <a href={`${import.meta.env.VITE_REMOTE_URL}/${doc.doc_name.toLowerCase().match(/\.(jpg|jpeg|png|gif|bmp|webp|svg|tiff|ico|heic|heif)$/i) ? 'images' : 'documents'}/${doc.doc_name}`} className="flex items-center gap-2" download>
                               <span>Télécharger</span>
                             </a>
                           )}
@@ -337,7 +337,7 @@ const DossierDetail = () => {
                               <span>Aperçu</span>
                             </a>
                           ) : (
-                            <a href={`${import.meta.env.VITE_REMOTE_URL}/documents/${doc.doc_name}`} className="flex items-center gap-2" download>
+                            <a href={`${import.meta.env.VITE_REMOTE_URL}/${doc.doc_name.toLowerCase().match(/\.(jpg|jpeg|png|gif|bmp|webp|svg|tiff|ico|heic|heif)$/i) ? 'images' : 'documents'}/${doc.doc_name}`} className="flex items-center gap-2" download>
                               <span>Télécharger</span>
                             </a>
                           )}
@@ -374,7 +374,7 @@ const DossierDetail = () => {
                               <span>Aperçu</span>
                             </a>
                           ) : (
-                            <a href={`${import.meta.env.VITE_REMOTE_URL}/documents/${doc.doc_name}`} className="flex items-center gap-2" download>
+                            <a href={`${import.meta.env.VITE_REMOTE_URL}/${doc.doc_name.toLowerCase().match(/\.(jpg|jpeg|png|gif|bmp|webp|svg|tiff|ico|heic|heif)$/i) ? 'images' : 'documents'}/${doc.doc_name}`} className="flex items-center gap-2" download>
                               <span>Télécharger</span>
                             </a>
                           )}
@@ -418,7 +418,7 @@ const DossierDetail = () => {
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
               <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
                 <FiInfo className="mr-2 h-5 w-5 text-[#6a1754]" />
-                Renseignements {dossier.str_designation}
+                Renseignements supplémentaires
               </h2>
               {dossier.Structure_renseignements && dossier.Structure_renseignements.length > 0 && (
                 <div className="space-y-4">
@@ -551,12 +551,10 @@ const DossierDetail = () => {
                 <div className="space-y-3">
                   {dossier.Projets.map((projet, index) => (
                     <div key={index} className="p-3 border border-gray-200 rounded-lg">
-                      <div className="flex justify-between items-start mb-2">
-                        <div>
-                          <h3 className="font-medium text-gray-900">{projet.pro_intitule}</h3>
-                          <p className="text-xs text-gray-500">Code: {projet.pro_code}</p>
-                        </div>
-                        <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
+                      <div className="mb-2">
+                        <h3 className="font-medium text-gray-900">{projet.pro_intitule}</h3>
+                        <p className="text-xs text-gray-500">Code: {projet.pro_code}</p>
+                        <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium mt-1 ${
                           projet.pro_statut === 'En cours' ? 'bg-blue-100 text-blue-800' :
                           projet.pro_statut === 'Terminé' ? 'bg-green-100 text-green-800' :
                           projet.pro_statut === 'Planifié' ? 'bg-yellow-100 text-yellow-800' :
