@@ -164,12 +164,12 @@ const Candidatures = () => {
 
   const columns = [
     {
-      name: 'ID',
-      selector: row => row.str_id,
+      name: 'N° Dossier',
+      selector: row => row.str_code,
       sortable: true,
       width: '120px',
       cell: row => (
-        <span className="font-mono text-sm text-gray-600">{1}</span>
+        <span className="font-mono text-sm text-gray-600">{row.str_code}</span>
       )
     },
     {

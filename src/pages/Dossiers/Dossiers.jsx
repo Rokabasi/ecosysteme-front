@@ -176,12 +176,12 @@ const Dossiers = () => {
 
   const columns = [
     {
-      name: 'ID',
-      selector: row => row.str_id,
+      name: 'N° Dossier',
+      selector: row => row.str_code,
       sortable: true,
       width: '120px',
       cell: row => (
-        <span className="font-mono text-sm text-gray-600">{1}</span>
+        <span className="font-mono text-sm text-gray-600">{row.str_code}</span>
       )
     },
     {
@@ -222,6 +222,17 @@ const Dossiers = () => {
       cell: row => (
         <div className="text-sm text-gray-600">
           {new Date(row.createdAt).toLocaleDateString('fr-FR')}
+        </div>
+      ),
+      width: '140px'
+    },
+    {
+      name: 'Projets',
+      selector: row => row.Projets?.length,
+      sortable: true,
+      cell: row => (
+        <div className="text-sm text-gray-600">
+          {row.Projets?.length}
         </div>
       ),
       width: '140px'
