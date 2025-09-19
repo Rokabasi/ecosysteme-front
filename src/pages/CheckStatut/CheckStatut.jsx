@@ -38,11 +38,6 @@ const CheckStatut = () => {
           str_annee_creation: annee,
         },
       });
-      console.log({
-        str_designation: designation,
-        str_province_siege_sociale: selectedProvince?.pro_designation,
-        str_annee_creation: annee,
-      });
 
       if (response.data) {
         setStatus(response.data);
@@ -55,7 +50,7 @@ const CheckStatut = () => {
       }
     } catch (err) {
       console.error("Erreur lors de la recherche:", err);
-      setError("Structure introuvable ou erreur serveur");
+      setError("Aucune structure trouvée avec ces critères");
       setStatus(null);
     } finally {
       setIsLoading(false);
