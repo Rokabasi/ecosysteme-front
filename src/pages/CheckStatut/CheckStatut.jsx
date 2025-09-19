@@ -147,137 +147,142 @@ const CheckStatut = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
-        <div className="text-center">
-          <h2 className="mt-6 text-3xl font-extrabold text-[#6a1754]">
-            Vérifier le statut
-          </h2>
-          <p className="mt-2 text-sm text-gray-600">
-            Entrez les informations de votre structure pour suivre l'état de
-            votre demande
-          </p>
-        </div>
+    <div className="min-h-screen flex flex-col gap-12 max-w-[480px] mx-auto py-12 px-4 sm:px-6 lg:px-8">
+      <div>
+        <Link
+          to="/"
+          className="text-sm font-medium text-[#6a1754] hover:text-[#0089CF] transition-colors duration-300"
+        >
+          ← Retour à l'accueil
+        </Link>
+      </div>
 
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          <div className="rounded-md space-y-4">
-            <div>
-              <label htmlFor="designation" className="sr-only">
-                Désignation de l'ONG/ASBL
-              </label>
-              <div className="relative">
-                <input
-                  id="designation"
-                  name="designation"
-                  type="text"
-                  required
-                  value={designation}
-                  onChange={(e) => setDesignation(e.target.value)}
-                  className="focus:ring-[#0089CF] focus:border-[#0089CF] block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm placeholder-gray-400"
-                  placeholder="Entrez la désignation de votre ONG/ASBL"
-                />
-              </div>
-            </div>
-            <div>
-              <label htmlFor="province" className="sr-only">
-                Province du siège social
-              </label>
-              <div className="relative">
-                <input
-                  id="province"
-                  name="province"
-                  type="text"
-                  required
-                  value={province}
-                  onChange={(e) => setProvince(e.target.value)}
-                  className="focus:ring-[#0089CF] focus:border-[#0089CF] block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm placeholder-gray-400"
-                  placeholder="Entrez la province de votre siège social"
-                />
-              </div>
-            </div>
-            <div>
-              <label htmlFor="anneeCreation" className="sr-only">
-                Année de création de l'ONG/ASBL
-              </label>
-              <div className="relative">
-                <input
-                  type="number"
-                  name="anneeCreation"
-                  id="anneeCreation"
-                  min="1900"
-                  max={new Date().getFullYear()}
-                  required
-                  value={annee}
-                  onChange={(e) => setAnnee(e.target.value)}
-                  className="focus:ring-[#0089CF] focus:border-[#0089CF] block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm placeholder-gray-400"
-                  placeholder="Entrez l'année de création de votre ONG/ASBL"
-                />
-              </div>
-            </div>
+      <div>
+        <div className="max-w-md w-full space-y-8">
+          <div className="text-center">
+            <h2 className="mt-6 text-3xl font-extrabold text-[#6a1754]">
+              {status ? "Statut de votre demande" : "Vérifier le statut"}
+            </h2>
+            <p className="mt-2 text-sm text-gray-600">
+              {status
+                ? "Retrouvez ci-dessous l’avancement de votre demande."
+                : "Entrez les informations de votre structure pour suivre l'état de votre demande"}
+            </p>
           </div>
 
-          <div>
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#6a1754] hover:bg-[#5a1446] active:bg-[#6a1754] transition-colors duration-300 disabled:opacity-70 disabled:cursor-not-allowed"
-            >
-              {isLoading ? (
-                <>
-                  <svg
-                    className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                  >
-                    <circle
-                      className="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                    ></circle>
-                    <path
-                      className="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                    ></path>
-                  </svg>
-                  Recherche en cours...
-                </>
-              ) : (
-                <>
-                  <FiSearch className="mr-2 h-4 w-4" />
-                  Vérifier le statut
-                </>
-              )}
-            </button>
-          </div>
-        </form>
+          {!status && (
+            <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+              <div className="rounded-md space-y-4">
+                <div>
+                  <label htmlFor="designation" className="sr-only">
+                    Désignation de l'ONG/ASBL
+                  </label>
+                  <div className="relative">
+                    <input
+                      id="designation"
+                      name="designation"
+                      type="text"
+                      required
+                      value={designation}
+                      onChange={(e) => setDesignation(e.target.value)}
+                      className="focus:ring-[#0089CF] focus:border-[#0089CF] block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm placeholder-gray-400"
+                      placeholder="Entrez la désignation de votre ONG/ASBL"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label htmlFor="province" className="sr-only">
+                    Province du siège social
+                  </label>
+                  <div className="relative">
+                    <input
+                      id="province"
+                      name="province"
+                      type="text"
+                      required
+                      value={province}
+                      onChange={(e) => setProvince(e.target.value)}
+                      className="focus:ring-[#0089CF] focus:border-[#0089CF] block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm placeholder-gray-400"
+                      placeholder="Entrez la province de votre siège social"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label htmlFor="anneeCreation" className="sr-only">
+                    Année de création de l'ONG/ASBL
+                  </label>
+                  <div className="relative">
+                    <input
+                      type="number"
+                      name="anneeCreation"
+                      id="anneeCreation"
+                      min="1900"
+                      max={new Date().getFullYear()}
+                      required
+                      value={annee}
+                      onChange={(e) => setAnnee(e.target.value)}
+                      className="focus:ring-[#0089CF] focus:border-[#0089CF] block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm placeholder-gray-400"
+                      placeholder="Entrez l'année de création de votre ONG/ASBL"
+                    />
+                  </div>
+                </div>
+              </div>
 
-        {/* Affichage des erreurs */}
-        {error && (
-          <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-md">
-            <div className="flex">
-              <FiXCircle className="h-5 w-5 text-red-400" />
-              <div className="ml-3">
-                <p className="text-sm text-red-800">{error}</p>
+              <div>
+                <button
+                  type="submit"
+                  disabled={isLoading}
+                  className="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#6a1754] hover:bg-[#5a1446] active:bg-[#6a1754] transition-colors duration-300 disabled:opacity-70 disabled:cursor-not-allowed cursor-pointer"
+                >
+                  {isLoading ? (
+                    <>
+                      <svg
+                        className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        ></circle>
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                        ></path>
+                      </svg>
+                      Recherche en cours...
+                    </>
+                  ) : (
+                    <>
+                      <FiSearch className="mr-2 h-4 w-4" />
+                      Vérifier le statut
+                    </>
+                  )}
+                </button>
+              </div>
+            </form>
+          )}
+
+          {/* Affichage des erreurs */}
+          {error && (
+            <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-md">
+              <div className="flex">
+                <FiXCircle className="h-5 w-5 text-red-400" />
+                <div className="ml-3">
+                  <p className="text-sm text-red-800">{error}</p>
+                </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {/* Affichage du statut */}
-        {status && getStatusDetails()}
-
-        <div className="text-center mt-4">
-          <Link
-            to="/"
-            className="text-sm font-medium text-[#6a1754] hover:text-[#0089CF] transition-colors duration-300"
-          >
-            ← Retour à l'accueil
-          </Link>
+          {/* Affichage du statut */}
+          {status && getStatusDetails()}
         </div>
       </div>
     </div>
