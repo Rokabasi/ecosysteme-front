@@ -85,7 +85,7 @@ const ProvinceStep = ({ validationErrors = {}, clearFieldError }) => {
             options={provinces}
             styles={customStyles}
             placeholder="Selectionnez votre province..."
-            noOptionsMessage={() => "Aucun résultat trouvé"}
+            noOptionsMessage={() => "Aucune province trouvée"}
             value={
               selectedProvince
                 ? {
