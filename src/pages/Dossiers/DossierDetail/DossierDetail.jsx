@@ -279,19 +279,19 @@ const DossierDetail = () => {
               </div>
             </div>
 
-            {/* Documents */}
+            {/* Documents généraux (hors projets) */}
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
               <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
                 <FiFileText className="mr-3 h-5 w-5 text-[#6a1754]" />
-                Documents
+                Documents généraux
               </h2>
               
               {/* Rapport Due Diligence */}
-              {dossier?.Documents?.filter(doc => doc.doc_designation.toLowerCase().includes('rapport due diligence')).length > 0 && (
+              {dossier?.Documents?.filter(doc => doc.doc_designation.toLowerCase().includes('rapport due diligence') && !doc.pro_id).length > 0 && (
                 <div className="mb-6">
                   <h3 className="text-lg font-medium text-gray-900 mb-3">Rapport Due Diligence</h3>
                   <div className="space-y-3">
-                    {dossier.Documents.filter(doc => doc.doc_designation.toLowerCase().includes('rapport due diligence')).map((doc, index) => (
+                    {dossier.Documents.filter(doc => doc.doc_designation.toLowerCase().includes('rapport due diligence') && !doc.pro_id).map((doc, index) => (
                       <div key={index} className="flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50">
                         <div className="flex items-center space-x-3">
                           <FiFileText className="h-5 w-5 text-gray-400" />
@@ -319,48 +319,19 @@ const DossierDetail = () => {
                 </div>
               )}
 
-              {/* Contrat de Projet */}
-              {dossier?.Documents?.filter(doc => doc.doc_designation.toLowerCase().includes('contrat de projet')).length > 0 && (
-                <div className="mb-6">
-                  <h3 className="text-lg font-medium text-gray-900 mb-3">Contrat de Projet</h3>
-                  <div className="space-y-3">
-                    {dossier.Documents.filter(doc => doc.doc_designation.toLowerCase().includes('contrat de projet')).map((doc, index) => (
-                      <div key={index} className="flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50">
-                        <div className="flex items-center space-x-3">
-                          <FiFileText className="h-5 w-5 text-gray-400" />
-                          <div>
-                            <p className="font-medium text-gray-900">{doc.doc_designation}</p>
-                            <p className="text-sm text-gray-500">{doc.doc_name} • {formatFileSize(parseInt(doc.doc_size))}</p>
-                          </div>
-                        </div>
-                        <button className="text-[#6a1754] hover:text-[#5c1949] text-sm font-medium">
-                          {doc.doc_name.toLowerCase().endsWith('.pdf') ? (
-                            <a href={`${import.meta.env.VITE_REMOTE_URL}/documents/${doc.doc_name}`} className="flex items-center gap-2" target="_blank" rel="noopener noreferrer">
-                              <span>Aperçu</span>
-                            </a>
-                          ) : (
-                            <a href={`${import.meta.env.VITE_REMOTE_URL}/${doc.doc_name.toLowerCase().match(/\.(jpg|jpeg|png|gif|bmp|webp|svg|tiff|ico|heic|heif)$/i) ? 'images' : 'documents'}/${doc.doc_name}`} className="flex items-center gap-2" download>
-                              <span>Télécharger</span>
-                            </a>
-                          )}
-                        </button>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Documents Joints */}
+              {/* Documents Joints généraux */}
               {dossier?.Documents?.filter(doc => 
                 !doc.doc_designation.toLowerCase().includes('rapport due diligence') && 
-                !doc.doc_designation.toLowerCase().includes('contrat de projet')
+                !doc.doc_designation.toLowerCase().includes('contrat de projet') &&
+                !doc.pro_id
               ).length > 0 && (
                 <div>
                   <h3 className="text-lg font-medium text-gray-900 mb-3">Documents Joints</h3>
                   <div className="space-y-3">
                     {dossier.Documents.filter(doc => 
                       !doc.doc_designation.toLowerCase().includes('rapport due diligence') && 
-                      !doc.doc_designation.toLowerCase().includes('contrat de projet')
+                      !doc.doc_designation.toLowerCase().includes('contrat de projet') &&
+                      !doc.pro_id
                     ).map((doc, index) => (
                       <div key={index} className="flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50">
                         <div className="flex items-center space-x-3">
@@ -550,30 +521,69 @@ const DossierDetail = () => {
                   <FiTarget className="mr-2 h-5 w-5 text-[#6a1754]" />
                   Projets
                 </h2>
-                <div className="space-y-3">
-                  {dossier.Projets.map((projet, index) => (
-                    <div key={index} className="p-3 border border-gray-200 rounded-lg">
-                      <div className="mb-2">
-                        <h3 className="font-medium text-gray-900">{projet.pro_intitule}</h3>
-                        <p className="text-xs text-gray-500">Code: {projet.pro_code}</p>
-                        <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium mt-1 ${
-                          projet.pro_statut === 'En cours' ? 'bg-blue-100 text-blue-800' :
-                          projet.pro_statut === 'Terminé' ? 'bg-green-100 text-green-800' :
-                          projet.pro_statut === 'Planifié' ? 'bg-yellow-100 text-yellow-800' :
-                          'bg-gray-100 text-gray-800'
-                        }`}>
-                          {projet.pro_statut}
-                        </span>
+                <div className="space-y-4">
+                  {dossier.Projets.map((projet, index) => {
+                    // Filtrer les documents qui correspondent à ce projet
+                    const documentsProjet = dossier?.Documents?.filter(doc => doc.pro_id === projet.pro_id) || [];
+                    
+                    return (
+                      <div key={index} className="p-4 border border-gray-200 rounded-lg">
+                        <div className="mb-3">
+                          <h3 className="font-medium text-gray-900">{projet.pro_intitule}</h3>
+                          <p className="text-xs text-gray-500">Code: {projet.pro_code}</p>
+                          <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium mt-1 ${
+                            projet.pro_statut === 'En cours' ? 'bg-blue-100 text-blue-800' :
+                            projet.pro_statut === 'Terminé' ? 'bg-green-100 text-green-800' :
+                            projet.pro_statut === 'Planifié' ? 'bg-yellow-100 text-yellow-800' :
+                            'bg-gray-100 text-gray-800'
+                          }`}>
+                            {projet.pro_statut}
+                          </span>
+                        </div>
+                        <div className="space-y-1 mb-3">
+                          <p className="text-xs text-gray-600">Zone: {projet.pro_zone}</p>
+                          <p className="text-xs text-gray-600">Coût: {projet.pro_cout}</p>
+                          <p className="text-xs text-gray-600">
+                            {new Date(projet.pro_date_debut).toLocaleDateString('fr-FR')} - {new Date(projet.pro_date_fin).toLocaleDateString('fr-FR')}
+                          </p>
+                        </div>
+                        
+                        {/* Documents du projet */}
+                        {documentsProjet.length > 0 && (
+                          <div className="mt-3 pt-3 border-t border-gray-100">
+                            {/* <h4 className="text-sm font-medium text-gray-900 mb-2 flex items-center">
+                              <FiFileText className="mr-1 h-4 w-4 text-gray-400" />
+                              Documents du projet
+                            </h4> */}
+                            <div className="space-y-2">
+                              {documentsProjet.map((doc, docIndex) => (
+                                <div key={docIndex} className="flex items-center justify-between p-2 bg-gray-50 rounded-md">
+                                  <div className="flex items-center space-x-2">
+                                    <FiFileText className="h-4 w-4 text-gray-400" />
+                                    <div>
+                                      <p className="text-sm font-medium text-gray-900">{doc.doc_designation}</p>
+                                      <p className="text-xs text-gray-500">{doc.doc_name} • {formatFileSize(parseInt(doc.doc_size))}</p>
+                                    </div>
+                                  </div>
+                                  <button className="text-[#6a1754] hover:text-[#5c1949] text-xs font-medium">
+                                    {doc.doc_name.toLowerCase().endsWith('.pdf') ? (
+                                      <a href={`${import.meta.env.VITE_REMOTE_URL}/documents/${doc.doc_name}`} className="flex items-center gap-1" target="_blank" rel="noopener noreferrer">
+                                        <span>Aperçu</span>
+                                      </a>
+                                    ) : (
+                                      <a href={`${import.meta.env.VITE_REMOTE_URL}/${doc.doc_name.toLowerCase().match(/\.(jpg|jpeg|png|gif|bmp|webp|svg|tiff|ico|heic|heif)$/i) ? 'images' : 'documents'}/${doc.doc_name}`} className="flex items-center gap-1" download>
+                                        <span>Télécharger</span>
+                                      </a>
+                                    )}
+                                  </button>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
                       </div>
-                      <div className="space-y-1">
-                        <p className="text-xs text-gray-600">Zone: {projet.pro_zone}</p>
-                        <p className="text-xs text-gray-600">Coût: {projet.pro_cout}</p>
-                        <p className="text-xs text-gray-600">
-                          {new Date(projet.pro_date_debut).toLocaleDateString('fr-FR')} - {new Date(projet.pro_date_fin).toLocaleDateString('fr-FR')}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
             )}
