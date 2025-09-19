@@ -141,19 +141,21 @@ const Register = () => {
             </div>
 
             {/* Step Content */}
-            <div className="mb-12">
-              {currentStep === 1 && <ProvinceStep validationErrors={validationErrors} clearFieldError={clearFieldError} />}
-              {currentStep === 2 && <ZoneStep validationErrors={validationErrors} clearFieldError={clearFieldError} />}
-              {currentStep === 3 && <LocaliteStep validationErrors={validationErrors} clearFieldError={clearFieldError} />}
-              {currentStep === 4 && <DocumentStep validationErrors={validationErrors} clearFieldError={clearFieldError} />}
-              {currentStep === 5 && currentSubStep === 1 && (
-                <IdentificationStepPart1 validationErrors={validationErrors} clearFieldError={clearFieldError} />
-              )}
-              {currentStep === 5 && currentSubStep === 2 && (
-                <IdentificationStepPart2 validationErrors={validationErrors} clearFieldError={clearFieldError} />
-              )}
-              {currentStep === 6 && <QuestionStep validationErrors={validationErrors} clearFieldError={clearFieldError} />}
-              {currentStep === 7 && <RevisionStep formData={formData} />}
+            <div className="mb-12 transition-all duration-500 ease-in-out">
+              <div className="transition-opacity duration-300 ease-in-out">
+                {currentStep === 1 && <ProvinceStep validationErrors={validationErrors} clearFieldError={clearFieldError} />}
+                {currentStep === 2 && <ZoneStep validationErrors={validationErrors} clearFieldError={clearFieldError} />}
+                {currentStep === 3 && <LocaliteStep validationErrors={validationErrors} clearFieldError={clearFieldError} />}
+                {currentStep === 4 && <DocumentStep validationErrors={validationErrors} clearFieldError={clearFieldError} />}
+                {currentStep === 5 && currentSubStep === 1 && (
+                  <IdentificationStepPart1 validationErrors={validationErrors} clearFieldError={clearFieldError} />
+                )}
+                {currentStep === 5 && currentSubStep === 2 && (
+                  <IdentificationStepPart2 validationErrors={validationErrors} clearFieldError={clearFieldError} />
+                )}
+                {currentStep === 6 && <QuestionStep validationErrors={validationErrors} clearFieldError={clearFieldError} />}
+                {currentStep === 7 && <RevisionStep formData={formData} />}
+              </div>
             </div>
 
             <div className="flex justify-between items-center">

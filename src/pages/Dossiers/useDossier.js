@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAuditDossiers, getDossiers, getErrorDossier, getFinanceDossiers, getJuridiqueDossiers, getLoadingDossier, selectAllDossiers } from '../../app/reducers/dossiers';
+import { getAuditDossiers, getControleurDossiers, getDossiers, getErrorDossier, getFinanceDossiers, getJuridiqueDossiers, getLoadingDossier, selectAllDossiers } from '../../app/reducers/dossiers';
 import { getSessionUser } from '../../config/auth';
 
 const customStyles = {
@@ -55,7 +55,9 @@ const useDossiers = () => {
         dispatch(getJuridiqueDossiers());
       }else if(user.direction === 'FINANCE' &&  user.profil === 'Financier'){
         dispatch(getFinanceDossiers());
-      } else dispatch(getAuditDossiers());
+      } else if(user.direction == 'AUDIT' &&  user.profil === 'Controleur' ){
+        dispatch(getControleurDossiers());
+      }else dispatch(getDossiers(user.direction));
     },[])
 
   return {

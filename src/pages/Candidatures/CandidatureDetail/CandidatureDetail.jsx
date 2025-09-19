@@ -347,7 +347,7 @@ const CandidatureDetail = () => {
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
               <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
                 <FiInfo className="mr-2 h-5 w-5 text-[#6a1754]" />
-                Renseignements de la structure
+                Renseignements sur {candidature.str_designation}
               </h2>
               {candidature.Structure_renseignements && candidature.Structure_renseignements.length > 0 && (
                 <div className="space-y-4">

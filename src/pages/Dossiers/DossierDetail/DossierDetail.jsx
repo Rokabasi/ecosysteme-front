@@ -119,9 +119,9 @@ const DossierDetail = () => {
             Retour à la liste
           </button>
           
-          <div className="flex justify-between items-center">
+          <div className="space-y-4">
             <h1 className="text-3xl font-bold text-gray-900">{dossier.str_designation}</h1>
-            <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-3">
+            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-3 lg:space-y-0">
               <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
                 <div className="flex items-center">
                   <span className="text-sm font-medium text-gray-700 mr-2">Statut :</span>
@@ -155,6 +155,7 @@ const DossierDetail = () => {
                   <label className="text-sm font-medium text-gray-500">Dénomination</label>
                   <p className="mt-1 text-lg font-semibold text-gray-900">{dossier.str_designation}</p>
                 </div>
+                
                 <div>
                   <label className="text-sm font-medium text-gray-500">Sigle</label>
                   <p className="mt-1 text-gray-900">{dossier.str_sigle || 'Non renseigné'}</p>
@@ -172,6 +173,10 @@ const DossierDetail = () => {
                     <FiUsers className="mr-2 h-4 w-4 text-gray-400" />
                     {dossier.str_nombre_employe_actif}
                   </p>
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-gray-500">Numéro de dossier</label>
+                  <p className="mt-1 text-gray-900">{dossier.str_code}</p>
                 </div>
               </div>
             </div>
@@ -242,60 +247,6 @@ const DossierDetail = () => {
               </div>
             </div>
 
-            {/* Projets */}
-            {dossier?.Projets && dossier.Projets.length > 0 && (
-              <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
-                  <FiTarget className="mr-3 h-5 w-5 text-[#6a1754]" />
-                  Projets
-                </h2>
-                <div className="space-y-4">
-                  {dossier.Projets.map((projet, index) => (
-                    <div key={index} className="border border-gray-200 rounded-lg p-4">
-                      <div className="flex justify-between items-start mb-3">
-                        <div>
-                          <h3 className="font-semibold text-gray-900">{projet.pro_intitule}</h3>
-                          <p className="text-sm text-gray-500">Code: {projet.pro_code}</p>
-                        </div>
-                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                          projet.pro_statut === 'En cours' ? 'bg-blue-100 text-blue-800' :
-                          projet.pro_statut === 'Terminé' ? 'bg-green-100 text-green-800' :
-                          projet.pro_statut === 'Planifié' ? 'bg-yellow-100 text-yellow-800' :
-                          'bg-gray-100 text-gray-800'
-                        }`}>
-                          {projet.pro_statut}
-                        </span>
-                      </div>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3">
-                        <div>
-                          <label className="text-xs font-medium text-gray-500">Zone d'intervention</label>
-                          <p className="text-sm text-gray-900">{projet.pro_zone}</p>
-                        </div>
-                        <div>
-                          <label className="text-xs font-medium text-gray-500">Coût</label>
-                          <p className="text-sm text-gray-900">{projet.pro_cout}</p>
-                        </div>
-                        <div>
-                          <label className="text-xs font-medium text-gray-500">Date de début</label>
-                          <p className="text-sm text-gray-900">{new Date(projet.pro_date_debut).toLocaleDateString('fr-FR')}</p>
-                        </div>
-                        <div>
-                          <label className="text-xs font-medium text-gray-500">Date de fin</label>
-                          <p className="text-sm text-gray-900">{new Date(projet.pro_date_fin).toLocaleDateString('fr-FR')}</p>
-                        </div>
-                      </div>
-                      <div>
-                        <label className="text-xs font-medium text-gray-500">Résultat attendu</label>
-                        <p className="text-sm text-gray-900 mt-1">{projet.pro_resultat}</p>
-                      </div>
-                      <div className="mt-2 text-xs text-gray-400">
-                        Créé le {new Date(projet.createdAt).toLocaleDateString('fr-FR')}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
 
             {/* Zones d'intervention */}
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
@@ -350,9 +301,17 @@ const DossierDetail = () => {
                           </div>
                         </div>
                         <button className="text-[#6a1754] hover:text-[#5c1949] text-sm font-medium">
-                          <a href={`${import.meta.env.VITE_REMOTE_URL}/documents/${doc.doc_name}`} className="flex items-center gap-2" target="_blank" rel="noopener noreferrer">
-                            <span>Aperçu</span>
-                          </a>
+                          {doc.doc_name.toLowerCase().endsWith('.pdf') ? (
+                            <a href={`${import.meta.env.VITE_REMOTE_URL}/documents/${doc.doc_name}`} className="flex items-center gap-2" target="_blank" rel="noopener noreferrer">
+                              <span>Aperçu</span>
+                            </a>
+                          ) : (
+                            <a 
+                            target='_blank'
+                            href={`${import.meta.env.VITE_REMOTE_URL}/${doc.doc_name.toLowerCase().match(/\.(jpg|jpeg|png|gif|bmp|webp|svg|tiff|ico|heic|heif)$/i) ? 'images' : 'documents'}/${doc.doc_name}`} className="flex items-center gap-2" download>
+                              <span>Télécharger</span>
+                            </a>
+                          )}
                         </button>
                       </div>
                     ))}
@@ -375,9 +334,15 @@ const DossierDetail = () => {
                           </div>
                         </div>
                         <button className="text-[#6a1754] hover:text-[#5c1949] text-sm font-medium">
-                          <a href={`${import.meta.env.VITE_REMOTE_URL}/documents/${doc.doc_name}`} className="flex items-center gap-2" target="_blank" rel="noopener noreferrer">
-                            <span>Aperçu</span>
-                          </a>
+                          {doc.doc_name.toLowerCase().endsWith('.pdf') ? (
+                            <a href={`${import.meta.env.VITE_REMOTE_URL}/documents/${doc.doc_name}`} className="flex items-center gap-2" target="_blank" rel="noopener noreferrer">
+                              <span>Aperçu</span>
+                            </a>
+                          ) : (
+                            <a href={`${import.meta.env.VITE_REMOTE_URL}/${doc.doc_name.toLowerCase().match(/\.(jpg|jpeg|png|gif|bmp|webp|svg|tiff|ico|heic|heif)$/i) ? 'images' : 'documents'}/${doc.doc_name}`} className="flex items-center gap-2" download>
+                              <span>Télécharger</span>
+                            </a>
+                          )}
                         </button>
                       </div>
                     ))}
@@ -406,9 +371,15 @@ const DossierDetail = () => {
                           </div>
                         </div>
                         <button className="text-[#6a1754] hover:text-[#5c1949] text-sm font-medium">
-                          <a href={`${import.meta.env.VITE_REMOTE_URL}/documents/${doc.doc_name}`} className="flex items-center gap-2" target="_blank" rel="noopener noreferrer">
-                            <span>Aperçu</span>
-                          </a>
+                          {doc.doc_name.toLowerCase().endsWith('.pdf') ? (
+                            <a href={`${import.meta.env.VITE_REMOTE_URL}/documents/${doc.doc_name}`} className="flex items-center gap-2" target="_blank" rel="noopener noreferrer">
+                              <span>Aperçu</span>
+                            </a>
+                          ) : (
+                            <a href={`${import.meta.env.VITE_REMOTE_URL}/${doc.doc_name.toLowerCase().match(/\.(jpg|jpeg|png|gif|bmp|webp|svg|tiff|ico|heic|heif)$/i) ? 'images' : 'documents'}/${doc.doc_name}`} className="flex items-center gap-2" download>
+                              <span>Télécharger</span>
+                            </a>
+                          )}
                         </button>
                       </div>
                     ))}
@@ -449,7 +420,7 @@ const DossierDetail = () => {
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
               <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
                 <FiInfo className="mr-2 h-5 w-5 text-[#6a1754]" />
-                Renseignements de la structure
+                Renseignements supplémentaires
               </h2>
               {dossier.Structure_renseignements && dossier.Structure_renseignements.length > 0 && (
                 <div className="space-y-4">
@@ -566,6 +537,41 @@ const DossierDetail = () => {
                       {traitement.tr_action && (
                         <p className="text-sm text-gray-600 mt-1">Action : {traitement.tr_action}</p>
                       )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Projets */}
+            {dossier?.Projets && dossier.Projets.length > 0 && (
+              <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                  <FiTarget className="mr-2 h-5 w-5 text-[#6a1754]" />
+                  Projets
+                </h2>
+                <div className="space-y-3">
+                  {dossier.Projets.map((projet, index) => (
+                    <div key={index} className="p-3 border border-gray-200 rounded-lg">
+                      <div className="mb-2">
+                        <h3 className="font-medium text-gray-900">{projet.pro_intitule}</h3>
+                        <p className="text-xs text-gray-500">Code: {projet.pro_code}</p>
+                        <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium mt-1 ${
+                          projet.pro_statut === 'En cours' ? 'bg-blue-100 text-blue-800' :
+                          projet.pro_statut === 'Terminé' ? 'bg-green-100 text-green-800' :
+                          projet.pro_statut === 'Planifié' ? 'bg-yellow-100 text-yellow-800' :
+                          'bg-gray-100 text-gray-800'
+                        }`}>
+                          {projet.pro_statut}
+                        </span>
+                      </div>
+                      <div className="space-y-1">
+                        <p className="text-xs text-gray-600">Zone: {projet.pro_zone}</p>
+                        <p className="text-xs text-gray-600">Coût: {projet.pro_cout}</p>
+                        <p className="text-xs text-gray-600">
+                          {new Date(projet.pro_date_debut).toLocaleDateString('fr-FR')} - {new Date(projet.pro_date_fin).toLocaleDateString('fr-FR')}
+                        </p>
+                      </div>
                     </div>
                   ))}
                 </div>

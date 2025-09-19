@@ -176,12 +176,12 @@ const Dossiers = () => {
 
   const columns = [
     {
-      name: 'ID',
-      selector: row => row.str_id,
+      name: 'N° Dossier',
+      selector: row => row.str_code,
       sortable: true,
       width: '120px',
       cell: row => (
-        <span className="font-mono text-sm text-gray-600">{1}</span>
+        <span className="font-mono text-sm text-gray-600 pointer-events-none">{row.str_code}</span>
       )
     },
     {
@@ -189,7 +189,7 @@ const Dossiers = () => {
       selector: row => row.str_designation,
       sortable: true,
       cell: row => (
-        <div className="flex flex-col">
+        <div className="flex flex-col pointer-events-none">
           <span className="font-medium text-gray-900">{row.str_designation}</span>
           <span className="text-xs text-gray-500">{row.str_sigle}</span>
         </div>
@@ -201,7 +201,7 @@ const Dossiers = () => {
       selector: row => row.str_annee_creation,
       sortable: true,
       cell: row => (
-        <span className="text-sm text-gray-600">{row.str_annee_creation}</span>
+        <span className="text-sm text-gray-600 pointer-events-none">{row.str_annee_creation}</span>
       )
     },
     {
@@ -209,7 +209,7 @@ const Dossiers = () => {
       selector: row => row.str_province,
       sortable: true,
       cell: row => (
-        <div className="flex items-center">
+        <div className="flex items-center pointer-events-none">
           
           <span className="text-sm">{row.str_province_siege_sociale || 'Non renseigné'}</span>
         </div>
@@ -220,8 +220,19 @@ const Dossiers = () => {
       selector: row => row.str_date_soumission,
       sortable: true,
       cell: row => (
-        <div className="text-sm text-gray-600">
+        <div className="text-sm text-gray-600 pointer-events-none">
           {new Date(row.createdAt).toLocaleDateString('fr-FR')}
+        </div>
+      ),
+      width: '140px'
+    },
+    {
+      name: 'Projets',
+      selector: row => row.Projets?.length,
+      sortable: true,
+      cell: row => (
+        <div className="text-sm text-gray-600 pointer-events-none">
+          {row.Projets?.length}
         </div>
       ),
       width: '140px'
@@ -230,7 +241,7 @@ const Dossiers = () => {
       name: 'STATUT',
       selector: row => row.str_statut,
       sortable: true,
-      cell: row => <StatusBadge status={row.str_statut} />,
+      cell: row => <div className="pointer-events-none"><StatusBadge status={row.str_statut} /></div>,
       width: '220px'
     },
   ];
